@@ -12,6 +12,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      borderColor: {
+        border: 'hsl(var(--border))', // Uses your defined CSS variable
+      },
     },
   },
   plugins: [],
