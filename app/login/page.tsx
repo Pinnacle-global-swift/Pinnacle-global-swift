@@ -52,6 +52,7 @@ export default function Login() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
+      console.log(values)
       const data = await api.login(values.email, values.password);
       localStorage.setItem('token', data.token);
       toast({
