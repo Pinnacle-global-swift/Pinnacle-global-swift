@@ -74,6 +74,7 @@ const handleResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T => {
 export const api = {
   register: async (userData: UserData): Promise<void> => {
     const response = await axiosInstance.post<ApiResponse<void>>('/auth/register', userData);
+  
     return handleResponse(response);
   },
 

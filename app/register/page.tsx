@@ -91,7 +91,8 @@ export default function Register () {
     setIsSubmitting(true)
     try {
       console.log(values)
-      await api.register(values)
+    const result =   await api.register(values)
+    console.log(result)
       toast({
         title: 'Registration Successful',
         description: 'You have successfully registered. Please log in.',
