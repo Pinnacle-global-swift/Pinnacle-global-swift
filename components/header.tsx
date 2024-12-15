@@ -38,7 +38,7 @@ export function Header() {
 
   return (
     <motion.header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white bg-opacity-90'}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black shadow-lg' : 'bg-black bg-opacity-90'}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
@@ -72,7 +72,7 @@ export function Header() {
                 >
                   <Link 
                     href={item.href}
-                    className="px-3 py-2 text-sm font-medium text-gray-800 hover:text-primary transition-colors rounded-md inline-flex items-center"
+                    className="px-3 py-2 text-sm font-medium text-white hover:text-primary transition-colors rounded-md inline-flex items-center"
                   >
                     {item.name}
                     {item.submenu && <ChevronDown className="ml-1 h-4 w-4" />}
