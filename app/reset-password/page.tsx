@@ -57,7 +57,7 @@ export default function ResetPassword () {
         duration: 5000
       })
       router.push('/login')
-    } catch (error) {
+    } catch (error:any) {
       console.error(error)
       toast({
         variant: 'destructive',
@@ -89,7 +89,7 @@ export default function ResetPassword () {
             alt='Swift-Blink Logo'
             width={200}
             height={50}
-            classNameclassName='h-12 w-auto'
+            // classNameclassName='h-12 w-auto'
           />
         </motion.div>
 

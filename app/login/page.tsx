@@ -60,7 +60,7 @@ export default function Login() {
         duration: 3000,
       });
       router.push('/dashboard');
-    } catch (error) {
+    } catch (error:any) {
       console.error('Login error:', error);
       toast({
         variant: "destructive",

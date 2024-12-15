@@ -48,7 +48,7 @@ export default function ForgotPassword () {
         duration: 5000
       })
       router.push('/login')
-    } catch (error) {
+    } catch (error:any) {
       console.error(error)
       toast({
         variant: 'destructive',
