@@ -55,7 +55,7 @@ export default function DashboardLayout({
   return (
     <div className={cn(
       "min-h-screen transition-colors duration-300",
-      theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'
+      theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50 dark:bg-gray-900'
     )}>
       {/* Sidebar */}
       <div 

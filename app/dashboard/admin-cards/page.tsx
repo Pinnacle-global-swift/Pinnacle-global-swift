@@ -109,9 +109,9 @@ export default function AdminCards() {
                   <TableCell>{request.cardType}</TableCell>
                   <TableCell>
                     <Badge variant={
-                      request.status === 'approved' ? 'success' :
+                      request.status === 'approved' ? 'default' :
                       request.status === 'rejected' ? 'destructive' :
-                      'default'
+                      'secondary'
                     }>
                       {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                     </Badge>
@@ -152,9 +152,9 @@ export default function AdminCards() {
                               <div>
                                 <Label>Status</Label>
                                 <Badge variant={
-                                  selectedCard.status === 'approved' ? 'success' :
+                                  selectedCard.status === 'approved' ? 'default' :
                                   selectedCard.status === 'rejected' ? 'destructive' :
-                                  'default'
+                                  'secondary'
                                 }>
                                   {selectedCard.status.charAt(0).toUpperCase() + selectedCard.status.slice(1)}
                                 </Badge>
