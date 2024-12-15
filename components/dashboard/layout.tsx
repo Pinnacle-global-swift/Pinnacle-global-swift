@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutGrid, WalletCards, ArrowLeftRight, Receipt, PieChart, Target, Settings, LogOut, Search, Bell, ChevronRight, User, MoreVertical, Menu, X, CreditCard, Users } from 'lucide-react'
+import { LayoutGrid, WalletCards, ArrowLeftRight, Receipt, PieChart, Target, Settings, LogOut, Search, Bell, ChevronRight, User, MoreVertical, Menu, X, CreditCard, Users, FileText, Shield } from 'lucide-react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,17 +19,16 @@ import { useTheme } from "next-themes"
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: LayoutGrid },
-  { name: 'Balances', href: '/dashboard/balances', icon: WalletCards },
-  { name: 'Cards', href: '/dashboard/cards', icon: CreditCard },
-  { name: 'Transactions', href: '/dashboard/transactions', icon: ArrowLeftRight },
+  { name: 'Transfer', href: '/dashboard/transfer', icon: ArrowLeftRight },
+  { name: 'Deposit', href: '/dashboard/deposit', icon: WalletCards },
+  { name: 'Withdraw', href: '/dashboard/withdraw', icon: ArrowLeftRight },
+  { name: 'Loan', href: '/dashboard/loan', icon: FileText },
+  { name: 'KYC', href: '/dashboard/kyc', icon: Shield },
+  { name: 'Transactions', href: '/dashboard/transactions', icon: Receipt },
   { name: 'Bills', href: '/dashboard/bills', icon: Receipt },
   { name: 'Expenses', href: '/dashboard/expenses', icon: PieChart },
   { name: 'Goals', href: '/dashboard/goals', icon: Target },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-  { name: 'Admin Overview', href: '/dashboard/admin-overview', icon: LayoutGrid },
-  { name: 'Users', href: '/dashboard/users', icon: Users },
-  { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
-  { name: 'Card Management', href: '/dashboard/admin-cards', icon: CreditCard },
 ]
 
 export default function DashboardLayout({

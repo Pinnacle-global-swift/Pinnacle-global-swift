@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, ArrowDownRight, ShoppingBag, Home, Car, Zap, ArrowUp, Wallet, FileText, ShieldCheck, ChevronRight, Bell, CreditCard } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, ShoppingBag, Wallet, FileText, ShieldCheck, ChevronRight, Bell, CreditCard } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -12,15 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { TransferDialog } from "@/components/transfer-dialog"
-import { DepositDialog } from "@/components/deposit-dialog"
-import { WithdrawDialog } from "@/components/withdraw-dialog"
-import { KYCDialog } from "@/components/kyc-dialog"
-import { LoanDialog } from "@/components/loan-dialog"
 import Link from 'next/link'
 
-// Define the necessary data structures
 const accountData = {
   name: "John Doe",
   accountNumber: "****1234",
@@ -41,20 +34,8 @@ const upcomingBills = [
 ]
 
 export default function DashboardOverview() {
-  const [isTransferOpen, setIsTransferOpen] = useState(false)
-  const [isDepositOpen, setIsDepositOpen] = useState(false)
-  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false)
-  const [isKYCOpen, setIsKYCOpen] = useState(false)
-  const [isLoanOpen, setIsLoanOpen] = useState(false)
-
   return (
     <div className="space-y-8">
-      <TransferDialog open={isTransferOpen} onOpenChange={setIsTransferOpen} />
-      <DepositDialog open={isDepositOpen} onOpenChange={setIsDepositOpen} />
-      <WithdrawDialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen} />
-      <KYCDialog open={isKYCOpen} onOpenChange={setIsKYCOpen} />
-      <LoanDialog open={isLoanOpen} onOpenChange={setIsLoanOpen} />
-
       {/* Account Overview Card */}
       <Card className="bg-gradient-to-br from-gray-800 to-gray-900 text-white">
         <CardHeader className="pb-2">
@@ -83,22 +64,24 @@ export default function DashboardOverview() {
 
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4">
-              <Button
-                variant="outline"
-                className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white w-full"
-                onClick={() => setIsTransferOpen(true)}
-              >
-                <ArrowUp className="w-4 h-4 mr-2" />
-                Transfer
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white w-full"
-                onClick={() => setIsWithdrawOpen(true)}
-              >
-                <ArrowDownRight className="w-4 h-4 mr-2" />
-                Withdraw
-              </Button>
+              <Link href="/dashboard/transfer">
+                <Button
+                  variant="outline"
+                  className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white w-full"
+                >
+                  <ArrowUpRight className="w-4 h-4 mr-2" />
+                  Transfer
+                </Button>
+              </Link>
+              <Link href="/dashboard/withdraw">
+                <Button
+                  variant="outline"
+                  className="bg-gray-700 border-gray-600 hover:bg-gray-600 text-white w-full"
+                >
+                  <ArrowDownRight className="w-4 h-4 mr-2" />
+                  Withdraw
+                </Button>
+              </Link>
             </div>
 
             {/* Quick Actions */}
@@ -112,30 +95,33 @@ export default function DashboardOverview() {
                   <span className="text-xs">Transactions</span>
                 </Button>
               </Link>
-              <Button
-                variant="ghost"
-                className="flex flex-col items-center space-y-1 h-auto py-4 hover:bg-gray-700 text-white"
-                onClick={() => setIsDepositOpen(true)}
-              >
-                <Wallet className="w-5 h-5" />
-                <span className="text-xs">Deposit</span>
-              </Button>
-              <Button
-                variant="ghost"
-                className="flex flex-col items-center space-y-1 h-auto py-4 hover:bg-gray-700 text-white"
-                onClick={() => setIsLoanOpen(true)}
-              >
-                <FileText className="w-5 h-5" />
-                <span className="text-xs">Loan</span>
-              </Button>
-              <Button
-                variant="ghost"
-                className="flex flex-col items-center space-y-1 h-auto py-4 hover:bg-gray-700 text-white"
-                onClick={() => setIsKYCOpen(true)}
-              >
-                <ShieldCheck className="w-5 h-5" />
-                <span className="text-xs">KYC</span>
-              </Button>
+              <Link href="/dashboard/deposit">
+                <Button
+                  variant="ghost"
+                  className="flex flex-col items-center space-y-1 h-auto py-4 hover:bg-gray-700 text-white w-full"
+                >
+                  <Wallet className="w-5 h-5" />
+                  <span className="text-xs">Deposit</span>
+                </Button>
+              </Link>
+              <Link href="/dashboard/loan">
+                <Button
+                  variant="ghost"
+                  className="flex flex-col items-center space-y-1 h-auto py-4 hover:bg-gray-700 text-white w-full"
+                >
+                  <FileText className="w-5 h-5" />
+                  <span className="text-xs">Loan</span>
+                </Button>
+              </Link>
+              <Link href="/dashboard/kyc">
+                <Button
+                  variant="ghost"
+                  className="flex flex-col items-center space-y-1 h-auto py-4 hover:bg-gray-700 text-white w-full"
+                >
+                  <ShieldCheck className="w-5 h-5" />
+                  <span className="text-xs">KYC</span>
+                </Button>
+              </Link>
             </div>
           </div>
         </CardContent>
@@ -211,13 +197,6 @@ export default function DashboardOverview() {
                 </Button>
               </Link>
             </div>
-            <Tabs defaultValue="all" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="income">Income</TabsTrigger>
-                <TabsTrigger value="expenses">Expenses</TabsTrigger>
-              </TabsList>
-            </Tabs>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8 text-gray-500">

@@ -90,6 +90,7 @@ export default function Register () {
   async function onSubmit (values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
+      console.log(values)
       await api.register(values)
       toast({
         title: 'Registration Successful',
