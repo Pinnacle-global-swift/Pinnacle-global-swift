@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
 import { ArrowUpRight, ArrowDownRight, ShoppingBag, Wallet, FileText, ShieldCheck, ChevronRight, Bell, CreditCard } from 'lucide-react'
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import Link from 'next/link'
+import { api } from '@/lib/api';
+
 
 const accountData = {
   name: "John Doe",
@@ -34,6 +36,34 @@ const upcomingBills = [
 ]
 
 export default function DashboardOverview() {
+
+
+  const [accountInfo, setAccountInfo] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+
+
+
+  useEffect(() => {
+    const fetchAccountInfo = async () => {
+      try {
+        const data = await api.getAccountInfo(); // Call the API method
+        setAccountInfo(data); // Set the fetched data to state
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch account info'); // Handle error
+      } finally {
+        setLoading(false); // Stop loading indicator
+      }
+    };
+
+    fetchAccountInfo(); // Call the function when the component mounts
+  }, []);
+
+
+  console.log(accountInfo)
+
+
   return (
     <div className="space-y-8">
       {/* Account Overview Card */}

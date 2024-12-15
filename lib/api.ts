@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { API_BASE_URL } from './config';
+import Router from 'next/router';
 
 // Define types for API responses and request payloads
 interface ApiResponse<T> {
@@ -61,6 +62,20 @@ axiosInstance.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
+
+// Add a response interceptor to handle unauthorized errors
+axiosInstance.interceptors.response.use(
+  (response) => response, // Pass through successful responses
+  (error) => {
+    if (error.response?.status === 401 || error.response?.data?.message === 'Not authorized to access this route') {
+      localStorage.removeItem('token'); // Clear any invalid tokens
+      Router.push('/login'); // Redirect to the login page
+      console.log("voke still testing me")
+    }
+    return Promise.reject(error); // Reject the error for further handling
+  }
+);
+
 
 // Helper function to handle API responses
 const handleResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T => {
