@@ -11,7 +11,6 @@ export default function Layout({
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange
     >
       <DashboardLayout>{children}</DashboardLayout>
     </ThemeProvider>
