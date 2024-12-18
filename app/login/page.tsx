@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react'
+import { Eye, EyeOff, Mail, Lock, Shield, Key } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -52,7 +52,6 @@ export default function Login() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
-      console.log(values)
       const data = await api.login(values.email, values.password);
       localStorage.setItem('token', data.token);
       toast({
@@ -79,8 +78,19 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070"
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+        <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+      </div>
+
+      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
         <motion.div 
           className="flex justify-center"
           initial={{ opacity: 0, y: -20 }}
@@ -114,7 +124,7 @@ export default function Login() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md"
+        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <Form {...form}>
@@ -204,7 +214,7 @@ export default function Login() {
 
               <Button
                 type="submit"
-                className="w-full bg-green-500 hover:bg-green-600"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Signing in..." : "Sign in"}
@@ -222,15 +232,31 @@ export default function Login() {
             </form>
           </Form>
         </div>
-
-        <div className="mt-6 flex justify-center space-x-4 text-sm text-gray-600">
-          <Link href="/privacy" className="hover:text-gray-900">
-            Privacy Notice
-          </Link>
-          <span>•</span>
-          <Link href="/terms" className="hover:text-gray-900">
-            Terms of service
-          </Link>
+        <div className="mt-6 flex justify-center space-x-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center"
+          >
+            <Shield className="w-6 h-6 text-white" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center"
+          >
+            <Lock className="w-6 h-6 text-white" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center"
+          >
+            <Key className="w-6 h-6 text-white" />
+          </motion.div>
         </div>
       </motion.div>
     </div>

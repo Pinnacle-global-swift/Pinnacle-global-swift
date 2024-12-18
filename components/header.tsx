@@ -11,6 +11,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import Image from 'next/image'
 
 const mainNavItems = [
   {
@@ -19,8 +20,8 @@ const mainNavItems = [
     subItems: [
       { name: "Checking Accounts", href: "/personal/checking" },
       { name: "Savings Accounts", href: "/personal/savings" },
-      // { name: "Credit Cards", href: "/personal/credit-cards" },
-      // { name: "Mortgages", href: "/personal/mortgages" },
+      { name: "Credit Cards", href: "/personal/credit-cards" },
+      { name: "Mortgages", href: "/personal/mortgages" },
     ]
   },
   {
@@ -28,9 +29,9 @@ const mainNavItems = [
     href: "/business",
     subItems: [
       { name: "Business Checking", href: "/business/checking" },
-      // { name: "Business Loans", href: "/business/loans" },
-      // { name: "Merchant Services", href: "/business/merchant-services" },
-      // { name: "Treasury Management", href: "/business/treasury" },
+      { name: "Business Loans", href: "/business/loans" },
+      { name: "Merchant Services", href: "/business/merchant-services" },
+      { name: "Treasury Management", href: "/business/treasury" },
     ]
   },
   {
@@ -40,17 +41,17 @@ const mainNavItems = [
       { name: "Personal Loans", href: "/loans/personal" },
       { name: "Auto Loans", href: "/loans/auto" },
       { name: "Home Loans", href: "/loans/home" },
-      // { name: "Business Loans", href: "/loans/business" },
+      { name: "Business Loans", href: "/loans/business" },
     ]
   },
   {
     name: "Investments",
     href: "/investments",
     subItems: [
-      // { name: "Wealth Management", href: "/investments/wealth-management" },
-      // { name: "Retirement Planning", href: "/investments/retirement" },
-      // { name: "Investment Advisory", href: "/investments/advisory" },
-      // { name: "Portfolio Management", href: "/investments/portfolio" },
+      { name: "Wealth Management", href: "/investments/wealth-management" },
+      { name: "Retirement Planning", href: "/investments/retirement" },
+      { name: "Investment Advisory", href: "/investments/advisory" },
+      { name: "Portfolio Management", href: "/investments/portfolio" },
     ]
   },
   {
@@ -58,8 +59,8 @@ const mainNavItems = [
     href: "/about",
     subItems: [
       { name: "Our Story", href: "/about/story" },
-      // { name: "Leadership", href: "/about/leadership" },
-      // { name: "Careers", href: "/about/careers" },
+      { name: "Leadership", href: "/about/leadership" },
+      { name: "Careers", href: "/about/careers" },
       { name: "Contact", href: "/contact" },
     ]
   }
@@ -77,9 +78,13 @@ export function Header() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                Pinnacle Global Bank
-              </span>
+              <Image
+                src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=300"
+                alt="Pinnacle Global Bank Logo"
+                width={180}
+                height={40}
+                className="h-10 w-auto object-contain"
+              />
             </Link>
 
             {/* Desktop Navigation */}
