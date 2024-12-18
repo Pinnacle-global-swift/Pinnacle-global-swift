@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, ChevronRight, User } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { TopBar } from './TopBar'
 
 const menuItems = [
   { name: 'Home', href: '/' },
@@ -37,6 +38,8 @@ export function Header() {
   }
 
   return (
+    <>
+          <TopBar />
     <motion.header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black shadow-lg' : 'bg-black bg-opacity-90'}`}
       initial={{ y: -100 }}
@@ -188,6 +191,8 @@ export function Header() {
         )}
       </AnimatePresence>
     </motion.header>
+    </>
+
   )
 }
 

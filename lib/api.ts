@@ -107,6 +107,15 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/auth/forgot-password', { email });
     return handleResponse(response);
   },
+  changePassword: async (email: string): Promise<void> => {
+    const response = await axiosInstance.post<ApiResponse<void>>('/auth/forgot-password', { email });
+    return handleResponse(response);
+  },
+  verifyOTP: async (email: string, otp:string): Promise<void> => {
+    console.log(email, otp)
+    const response = await axiosInstance.post<ApiResponse<void>>('/auth/forgot-password', { email , otp});
+    return handleResponse(response);
+  },
 
   resetPassword: async (token: string, password: string): Promise<void> => {
     const response = await axiosInstance.post<ApiResponse<void>>(`/auth/reset-password/${token}`, { password });
