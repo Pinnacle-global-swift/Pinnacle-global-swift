@@ -1,6 +1,6 @@
 'use client'
 
-import React,  { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { MapPin, Mail, Facebook, Linkedin, Twitter, Instagram, Youtube } from 'lucide-react'
 import Link from 'next/link'
 import {
@@ -14,8 +14,7 @@ import {
 export function TopBar() {
   const [mounted, setMounted] = useState(false)
 
-  // Prevent hydration errors by only rendering after mount
-    useEffect(() => {
+  useEffect(() => {
     setMounted(true)
   }, [])
 
@@ -36,7 +35,7 @@ export function TopBar() {
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 hidden sm:inline" />
             <span className="sm:hidden">Email:</span>
-            <a href="mailto:support@pinnaclebank.com" className="hover:text-primary">
+            <a href="mailto:support@pinnaclebank.com" className="hover:text-primary transition-colors">
               support@pinnaclebank.com
             </a>
           </div>
@@ -54,20 +53,25 @@ export function TopBar() {
             </Select>
 
             <div className="flex items-center gap-3">
-              <Link href="#" className="hover:text-primary">
+              <Link href="#" className="hover:text-primary transition-colors">
                 <Facebook className="w-4 h-4" />
+                <span className="sr-only">Facebook</span>
               </Link>
-              <Link href="#" className="hover:text-primary">
+              <Link href="#" className="hover:text-primary transition-colors">
                 <Linkedin className="w-4 h-4" />
+                <span className="sr-only">LinkedIn</span>
               </Link>
-              <Link href="#" className="hover:text-primary">
+              <Link href="#" className="hover:text-primary transition-colors">
                 <Twitter className="w-4 h-4" />
+                <span className="sr-only">Twitter</span>
               </Link>
-              <Link href="#" className="hover:text-primary">
+              <Link href="#" className="hover:text-primary transition-colors">
                 <Instagram className="w-4 h-4" />
+                <span className="sr-only">Instagram</span>
               </Link>
-              <Link href="#" className="hover:text-primary">
+              <Link href="#" className="hover:text-primary transition-colors">
                 <Youtube className="w-4 h-4" />
+                <span className="sr-only">YouTube</span>
               </Link>
             </div>
           </div>
