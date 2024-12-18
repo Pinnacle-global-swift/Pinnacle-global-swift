@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Shield } from 'lucide-react'
+import { ArrowLeft, Shield, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -48,7 +48,7 @@ export default function VerifyOTP() {
         description: "Your OTP has been successfully verified.",
         duration: 5000,
       });
-      router.push('/change-password');
+      router.push('/reset-password');
     } catch (error:any) {
       console.error(error);
       toast({
@@ -63,8 +63,19 @@ export default function VerifyOTP() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-primary flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-800 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1557683311-eac922347aa1?auto=format&fit=crop&q=80&w=2070"
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-800 opacity-90"></div>
+      </div>
+
+      <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
         <motion.div 
           className="flex justify-center"
           initial={{ opacity: 0, y: -20 }}
@@ -73,7 +84,7 @@ export default function VerifyOTP() {
         >
           <Image
             src="/placeholder.svg?height=50&width=200"
-            alt="Pinnacle Global Bank Logo"
+            alt="Swift-Blink Logo"
             width={200}
             height={50}
             className="h-12 w-auto"
@@ -114,8 +125,9 @@ export default function VerifyOTP() {
                       <div className="relative">
                         <Shield className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input 
-                          className="pl-10 bg-gray-50"
-                          placeholder="Enter 6-digit OTP"
+                          className="pl-10 bg-gray-50 text-center text-2xl tracking-widest"
+                          placeholder="000000"
+                          maxLength={6}
                           {...field}
                         />
                       </div>
@@ -127,10 +139,23 @@ export default function VerifyOTP() {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-primary hover:bg-blue-700 text-white"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Verifying..." : "Verify OTP"}
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Verifying...
+                  </div>
+                ) : (
+                  <>
+                    Verify OTP
+                    <CheckCircle className="ml-2 h-5 w-5" />
+                  </>
+                )}
               </Button>
             </form>
           </Form>
@@ -138,13 +163,28 @@ export default function VerifyOTP() {
           <div className="mt-6">
             <Link
               href="/forgot-password"
-              className="flex items-center justify-center gap-2 text-sm text-blue-600 hover:text-blue-500"
+              className="flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Forgot Password
             </Link>
           </div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-6 flex justify-center space-x-4"
+        >
+          <Link href="/privacy" className="text-sm text-blue-200 hover:text-white">
+            Privacy Notice
+          </Link>
+          <span className="text-blue-200">•</span>
+          <Link href="/terms" className="text-sm text-blue-200 hover:text-white">
+            Terms of service
+          </Link>
+        </motion.div>
       </motion.div>
     </div>
   )
