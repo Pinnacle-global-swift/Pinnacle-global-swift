@@ -3,26 +3,21 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, ChevronRight, User } from 'lucide-react'
+import { Menu, X, ChevronDown, Phone } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { TopBar } from './TopBar'
+import Image from 'next/image'
 
 const menuItems = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Services', href: '/services', submenu: [
-    { name: 'Personal Banking', href: '/services/personal' },
-    { name: 'Business Banking', href: '/services/business' },
-    { name: 'Loans', href: '/services/loans' },
-  ]},
-  { name: 'Investments', href: '/investments' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Services', href: '/services' },
+  { name: 'Contact Us', href: '/contact' },
 ]
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,164 +28,122 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const toggleSubmenu = (name: string) => {
-    setActiveSubmenu(activeSubmenu === name ? null : name)
-  }
-
   return (
     <>
-    <TopBar />
-    <motion.header 
-      className={`fixed  left-0 right-0  z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg  top-0' : 'bg-white bg-opacity-90 top-10'}`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-    >
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-primary transition-colors hover:text-primary/80">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-            >
-              Pinnacle Global Bank
-            </motion.div>
-          </Link>
-          
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden text-primary"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
+      <TopBar />
+      <header className={`sticky top-0 z-50 w-full bg-white transition-all duration-300 ${
+        scrolled ? 'shadow-lg' : ''
+      }`}>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0">
+              <Image
+                src="/logo.svg"
+                alt="DBS Bank"
+                width={120}
+                height={40}
+                className="h-10 w-auto"
+              />
+            </Link>
 
-          <div className="hidden lg:flex items-center space-x-4">
-            {menuItems.map((item) => (
-              <div key={item.name} className="relative group">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                >
-                  <Link 
-                    href={item.href}
-                    className="px-3 py-2 text-sm font-medium text-gray-800 hover:text-primary transition-colors rounded-md inline-flex items-center"
-                  >
-                    {item.name}
-                    {item.submenu && <ChevronDown className="ml-1 h-4 w-4" />}
-                  </Link>
-                </motion.div>
-                {item.submenu && (
-                  <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                      {item.submenu.map((subItem) => (
-                        <motion.div
-                          key={subItem.name}
-                          whileHover={{ backgroundColor: '#f3f4f6' }}
-                        >
-                          <Link
-                            href={subItem.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:text-primary"
-                            role="menuitem"
-                          >
-                            {subItem.name}
-                          </Link>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
             >
-              <Link href="/login">
-                <Button variant="default" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  <User className="w-4 h-4 mr-2" />
-                  Online Banking
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </nav>
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ type: 'tween', duration: 0.3 }}
-            className="lg:hidden bg-white shadow-lg absolute top-full left-0 right-0 overflow-hidden"
-          >
-            <div className="container mx-auto px-4 py-4">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-8">
               {menuItems.map((item) => (
-                <div key={item.name}>
-                  {item.submenu ? (
-                    <div>
-                      <button
-                        onClick={() => toggleSubmenu(item.name)}
-                        className="flex justify-between items-center w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100"
-                      >
-                        {item.name}
-                        <ChevronRight className={`h-4 w-4 transition-transform ${activeSubmenu === item.name ? 'rotate-90' : ''}`} />
-                      </button>
-                      <AnimatePresence>
-                        {activeSubmenu === item.name && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="bg-gray-50"
-                          >
-                            {item.submenu.map((subItem) => (
-                              <Link
-                                key={subItem.name}
-                                href={subItem.href}
-                                className="block px-8 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                onClick={() => setIsMenuOpen(false)}
-                              >
-                                {subItem.name}
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="block px-4 py-2 text-gray-900 hover:bg-gray-100"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </div>
-              ))}
-              <div className="mt-4">
-                <Link 
-                  href="/login" 
-                  className="block w-full"
-                  onClick={() => setIsMenuOpen(false)}
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
                 >
-                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    <User className="w-4 h-4 mr-2" />
-                    Online Banking
-                  </Button>
+                  {item.name}
                 </Link>
+              ))}
+            </nav>
+
+            {/* Action Buttons */}
+            <div className="hidden lg:flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" className="text-gray-700 hover:text-gray-900">
+                  Login
+                </Button>
+                <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
+                  Register
+                </Button>
+              </div>
+              <div className="border-l border-gray-200 pl-4">
+                <div className="flex flex-col items-end">
+                  <span className="text-sm text-blue-600 font-medium">Free Consultancy</span>
+                  <a 
+                    href="tel:+6561002373" 
+                    className="flex items-center text-gray-900 font-bold hover:text-blue-600 transition-colors"
+                  >
+                    <Phone className="h-4 w-4 mr-1" />
+                    +65 61002373
+                  </a>
+                </div>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+          </div>
+
+          {/* Mobile Navigation */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="lg:hidden border-t border-gray-200"
+              >
+                <div className="py-4 space-y-4">
+                  <nav className="flex flex-col space-y-2">
+                    {menuItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </nav>
+                  <div className="px-4 space-y-2">
+                    <Button variant="outline" className="w-full justify-center">
+                      Login
+                    </Button>
+                    <Button variant="default" className="w-full justify-center bg-blue-600 hover:bg-blue-700">
+                      Register
+                    </Button>
+                    <div className="pt-4 border-t border-gray-200">
+                      <a 
+                        href="tel:+6561002373"
+                        className="flex items-center justify-center text-blue-600 font-medium"
+                      >
+                        <Phone className="h-4 w-4 mr-2" />
+                        +65 61002373
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </header>
     </>
   )
 }

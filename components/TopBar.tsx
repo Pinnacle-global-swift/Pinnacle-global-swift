@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MapPin, Mail, Facebook, Linkedin, Twitter, Instagram, Youtube } from 'lucide-react'
+import { MapPin, Mail, Phone, Facebook, Linkedin, Twitter, Instagram, Youtube } from 'lucide-react'
 import Link from 'next/link'
 import {
   Select,
@@ -23,56 +23,64 @@ export function TopBar() {
   }
 
   return (
-    <div className="bg-[#0B1222] text-white py-2 px-4">
-      <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-xs sm:text-sm">
-        <div className="flex items-center gap-2 mb-2 sm:mb-0 text-center sm:text-left">
-          <MapPin className="w-4 h-4 hidden sm:inline" />
-          <span className="sm:hidden">Address:</span>
-          <span>201 TELOK KURAU ROAD #01-05 KURAU COURT, SINGAPORE</span>
-        </div>
-        
-        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
-          <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4 hidden sm:inline" />
-            <span className="sm:hidden">Email:</span>
-            <a href="mailto:support@pinnaclebank.com" className="hover:text-primary transition-colors">
-              support@pinnaclebank.com
-            </a>
+    <div className="bg-[#0A1E3D] text-white py-2 px-4 text-sm">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+          {/* Left Section */}
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-6">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-blue-400" />
+              <span className="text-gray-300">201 TELOK KURAU ROAD #01-05 KURAU COURT, SINGAPORE</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-blue-400" />
+              <a 
+                href="mailto:support@pinnaclebank.com" 
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                support@pinnaclebank.com
+              </a>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Right Section */}
+          <div className="flex items-center gap-6">
+            {/* Language Selector */}
             <Select defaultValue="en">
-              <SelectTrigger className="w-[100px] bg-transparent border-none text-white focus:ring-0">
+              <SelectTrigger className="w-[100px] h-7 bg-transparent border-gray-700 text-gray-300 hover:text-white focus:ring-1 focus:ring-blue-400">
                 <SelectValue placeholder="Language" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="zh">中文</SelectItem>
-                <SelectItem value="ms">Bahasa</SelectItem>
+              <SelectContent className="bg-[#0A1E3D] border-gray-700">
+                <SelectItem value="en" className="text-gray-300 hover:bg-blue-900/20 focus:bg-blue-900/20">
+                  English
+                </SelectItem>
+                <SelectItem value="zh" className="text-gray-300 hover:bg-blue-900/20 focus:bg-blue-900/20">
+                  中文
+                </SelectItem>
+                <SelectItem value="ms" className="text-gray-300 hover:bg-blue-900/20 focus:bg-blue-900/20">
+                  Bahasa
+                </SelectItem>
               </SelectContent>
             </Select>
 
+            {/* Social Links */}
             <div className="flex items-center gap-3">
-              <Link href="#" className="hover:text-primary transition-colors">
-                <Facebook className="w-4 h-4" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link href="#" className="hover:text-primary transition-colors">
-                <Linkedin className="w-4 h-4" />
-                <span className="sr-only">LinkedIn</span>
-              </Link>
-              <Link href="#" className="hover:text-primary transition-colors">
-                <Twitter className="w-4 h-4" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link href="#" className="hover:text-primary transition-colors">
-                <Instagram className="w-4 h-4" />
-                <span className="sr-only">Instagram</span>
-              </Link>
-              <Link href="#" className="hover:text-primary transition-colors">
-                <Youtube className="w-4 h-4" />
-                <span className="sr-only">YouTube</span>
-              </Link>
+              {[
+                { icon: Facebook, href: '#', color: 'hover:text-blue-400' },
+                { icon: Linkedin, href: '#', color: 'hover:text-blue-500' },
+                { icon: Twitter, href: '#', color: 'hover:text-blue-400' },
+                { icon: Instagram, href: '#', color: 'hover:text-pink-400' },
+                { icon: Youtube, href: '#', color: 'hover:text-red-500' },
+              ].map((social, index) => (
+                <Link 
+                  key={index} 
+                  href={social.href}
+                  className={`transition-colors duration-200 text-gray-400 ${social.color}`}
+                >
+                  <social.icon className="w-4 h-4" />
+                  <span className="sr-only">{social.icon.name}</span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
