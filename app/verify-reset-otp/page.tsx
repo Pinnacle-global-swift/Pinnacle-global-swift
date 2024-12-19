@@ -30,7 +30,7 @@ const formSchema = z.object({
     .regex(/^\d+$/, { message: 'OTP must contain only numbers' })
 })
 
-export default function VerifyOTP () {
+export default function VerifyResetOTP () {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
@@ -46,8 +46,10 @@ export default function VerifyOTP () {
     const storedEmail = localStorage.getItem('resetEmail');
     setIsSubmitting(true)
     try {
-     const data = await api.verifyOTP(storedEmail, values.otp);
+     const data = await api.verifyResetOTP(storedEmail, values.otp);
 
+     localStorage.setItem('resetToken', data?.resetToken);
+    //  resetToken
      localStorage.removeItem('resetEmail');
      console.log(data)
       toast({
@@ -55,7 +57,7 @@ export default function VerifyOTP () {
         description: 'Your OTP has been successfully verified.',
         duration: 5000
       })
-      router.push('/login')
+      router.push('/reset-password')
     } catch (error: any) {
       console.error(error)
       toast({

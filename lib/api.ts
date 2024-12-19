@@ -78,23 +78,23 @@ axiosInstance.interceptors.response.use(
 
 
 // Helper function to handle API responses
-const handleResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T => {
+const handleResponse = <T>(response: any): any => {
   if (response.data.success) {
-    return response.data.data;
+    return response.data;
   } else {
-    throw new Error(response.data.message || 'An error occurred');
+    console.error("error voke  handleResponse", response.data)
+    throw new Error( response.data.message || 'An error occurred');
   }
 };
 
 export const api = {
   register: async (userData: UserData): Promise<void> => {
     const response = await axiosInstance.post<ApiResponse<void>>('/auth/register', userData);
-  
     return handleResponse(response);
   },
 
-  login: async (email: string, password: string): Promise<{ token: string }> => {
-    const response = await axiosInstance.post<ApiResponse<{ token: string }>>('/auth/login', { email, password });
+  login: async (email: string, password: string): Promise<any > => {
+    const response = await axiosInstance.post<ApiResponse<any>>('/auth/login', { email, password });
     return handleResponse(response);
   },
 
@@ -111,9 +111,14 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/auth/forgot-password', { email });
     return handleResponse(response);
   },
-  verifyOTP: async (email: string, otp:string): Promise<void> => {
+  verifyOTP: async (email: any, otp:string): Promise<void> => {
     console.log(email, otp)
-    const response = await axiosInstance.post<ApiResponse<void>>('/auth/forgot-password', { email , otp});
+    const response = await axiosInstance.post<ApiResponse<void>>('/auth/verify-otp', { email , otp});
+    return handleResponse(response);
+  },
+  verifyResetOTP: async (email: any, otp:string): Promise<any> => {
+    console.log(email, otp)
+    const response = await axiosInstance.post<any>('/auth/verify-reset-otp', { email , otp});
     return handleResponse(response);
   },
 

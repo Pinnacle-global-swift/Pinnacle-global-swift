@@ -80,13 +80,15 @@ export default function Register() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
-      await api.register(values);
+     const data =  await api.register(values);
+     console.log(data)
+     localStorage.setItem('resetEmail', values.email);
       toast({
         title: "Registration Successful",
         description: "You have successfully registered. Please log in.",
         duration: 5000,
       });
-      router.push('/login');
+      router.push('/verify-otp');
     } catch (error:any) {
       console.error(error);
       toast({

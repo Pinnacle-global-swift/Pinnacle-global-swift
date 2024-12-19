@@ -76,17 +76,17 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 to-indigo-800 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://images.unsplash.com/photo-1557683311-eac922347aa1?auto=format&fit=crop&q=80&w=2070"
-          alt="Background"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-indigo-800 opacity-90"></div>
-      </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+    <div className="absolute inset-0 z-0">
+      <Image
+        src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070"
+        alt="Background"
+        layout="fill"
+        objectFit="cover"
+        quality={100}
+      />
+      <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+    </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md z-10">
         <motion.div 

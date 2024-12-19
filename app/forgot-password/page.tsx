@@ -41,19 +41,20 @@ export default function ForgotPassword() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
-      // await api.forgotPassword(values.email);
+    const data =   await api.forgotPassword(values.email);
+    localStorage.setItem('resetEmail', values.email);
       toast({
         title: "Password Reset Initiated",
         description: "Check your email for further instructions.",
         duration: 5000,
       });
-      router.push('/verify-otp');
+      router.push('/verify-reset-otp');
     } catch (error:any) {
-      console.error(error);
+      console.error(error?.response?.data?.error, error);
       toast({
         variant: "destructive",
         title: "Password Reset Failed",
-        description: error.message || "An unexpected error occurred. Please try again.",
+        description: error?.response?.data?.error || "An unexpected error occurred. Please try again.",
         duration: 5000,
       });
     } finally {

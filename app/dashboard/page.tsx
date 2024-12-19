@@ -49,7 +49,7 @@ export default function DashboardOverview() {
     const fetchAccountInfo = async () => {
       try {
         const data = await api.getAccountInfo(); // Call the API method
-        setAccountInfo(data); // Set the fetched data to state
+        setAccountInfo(data?.data); // Set the fetched data to state
       } catch (err: any) {
         setError(err.message || 'Failed to fetch account info'); // Handle error
       } finally {
@@ -75,7 +75,7 @@ export default function DashboardOverview() {
             </div>
             <div>
               <p className="text-sm text-gray-400">Welcome back,</p>
-              <p className="font-medium">{accountData.name}</p>
+              <p className="font-medium">{accountInfo?.name}</p>
             </div>
           </div>
         </CardHeader>
@@ -83,12 +83,12 @@ export default function DashboardOverview() {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-gray-400">Total Balance</p>
-              <h2 className="text-3xl font-bold">${accountData.balance.toFixed(2)} {accountData.currency}</h2>
+              <h2 className="text-3xl font-bold">${accountInfo?.balance.toFixed(2)} {accountData.currency}</h2>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Account number:</span>
-                <span>{accountData.accountNumber}</span>
+                <span>{accountInfo?.accountNumber}</span>
               </div>
             </div>
 
