@@ -5,7 +5,8 @@ import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Facebook, Twitter, LinkedinIcon as LinkedIn, Instagram } from 'lucide-react'
+import Image from 'next/image'
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -27,68 +28,88 @@ export function Contact() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-center mb-12"
+          className="text-4xl font-bold text-center mb-16"
         >
           Get in Touch
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
             <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <MapPin className="w-6 h-6 text-primary mr-4" />
-                <p>123 Financial Street, New York, NY 10001</p>
+            <div className="space-y-6">
+              <div className="flex items-start">
+                <MapPin className="w-6 h-6 text-primary mr-4 mt-1" />
+                <div>
+                  <h4 className="font-medium">Address</h4>
+                  <p className="text-gray-600">123 Financial Street, New York, NY 10001</p>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Phone className="w-6 h-6 text-primary mr-4" />
-                <p>+1 (555) 123-4567</p>
+              <div className="flex items-start">
+                <Phone className="w-6 h-6 text-primary mr-4 mt-1" />
+                <div>
+                  <h4 className="font-medium">Phone</h4>
+                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Mail className="w-6 h-6 text-primary mr-4" />
-                <p>contact@pinnacleglobalbank.com</p>
+              <div className="flex items-start">
+                <Mail className="w-6 h-6 text-primary mr-4 mt-1" />
+                <div>
+                  <h4 className="font-medium">Email</h4>
+                  <p className="text-gray-600">contact@pinnacleglobalbank.com</p>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Clock className="w-6 h-6 text-primary mr-4" />
-                <p>Mon-Fri: 9am-5pm, Sat: 10am-2pm</p>
+              <div className="flex items-start">
+                <Clock className="w-6 h-6 text-primary mr-4 mt-1" />
+                <div>
+                  <h4 className="font-medium">Business Hours</h4>
+                  <p className="text-gray-600">Mon-Fri: 9am-5pm, Sat: 10am-2pm</p>
+                </div>
               </div>
             </div>
-            <div className="mt-8">
+
+            <div className="mt-12">
               <h4 className="text-xl font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                {['facebook', 'twitter', 'linkedin', 'instagram'].map((social) => (
+                {[
+                  { icon: Facebook, href: 'https://facebook.com' },
+                  { icon: Twitter, href: 'https://twitter.com' },
+                  { icon: LinkedIn, href: 'https://linkedin.com' },
+                  { icon: Instagram, href: 'https://instagram.com' },
+                ].map((social, index) => (
                   <a
-                    key={social}
-                    href={`https://${social}.com`}
+                    key={index}
+                    href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-primary text-white p-2 rounded-full hover:bg-primary-dark transition-colors"
                   >
-                    <span className="sr-only">{social}</span>
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                    </svg>
+                    <social.icon className="w-5 h-5" />
                   </a>
                 ))}
               </div>
             </div>
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
+            <h3 className="text-2xl font-semibold mb-6">Send Us a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <Input id="name" name="name" required className="w-full" />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <Input id="email" name="email" type="email" required className="w-full" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <Input id="name" name="name" required className="w-full" />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <Input id="email" name="email" type="email" required className="w-full" />
+                </div>
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
@@ -104,6 +125,72 @@ export function Contact() {
             </form>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-20"
+        >
+          <h3 className="text-2xl font-semibold mb-6 text-center">Visit Our Main Branch</h3>
+          <div className="relative h-[700px] rounded-lg overflow-hidden">
+            <Image
+              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070"
+              alt="Pinnacle Global Bank Main Branch"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="text-white text-center">
+                <h4 className="text-2xl font-bold mb-2">Pinnacle Global Bank</h4>
+                <p>123 Financial Street, New York, NY 10001</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-20"
+        >
+          <h3 className="text-2xl font-semibold mb-6 text-center">Our Global Presence</h3>
+          <div className="aspect-w-16 aspect-h-9">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.305935107!2d-74.25987214158748!3d40.69766374827421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1678886479025!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="mt-20"
+        >
+          <h3 className="text-2xl font-semibold mb-6 text-center">Frequently Asked Questions</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              { q: "How do I open an account?", a: "You can open an account online through our secure portal or visit any of our branches with valid identification and proof of address." },
+              { q: "What are your interest rates?", a: "Our interest rates vary depending on the type of account and current market conditions. Please check our rates page or contact a representative for the most up-to-date information." },
+              { q: "How can I apply for a loan?", a: "You can apply for a loan online, through our mobile app, or by scheduling an appointment with one of our loan officers at your nearest branch." },
+              { q: "Is online banking secure?", a: "Yes, we use state-of-the-art encryption and multi-factor authentication to ensure the security of your online banking experience." },
+            ].map((faq, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+                <h4 className="font-semibold mb-2">{faq.q}</h4>
+                <p className="text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   )

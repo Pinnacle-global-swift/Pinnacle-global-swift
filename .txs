@@ -41,7 +41,7 @@ export function Header() {
     <>
     <TopBar />
     <motion.header 
-      className={`fixed  left-0 right-0  z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg  top-0' : 'bg-white bg-opacity-90 top-10'}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white bg-opacity-90'}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}

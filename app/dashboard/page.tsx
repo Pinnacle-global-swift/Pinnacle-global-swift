@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
-import { ArrowUpRight, ArrowDownRight, ShoppingBag, Wallet, FileText, ShieldCheck, ChevronRight, Bell, CreditCard } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, ShoppingBag, Wallet, FileText, ShieldCheck, ChevronRight, Bell, CreditCard, Target, Receipt } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
+// import { Progress } from "@/components/ui/progress"
 import Link from 'next/link'
 import { api } from '@/lib/api';
 
@@ -61,7 +61,6 @@ export default function DashboardOverview() {
   }, []);
 
 
-  console.log(accountInfo)
 
 
   return (
@@ -160,7 +159,7 @@ export default function DashboardOverview() {
       {/* Top Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Goals */}
-        <Card className="bg-gradient-to-br from-gray-700 to-gray-800 text-white">
+        {/* <Card className="bg-gradient-to-br from-gray-700 to-gray-800 text-white">
           <CardHeader>
             <CardTitle>Goals</CardTitle>
             <CardDescription className="text-green-100">December, 2023</CardDescription>
@@ -183,10 +182,27 @@ export default function DashboardOverview() {
               </div>
             </div>
           </CardContent>
+        </Card> */}
+         <Card className="bg-gradient-to-br from-gray-700 to-gray-800 text-white">
+          <CardHeader>
+            <CardTitle>Goals</CardTitle>
+            <CardDescription className="text-green-100">December, 2023</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <div className="mb-4">
+                <Target className="w-12 h-12 text-gray-500" />
+              </div>
+              <p className="text-gray-400">No goals set yet</p>
+              <Button variant="outline" className="mt-4 text-white border-white hover:bg-white/10">
+                Set Your First Goal
+              </Button>
+            </div>
+          </CardContent>
         </Card>
 
         {/* Upcoming Bills */}
-        <Card className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white">
+        {/* <Card className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Upcoming Bills</CardTitle>
             <Link href="/dashboard/bills">
@@ -209,6 +225,27 @@ export default function DashboardOverview() {
                   </div>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card> */}
+         <Card className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Upcoming Bills</CardTitle>
+            <Link href="/dashboard/bills">
+              <Button variant="ghost" size="sm" className="text-white hover:text-yellow-100">
+                View All <ChevronRight className="w-4 h-4 ml-1" />
+              </Button>
+            </Link>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <div className="mb-4">
+                <Receipt className="w-12 h-12 text-yellow-200" />
+              </div>
+              <p className="text-yellow-100">No upcoming bills</p>
+              <Button variant="outline" className="mt-4 text-white border-white hover:bg-white/10">
+                Add Your First Bill
+              </Button>
             </div>
           </CardContent>
         </Card>
