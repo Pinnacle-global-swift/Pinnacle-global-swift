@@ -81,7 +81,6 @@ export default function Register() {
     setIsSubmitting(true)
     try {
      const data =  await api.register(values);
-     console.log(data)
      localStorage.setItem('resetEmail', values.email);
       toast({
         title: "Registration Successful",

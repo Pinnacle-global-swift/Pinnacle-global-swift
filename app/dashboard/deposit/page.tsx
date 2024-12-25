@@ -13,9 +13,9 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card"
 import {
   Form,
@@ -35,33 +35,74 @@ import {
 } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
 
+const cryptoAddresses = [
+  {
+    type: "BTC",
+    coin: "COIN",
+    address: "bc1qc5hvcr8k6vxzsks6w3d5h3rcmaa52t34n4mdjk",
+    qrCode: "/placeholder.svg?height=200&width=200",
+    timestamp: "9:19 PM",
+    icon: "/btc-icon.svg"
+  },
+  {
+    type: "ETH", 
+    coin: "COIN",
+    address: "0x5ed59b1E92493310e5580C4e54051036396AAA2C",
+    qrCode: "/placeholder.svg?height=200&width=200",
+    timestamp: "9:20 PM",
+    icon: "/eth-icon.svg"
+  },
+  {
+    type: "USDT",
+    coin: "TRC20",
+    address: "TDwxMpfaXoWqxQU5kdosvbDKqbKoQ5klkF",
+    qrCode: "/placeholder.svg?height=200&width=200",
+    timestamp: "9:20 PM",
+    icon: "/usdt-icon.svg"
+  }
+]
+
 const formSchema = z.object({
   amount: z.string().min(1, "Amount is required"),
   paymentMethod: z.string().min(1, "Payment method is required"),
 })
 
-const WALLET_ADDRESS = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
-
 export default function DepositPage() {
-  const [copied, setCopied] = useState(false)
+  const [selectedCrypto, setSelectedCrypto] = useState(cryptoAddresses[0])
+  const [copiedAddress, setCopiedAddress] = useState<string | null>(null)
   const { toast } = useToast()
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: "",
-      paymentMethod: "",
+      paymentMethod: "bitcoin",
     },
   })
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(WALLET_ADDRESS)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  const copyToClipboard = (address: string) => {
+    navigator.clipboard.writeText(address)
+    setCopiedAddress(address)
     toast({
       title: "Address Copied",
-      description: "Wallet address has been copied to clipboard",
+      description: "The address has been copied to your clipboard",
     })
+    setTimeout(() => setCopiedAddress(null), 2000)
+  }
+
+  const handlePaymentMethodChange = (value: string) => {
+    form.setValue("paymentMethod", value)
+    switch(value) {
+      case "bitcoin":
+        setSelectedCrypto(cryptoAddresses[0])
+        break
+      case "ethereum":
+        setSelectedCrypto(cryptoAddresses[1])
+        break
+      case "usdt":
+        setSelectedCrypto(cryptoAddresses[2])
+        break
+    }
   }
 
   return (
@@ -116,7 +157,7 @@ export default function DepositPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-200">Payment Method</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={handlePaymentMethodChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
                             <SelectValue placeholder="Select payment method" />
@@ -134,10 +175,25 @@ export default function DepositPage() {
                 />
 
                 <div className="space-y-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={selectedCrypto.icon}
+                        alt={selectedCrypto.type}
+                        width={24}
+                        height={24}
+                        className="rounded-full"
+                      />
+                      <span className="text-lg font-semibold text-white">{selectedCrypto.type}</span>
+                      <span className="text-sm text-gray-400">{selectedCrypto.coin}</span>
+                    </div>
+                    <span className="text-xs text-gray-500">{selectedCrypto.timestamp}</span>
+                  </div>
+
                   <div className="flex justify-center">
                     <div className="bg-white p-4 rounded-lg">
                       <Image
-                        src="/placeholder.svg?height=200&width=200"
+                        src={selectedCrypto.qrCode}
                         alt="QR Code"
                         width={200}
                         height={200}
@@ -150,17 +206,20 @@ export default function DepositPage() {
                     <label className="text-sm text-gray-200">Wallet Address</label>
                     <div className="flex items-center gap-2 bg-gray-800 p-3 rounded-lg">
                       <QrCode className="w-5 h-5 text-gray-400" />
-                      <code className="flex-1 text-sm text-gray-300 font-mono">
-                        {WALLET_ADDRESS}
+                      <code className="flex-1 text-sm text-gray-300 font-mono break-all">
+                        {selectedCrypto.address}
                       </code>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={copyToClipboard}
+                        onClick={() => copyToClipboard(selectedCrypto.address)}
                         className="h-8 px-3 text-gray-400 hover:text-white hover:bg-gray-700"
                       >
-                        {copied ? "Copied!" : "Copy"}
-                        <Copy className="w-4 h-4 ml-2" />
+                        {copiedAddress === selectedCrypto.address ? (
+                          "Copied!"
+                        ) : (
+                          <Copy className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -171,7 +230,7 @@ export default function DepositPage() {
           <CardFooter className="border-t border-gray-700 mt-6 flex flex-col items-start pt-6">
             <h4 className="text-sm font-medium text-gray-200 mb-2">Important Note</h4>
             <p className="text-sm text-gray-400">
-              Please make sure to send only the supported cryptocurrency to this address.
+              Please make sure to send only {selectedCrypto.type} ({selectedCrypto.coin}) to this address.
               Sending any other cryptocurrency may result in permanent loss.
             </p>
           </CardFooter>

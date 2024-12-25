@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
     id: 1,
     name: "Sarah Johnson",
     role: "Business Owner",
-    comment: "SwiftTask has revolutionized how I manage my finances. The interface is intuitive and the customer service is exceptional.",
+    comment: "SwifPinance Global Bank has revolutionized how I manage my finances. The interface is intuitive and the customer service is exceptional.",
     rating: 5,
     image: "/placeholder.svg?height=100&width=100"
   },

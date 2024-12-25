@@ -76,12 +76,16 @@ export function Header() {
             {/* Action Buttons */}
             <div className="hidden lg:flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <Button variant="ghost" className="text-gray-700 hover:text-gray-900">
-                  Login
-                </Button>
-                <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Register
-                </Button>
+                <Link href="/login">
+                  <Button variant="ghost" className="text-gray-700 hover:text-gray-900">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Register
+                  </Button>
+                </Link>
               </div>
               <div className="border-l border-gray-200 pl-4">
                 <div className="flex flex-col items-end">
@@ -122,12 +126,16 @@ export function Header() {
                     ))}
                   </nav>
                   <div className="px-4 space-y-2">
-                    <Button variant="outline" className="w-full justify-center">
-                      Login
-                    </Button>
-                    <Button variant="default" className="w-full justify-center bg-blue-600 hover:bg-blue-700">
-                      Register
-                    </Button>
+                    <Link href="/login">
+                      <Button variant="outline" className="w-full justify-center">
+                        Login
+                      </Button>
+                    </Link>
+                    <Link href="/register">
+                      <Button variant="default" className="w-full justify-center bg-blue-600 hover:bg-blue-700">
+                        Register
+                      </Button>
+                    </Link>
                     <div className="pt-4 border-t border-gray-200">
                       <a 
                         href="tel:+6561002373"
@@ -147,4 +155,3 @@ export function Header() {
     </>
   )
 }
-

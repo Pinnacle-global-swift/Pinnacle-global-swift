@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowDownRight, Wallet } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
+import { api } from '@/lib/api'
 
 const formSchema = z.object({
   amount: z.string().min(1, "Amount is required"),
@@ -43,9 +44,38 @@ const formSchema = z.object({
   description: z.string().optional(),
 })
 
+const cryptoAddresses = [
+  {
+    address: "bc1qc5hvcr8k6vxzsks6w3d5h3rcmaa52t34n4mdjk",
+    phone: "+234 812 747 8245",
+    qrCode: "/placeholder.svg?height=200&width=200",
+    timestamp: "9:19 PM"
+  },
+  {
+    address: "0x5ed59b1E92493310e5580C4e54051036396AAA2C",
+    phone: "+234 812 747 8245",
+    qrCode: "/placeholder.svg?height=200&width=200",
+    timestamp: "9:20 PM"
+  },
+  {
+    address: "TDwxMpfaXoWqxQU5kdosvbDKqbKoQ5klkF",
+    phone: "+234 812 747 8245",
+    qrCode: "/placeholder.svg?height=200&width=200",
+    timestamp: "9:20 PM"
+  }
+]
+
+
 export default function WithdrawPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
+  const [accountInfo, setAccountInfo] = useState<any>(null)
+  const [accountUser, setAccountUser] = useState<any>(null)
+
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedMethod, setSelectedMethod] = useState<string>('bank_transfer')
+  const [copiedAddress, setCopiedAddress] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,26 +89,57 @@ export default function WithdrawPage() {
     },
   })
 
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
+    console.log(values)
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      const response = await api.withdraw({
+        amount: parseFloat(values.amount),
+        withdrawalMethod: values.withdrawalMethod,
+        bankName: values.bankName,
+        accountNumber: values.accountNumber,
+        swiftCode: values.swiftCode
+      });
+
       toast({
         title: "Withdrawal Initiated",
-        description: `$${values.amount} withdrawal request has been submitted`,
-      })
-      form.reset()
+        description: `Your withdrawal request for $${values.amount} has been submitted. Reference: ${response.data?.transaction.reference}`,
+        duration: 5000,
+      });
+
+      form.reset();
     } catch (error) {
+      console.error('Withdrawal error:', error);
       toast({
         variant: "destructive",
         title: "Withdrawal Failed",
-        description: "Please try again later",
-      })
+        description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again.",
+        duration: 5000,
+      });
     } finally {
       setIsSubmitting(false)
     }
   }
+
+  useEffect(() => {
+    const fetchAccountInfo = async () => {
+      try {
+        const data = await api.getUserDetails() // Call the API method
+        setAccountUser(data?.data?.account) // Set the fetched data to state
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch account info') // Handle error
+      } finally {
+        setLoading(false) // Stop loading indicator
+      }
+    }
+
+    fetchAccountInfo() // Call the function when the component mounts
+  }, [])
+
+
+  console.log(accountUser)
+
 
   return (
     <div className="container max-w-xl mx-auto py-10">
@@ -106,7 +167,7 @@ export default function WithdrawPage() {
               <Wallet className="w-5 h-5 text-blue-500" />
               <div>
                 <p className="text-sm font-medium text-white">Available Balance</p>
-                <p className="text-2xl font-bold text-white">$50,000.00</p>
+                <p className="text-2xl font-bold text-white">${accountUser?.balance}</p>
               </div>
             </div>
 
@@ -140,16 +201,18 @@ export default function WithdrawPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-200">Withdrawal Method</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={(value) => {
+                        field.onChange(value)
+                        setSelectedMethod(value)
+                      }} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
                             <SelectValue placeholder="Select withdrawal method" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                          <SelectItem value="wire_transfer">Wire Transfer</SelectItem>
-                          <SelectItem value="crypto">Cryptocurrency</SelectItem>
+                          <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
+                          <SelectItem value="Wire Transfer">Wire Transfer</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -210,6 +273,7 @@ export default function WithdrawPage() {
                     </FormItem>
                   )}
                 />
+
 
                 <Button
                   type="submit"

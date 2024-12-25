@@ -1,5 +1,6 @@
 import DashboardLayout from '@/components/dashboard/layout'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from "@/components/ui/toaster"
 
 export default function Layout({
   children,
@@ -13,6 +14,7 @@ export default function Layout({
       enableSystem
     >
       <DashboardLayout>{children}</DashboardLayout>
+      <Toaster />
     </ThemeProvider>
   )
 }

@@ -10,7 +10,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { api } from "@/lib/api"
-import { API_BASE_URL } from "@/lib/config";
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -55,13 +54,13 @@ export default function Login() {
     try {
       const data = await api.login(values.email, values.password);
       localStorage.setItem('token', data.token);
-      console.log(data)
+      router.push('/dashboard');
       toast({
         title: "Login Successful",
         description: "You have successfully logged in.",
         duration: 3000,
       });
-      router.push('/dashboard');
+
     } catch (error:any) {
       console.error('Login error:', error);
       toast({

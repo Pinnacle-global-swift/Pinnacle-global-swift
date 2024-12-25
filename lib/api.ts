@@ -48,20 +48,28 @@ const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': '*/*',
+    Accept: '*/*',
   },
+  timeout: 10000, // Timeout set to 10 seconds
 });
 
+
 // Add a request interceptor to include the token in the header
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    const resetToken = localStorage.getItem('resetToken');
+    if (token ||  resetToken) {
+      config.headers['Authorization'] = `Bearer ${ resetToken || token}`;
+    }
+    return config;
+  },
+  (error) => {
+    console.error('Request Error:', error);
+    return Promise.reject(error);
   }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+);
+
 
 // Add a response interceptor to handle unauthorized errors
 axiosInstance.interceptors.response.use(
@@ -122,8 +130,8 @@ export const api = {
     return handleResponse(response);
   },
 
-  resetPassword: async (token: string, password: string): Promise<void> => {
-    const response = await axiosInstance.post<ApiResponse<void>>(`/auth/reset-password/${token}`, { password });
+  resetPassword: async ( password: string): Promise<void> => {
+    const response = await axiosInstance.post<ApiResponse<void>>(`/auth/reset-password`, { password });
     return handleResponse(response);
   },
 
@@ -134,6 +142,10 @@ export const api = {
 
   getUserSettings: async (): Promise<any> => {
     const response = await axiosInstance.get<ApiResponse<any>>('/users/settings');
+    return handleResponse(response);
+  },
+  getUserDetails: async (): Promise<any> => {
+    const response = await axiosInstance.get<ApiResponse<any>>('/users/details');
     return handleResponse(response);
   },
 
@@ -166,10 +178,18 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/notifications/mark-read', { notificationIds });
     return handleResponse(response);
   },
-
   cardApplication: async (data: CardApplicationData): Promise<void> => {
     const response = await axiosInstance.post<ApiResponse<void>>('/cards/apply', data);
     return handleResponse(response);
   },
+
+  withdraw: async (data: any): Promise<any> => {
+    const response = await axiosInstance.post<ApiResponse<void>>('/withdrawals', data);
+    return handleResponse(response);
+  },
+  transactions: async (page: number = 1, limit: number = 20): Promise<any> => {
+    const response = await axiosInstance.get(`transactions/history?page=${page}&limit=${limit}`);
+    return handleResponse(response);
+  }
 };
 
