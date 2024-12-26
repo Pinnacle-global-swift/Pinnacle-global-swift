@@ -10,6 +10,7 @@ import {
   FileText,
   ShieldCheck,
   ChevronRight,
+  ArrowLeftRight,
   Bell,
   CreditCard,
   Target,
