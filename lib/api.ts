@@ -50,7 +50,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
     Accept: '*/*',
   },
-  timeout: 10000, // Timeout set to 10 seconds
+  // timeout: 10000, // Timeout set to 10 seconds
 });
 
 
@@ -75,10 +75,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response, // Pass through successful responses
   (error) => {
+    console.log(error)
     if (error.response?.status === 401 || error.response?.data?.message === 'Not authorized to access this route') {
       localStorage.removeItem('token'); // Clear any invalid tokens
-      Router.push('/login'); // Redirect to the login page
-      console.log("voke still testing me")
+      // Router.push('/login'); // Redirect to the login page
     }
     return Promise.reject(error); // Reject the error for further handling
   }
@@ -178,7 +178,7 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/notifications/mark-read', { notificationIds });
     return handleResponse(response);
   },
-  cardApplication: async (data: CardApplicationData): Promise<void> => {
+  cardApplication: async (data: any): Promise<void> => {
     const response = await axiosInstance.post<ApiResponse<void>>('/cards/apply', data);
     return handleResponse(response);
   },
@@ -187,8 +187,21 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/withdrawals', data);
     return handleResponse(response);
   },
+  applycard: async (data: any): Promise<any> => {
+    const response = await axiosInstance.post('/cards/apply', data);
+    return handleResponse(response);
+  },
+  cardstatus: async (): Promise<any> => {
+    const response = await axiosInstance.get('/cards/status');
+    return handleResponse(response);
+  },
+  submitkyc: async (data: any): Promise<any> => {
+  
+    const response = await axiosInstance.post('/kyc/submit', data);
+    return handleResponse(response);
+  },
   transactions: async (page: number = 1, limit: number = 20): Promise<any> => {
-    const response = await axiosInstance.get(`transactions/history?page=${page}&limit=${limit}`);
+    const response = await axiosInstance.get(`/transactions/history?page=${page}&limit=${limit}`);
     return handleResponse(response);
   }
 };

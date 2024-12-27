@@ -43,18 +43,19 @@ export default function ForgotPassword() {
     try {
     const data =   await api.forgotPassword(values.email);
     localStorage.setItem('resetEmail', values.email);
+    router.push('/verify-reset-otp');
       toast({
         title: "Password Reset Initiated",
         description: "Check your email for further instructions.",
         duration: 5000,
       });
-      router.push('/verify-reset-otp');
+  
     } catch (error:any) {
       console.error(error?.response?.data?.error, error);
       toast({
         variant: "destructive",
         title: "Password Reset Failed",
-        description: error?.response?.data?.error || "An unexpected error occurred. Please try again.",
+        description: error?.response?.data?.error?.message || "An unexpected error occurred. Please try again.",
         duration: 5000,
       });
     } finally {
@@ -110,7 +111,7 @@ export default function ForgotPassword() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md"
+ className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <Form {...form}>

@@ -43,15 +43,15 @@ export default function VerifyResetOTP () {
   })
 
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    const storedEmail = localStorage.getItem('resetEmail');
+    const storedEmail = localStorage.getItem('resetEmail')
     setIsSubmitting(true)
     try {
-     const data = await api.verifyResetOTP(storedEmail, values.otp);
+      const data = await api.verifyResetOTP(storedEmail, values.otp)
 
-     localStorage.setItem('resetToken', data?.resetToken);
-    //  resetToken
-     localStorage.removeItem('resetEmail');
-     console.log(data)
+      localStorage.setItem('resetToken', data?.resetToken)
+      //  resetToken
+      localStorage.removeItem('resetEmail')
+      console.log(data)
       toast({
         title: 'OTP Verified',
         description: 'Your OTP has been successfully verified.',
@@ -61,10 +61,11 @@ export default function VerifyResetOTP () {
     } catch (error: any) {
       console.error(error)
       toast({
-        variant: 'destructive',
+        // variant: 'destructive',
         title: 'Verification Failed',
         description:
-          error.message || 'An unexpected error occurred. Please try again.',
+          error?.response?.data?.error?.message ||
+          'An unexpected error occurred. Please try again.',
         duration: 5000
       })
     } finally {
@@ -73,7 +74,7 @@ export default function VerifyResetOTP () {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+    <div className='min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative'>
       <div className='absolute inset-0 z-0'>
         <Image
           src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070'
@@ -82,7 +83,7 @@ export default function VerifyResetOTP () {
           objectFit='cover'
           quality={100}
         />
-        <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+        <div className='absolute inset-0 bg-gray-900 opacity-75'></div>
       </div>
 
       <div className='sm:mx-auto sm:w-full sm:max-w-md z-10'>
@@ -118,7 +119,7 @@ export default function VerifyResetOTP () {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'
+        className='mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10'
       >
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
           <Form {...form}>

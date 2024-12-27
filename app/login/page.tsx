@@ -50,11 +50,10 @@ export default function Login() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-    console.log(values.email, values.password)
     try {
       const data = await api.login(values.email, values.password);
-      localStorage.setItem('token', data.token);
       router.push('/dashboard');
+      localStorage.setItem('token', data.token);
       toast({
         title: "Login Successful",
         description: "You have successfully logged in.",
@@ -62,11 +61,11 @@ export default function Login() {
       });
 
     } catch (error:any) {
-      console.error('Login error:', error);
+      // console.error('Login error:', error?.response?.data?.error, "voke");
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Login Failed",
-        description: error.message || "An unexpected error occurred. Please try again.",
+        description: error?.response?.data?.error?.message || "An unexpected error occurred. Please try again.",
         duration: 5000,
       });
     } finally {

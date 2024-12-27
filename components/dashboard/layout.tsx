@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
   LayoutGrid,
   WalletCards,
@@ -25,7 +24,7 @@ import {
   FileText,
   Shield
 } from 'lucide-react'
-
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -59,6 +58,7 @@ export default function DashboardLayout ({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [accountInfo, setAccountInfo] = useState<any>(null)
@@ -69,15 +69,57 @@ export default function DashboardLayout ({
 
   const { theme } = useTheme()
 
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsSidebarOpen(window.innerWidth >= 1024)
+  //   }
+
+  //   window.addEventListener('resize', handleResize)
+  //   handleResize()
+
+  //   return () => window.removeEventListener('resize', handleResize)
+  // }, [])
+
+    // Close sidebar on route change on mobile
+    useEffect(() => {
+      if (window.innerWidth < 1024) {
+        setIsSidebarOpen(false)
+      }
+    }, [pathname])
+
+
   useEffect(() => {
     const handleResize = () => {
-      setIsSidebarOpen(window.innerWidth >= 1024)
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true)
+      } else {
+        setIsSidebarOpen(false)
+      }
     }
 
     window.addEventListener('resize', handleResize)
     handleResize()
 
     return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+   // Handle clicking outside sidebar on mobile
+   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById('sidebar')
+      const menuButton = document.getElementById('menu-button')
+      
+      if (window.innerWidth < 1024 && 
+          sidebar && 
+          !sidebar.contains(event.target as Node) && 
+          menuButton && 
+          !menuButton.contains(event.target as Node)) {
+        setIsSidebarOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
 
@@ -97,17 +139,26 @@ export default function DashboardLayout ({
   }, [])
 
 
-  console.log(accountUser)
 
   return (
     <div
       className={cn(
-        'min-h-screen  duration-300',
-        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50 dark:bg-gray-900'
+        'min-h-screen   transition-colors  duration-300',
+        theme === 'dark' ? 'dark:bg-gradient-dark' : 'light:bg-gradient-light'
       )}
     >
+
+   {/* Overlay */}
+   {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <div
+         id="sidebar"
         className={cn(
           'fixed inset-y-0 left-0 z-50 w-64 bg-background border-r shadow-lg transform transition-transform duration-300 ease-in-out',
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
@@ -116,8 +167,8 @@ export default function DashboardLayout ({
       >
         <div className='flex flex-col h-full'>
           {/* Logo */}
-          <div className='p-6 bg-primary'>
-            <h1 className='text-xl font-bold'>Pinnacle Global Bank</h1>
+          <div className="p-6 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <h1 className='text-xl font-bold  text-white'>Pinnacle Global Bank</h1>
           </div>
 
           {/* Navigation */}
@@ -179,10 +230,11 @@ export default function DashboardLayout ({
       {/* Main Content */}
       <div className='lg:pl-64 flex flex-col min-h-screen'>
         {/* Header */}
-        <header className='bg-background border-b sticky top-0 z-40'>
+        <header className='bg-background  border-b sticky top-0 z-40'>
           <div className='flex items-center justify-between px-4 py-4 lg:px-8'>
             <div className='flex items-center space-x-4'>
               <Button
+                id="menu-button"
                 variant='ghost'
                 size='icon'
                 className='lg:hidden'
@@ -223,7 +275,7 @@ export default function DashboardLayout ({
         </header>
 
         {/* Page Content */}
-        <main className='flex-grow p-4 lg:p-8 overflow-x-hidden'>
+        <main className='flex-grow p-4 lg:p-8 overflow-auto'>
           {children}
         </main>
       </div>

@@ -33,14 +33,17 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
+import { api } from '@/lib/api'
 
 const formSchema = z.object({
-  fullName: z.string().min(1, "Full name is required"),
+  fullLegalName: z.string().min(1, "Full name is required"),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   nationality: z.string().min(1, "Nationality is required"),
   idType: z.string().min(1, "ID type is required"),
   idNumber: z.string().min(1, "ID number is required"),
-  address: z.string().min(1, "Address is required"),
+  residentialAddress: z.string().min(1, "Address is required"),
+  idFrontImage: z.string().min(1, "Address is required"),
+  idBackImage: z.string().min(1, "Address is required"),
 })
 
 export default function KYCPage() {
@@ -52,19 +55,21 @@ export default function KYCPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
+      fullLegalName: "",
       dateOfBirth: "",
       nationality: "",
       idType: "",
       idNumber: "",
-      address: "",
+      residentialAddress: "",
+       "idFrontImage": "base64...",
+  "idBackImage": "base64..."
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!frontImage || !backImage) {
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Missing Documents",
         description: "Please upload both front and back images of your ID",
       })
@@ -73,7 +78,8 @@ export default function KYCPage() {
 
     setIsSubmitting(true)
     try {
-      // Simulate API call
+      const response = await api.submitkyc(values)
+      console.log(response,values )
       await new Promise(resolve => setTimeout(resolve, 2000))
       toast({
         title: "KYC Submitted Successfully",
@@ -126,7 +132,7 @@ export default function KYCPage() {
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
-                  name="fullName"
+                  name="fullLegalName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-200">Full Legal Name</FormLabel>
@@ -227,7 +233,7 @@ export default function KYCPage() {
 
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="residentialAddress"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-gray-200">Residential Address</FormLabel>

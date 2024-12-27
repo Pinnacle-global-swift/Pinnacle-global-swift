@@ -40,7 +40,7 @@ const cryptoAddresses = [
     type: "BTC",
     coin: "COIN",
     address: "bc1qc5hvcr8k6vxzsks6w3d5h3rcmaa52t34n4mdjk",
-    qrCode: "/placeholder.svg?height=200&width=200",
+    qrCode: "/BTC.png?height=200&width=200",
     timestamp: "9:19 PM",
     icon: "/btc-icon.svg"
   },
@@ -48,7 +48,7 @@ const cryptoAddresses = [
     type: "ETH", 
     coin: "COIN",
     address: "0x5ed59b1E92493310e5580C4e54051036396AAA2C",
-    qrCode: "/placeholder.svg?height=200&width=200",
+    qrCode: "/ETH.png?height=200&width=200",
     timestamp: "9:20 PM",
     icon: "/eth-icon.svg"
   },
@@ -56,7 +56,7 @@ const cryptoAddresses = [
     type: "USDT",
     coin: "TRC20",
     address: "TDwxMpfaXoWqxQU5kdosvbDKqbKoQ5klkF",
-    qrCode: "/placeholder.svg?height=200&width=200",
+    qrCode: "/USDT.png?height=200&width=200",
     timestamp: "9:20 PM",
     icon: "/usdt-icon.svg"
   }
@@ -175,20 +175,7 @@ export default function DepositPage() {
                 />
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={selectedCrypto.icon}
-                        alt={selectedCrypto.type}
-                        width={24}
-                        height={24}
-                        className="rounded-full"
-                      />
-                      <span className="text-lg font-semibold text-white">{selectedCrypto.type}</span>
-                      <span className="text-sm text-gray-400">{selectedCrypto.coin}</span>
-                    </div>
-                    <span className="text-xs text-gray-500">{selectedCrypto.timestamp}</span>
-                  </div>
+                 
 
                   <div className="flex justify-center">
                     <div className="bg-white p-4 rounded-lg">

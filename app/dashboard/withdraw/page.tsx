@@ -109,12 +109,12 @@ export default function WithdrawPage() {
       });
 
       form.reset();
-    } catch (error) {
-      console.error('Withdrawal error:', error);
+    } catch (error:any) {
+      console.error('Withdrawal error:', error?.response?.data?.error?.message      );
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Withdrawal Failed",
-        description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again.",
+        description:  error?.response?.data?.error?.message  ||  "An unexpected error occurred. Please try again.",
         duration: 5000,
       });
     } finally {
@@ -138,7 +138,6 @@ export default function WithdrawPage() {
   }, [])
 
 
-  console.log(accountUser)
 
 
   return (

@@ -67,7 +67,8 @@ export default function ResetPassword () {
         variant: 'destructive',
         title: 'Password Reset Failed',
         description:
-          error.message || 'An unexpected error occurred. Please try again.',
+          error?.response?.data?.error
+          || 'An unexpected error occurred. Please try again.',
         duration: 5000
       })
     } finally {
@@ -127,7 +128,7 @@ export default function ResetPassword () {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'
+        className='mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10'
       >
         <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
           <Form {...form}>
