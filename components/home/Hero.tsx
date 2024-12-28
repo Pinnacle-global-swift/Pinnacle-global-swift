@@ -15,7 +15,7 @@ const heroSlides = [
     title: "Banking Made Simple",
     subtitle: "Secure, and Smart",
     description: "Experience modern banking with our sleek, user-friendly interface. Stay on top of your finances effortlessly with Pinnacle Global Bank.",
-    image: "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&q=80&w=1920",
+    image: "./imagebuilding.png",
     cta: {
       primary: { text: "Get Started", link: "/register" },
       secondary: { text: "Learn More", link: "/about" }
