@@ -454,7 +454,7 @@ export default function ServicesPage () {
                   <Phone className='w-6 h-6 text-blue-600' />
                   <div className='text-left'>
                     <p className='text-sm text-blue-600'>Call us at</p>
-                    <p className='font-semibold text-blue-800'>+65 61002373</p>
+                    <p className='font-semibold text-blue-800'>+1 (336) 754-6451</p>
                   </div>
                 </div>
                 <Button

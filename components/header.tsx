@@ -95,7 +95,7 @@ export function Header() {
                     className="flex items-center text-gray-900 font-bold hover:text-blue-600 transition-colors"
                   >
                     <Phone className="h-4 w-4 mr-1" />
-                    +65 61002373
+                    +1 (336) 754-6451
                   </a>
                 </div>
               </div>
