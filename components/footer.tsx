@@ -67,7 +67,7 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-2">
               <li className="flex items-center text-gray-400">
-                <span>+1 (555) 123-4567</span>
+                <span>+1 (336) 754-6451</span>
               </li>
               <li className="flex items-center text-gray-400">
                 <span>contact@pinnacleglobal.com</span>

@@ -27,7 +27,7 @@ const heroSlides = [
     description: "Grow your wealth with our range of investment options. From high-yield savings to diversified portfolios, we've got you covered.",
     image: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?auto=format&fit=crop&q=80&w=1920",
     cta: {
-      primary: { text: "Start Investing", link: "/investments" },
+      primary: { text: "Start Investing", link: "/login" },
       secondary: { text: "Explore Options", link: "/services" }
     }
   },
@@ -37,8 +37,8 @@ const heroSlides = [
     description: "Access your accounts, make transactions, and manage your finances from anywhere in the world with our secure mobile banking app.",
     image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=1920",
     cta: {
-      primary: { text: "Download App", link: "/app" },
-      secondary: { text: "See Features", link: "#features" }
+      primary: { text: "Start Saving", link: "/login" },
+      secondary: { text: "See Features", link: "/services" }
     }
   }
 ]
@@ -53,7 +53,7 @@ export function Hero() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 2000,
     beforeChange: (current: number, next: number) => setCurrentSlide(next)
   }
 
@@ -87,7 +87,7 @@ export function Hero() {
                   <p className="text-lg mb-8">{slide.description}</p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link href={slide.cta.primary.link}>
-                      <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">
+                      <Button size="lg" className="w-full sm:w-auto bg-white text-black hover:bg-gray-100">
                         {slide.cta.primary.text}
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </Button>

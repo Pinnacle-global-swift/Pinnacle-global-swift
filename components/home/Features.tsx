@@ -33,7 +33,7 @@ const features = [
     icon: Smartphone, 
     title: "Mobile Banking", 
     description: "Manage your accounts, pay bills, and deposit checks right from your smartphone with our award-winning app.",
-    image: "https://images.unsplash.com/photo-1616514197672-7f32d31ae4b3?auto=format&fit=crop&q=80&w=1920"
+    image: "https://images.unsplash.com/photo-1599202875854-23b7cd490ff4?q=80&w=1588&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   },
   { 
     icon: PiggyBank, 

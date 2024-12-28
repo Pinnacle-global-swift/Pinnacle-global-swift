@@ -39,7 +39,7 @@ export function Header() {
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
               <Image
-                src="/logo.svg"
+                src="/pgb.png"
                 alt="DBS Bank"
                 width={120}
                 height={40}
@@ -142,7 +142,7 @@ export function Header() {
                         className="flex items-center justify-center text-blue-600 font-medium"
                       >
                         <Phone className="h-4 w-4 mr-2" />
-                        +65 61002373
+                        +1 (336) 754-6451
                       </a>
                     </div>
                   </div>
