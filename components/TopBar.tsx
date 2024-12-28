@@ -30,7 +30,7 @@ export function TopBar() {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-6">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-blue-400" />
-              <span className="text-gray-300">201 TELOK KURAU ROAD #01-05 KURAU COURT, SINGAPORE</span>
+              <span className="text-gray-300">2401 W Park Row Dr, Pantego, TX 76013, United States</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-blue-400" />

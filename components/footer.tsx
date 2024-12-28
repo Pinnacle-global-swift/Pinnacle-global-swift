@@ -73,7 +73,7 @@ export function Footer() {
                 <span>contact@pinnacleglobal.com</span>
               </li>
               <li className="flex items-center text-gray-400">
-                <span>123 Financial District, New York, NY 10004</span>
+                <span>2401 W Park Row Dr, Pantego, TX 76013, United States</span>
               </li>
             </ul>
           </div>
