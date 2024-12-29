@@ -9,11 +9,12 @@ import { FinancialTools } from "@/components/home/FinancialTools"
 import { SecurityMeasures } from "@/components/home/SecurityMeasures"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-
+import { CurrencyTicker } from "@/components/CurrencyTicker"
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
+      <CurrencyTicker />
       <main className="flex-1">
         <Hero />
         <Features />

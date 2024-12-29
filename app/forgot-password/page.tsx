@@ -84,7 +84,7 @@ export default function ForgotPassword() {
           transition={{ duration: 0.5 }}
         >
           <Image
-            src="/placeholder.svg?height=50&width=200"
+            src="/pgb.png?height=50&width=200"
             alt="Swift-Blink Logo"
             width={200}
             height={50}
