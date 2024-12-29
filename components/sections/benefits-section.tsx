@@ -18,7 +18,7 @@ export function BenefitsSection() {
     {
       icon: Building2,
       title: "Discounts on Locker",
-      description: "Safeguard your valuables with our locker services and enjoy exclusive discounts as a Swift-Blink account holder."
+      description: "Safeguard your valuables with our locker services and enjoy exclusive discounts as a Pinancle account holder."
     },
     {
       icon: CreditCard,

@@ -45,7 +45,7 @@ export function Contact() {
                 <MapPin className="w-6 h-6 text-primary mr-4 mt-1" />
                 <div>
                   <h4 className="font-medium">Address</h4>
-                  <p className="text-gray-600">123 Financial Street, New York, NY 10001</p>
+                  <p className="text-gray-600">2401 W Park Row Dr, Pantego, TX 76013, United States</p>
                 </div>
               </div>
               <div className="flex items-start">
