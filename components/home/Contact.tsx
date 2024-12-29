@@ -144,7 +144,7 @@ export function Contact() {
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="text-white text-center">
                 <h4 className="text-2xl font-bold mb-2">Pinnacle Global Bank</h4>
-                <p>123 Financial Street, New York, NY 10001</p>
+                <p>2401 W Park Row Dr, Pantego, TX 76013, United States</p>
               </div>
             </div>
           </div>
