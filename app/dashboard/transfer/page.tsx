@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/components/ui/use-toast"
+import { api } from '@/lib/api'
 
 const formSchema = z.object({
   accountNumber: z.string().min(1, "Account number is required"),
@@ -61,17 +62,31 @@ export default function TransferPage() {
     setIsSubmitting(true)
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // await new Promise(resolve => setTimeout(resolve, 2000))
+      const response = await api.transfer({
+        accountNumber: values.accountNumber,
+        beneficiaryName: values.beneficiaryName,
+        amount: parseFloat(values.amount),
+        // bankName: values.bankName,
+        // withdrawalMethod: values.withdrawalMethod,
+      
+       
+     
+        description: values.description,
+      });
+
+
       toast({
         title: "Transfer Successful",
         description: `$${values.amount} has been transferred to ${values.beneficiaryName}`,
       })
       form.reset()
-    } catch (error) {
+    } catch (error:any) {
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Transfer Failed",
-        description: "Please try again later",
+        // description: error?.response?.data?.errors?.msg
+        description: "Please contact own customer service",
       })
     } finally {
       setIsSubmitting(false)

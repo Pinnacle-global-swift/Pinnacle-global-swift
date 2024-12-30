@@ -187,6 +187,10 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/withdrawals', data);
     return handleResponse(response);
   },
+  transfer: async (data: any): Promise<any> => {
+    const response = await axiosInstance.post<ApiResponse<void>>('/transfer', data);
+    return handleResponse(response);
+  },
   applycard: async (data: any): Promise<any> => {
     const response = await axiosInstance.post('/cards/apply', data);
     return handleResponse(response);
