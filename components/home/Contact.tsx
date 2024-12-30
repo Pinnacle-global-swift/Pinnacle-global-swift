@@ -52,7 +52,7 @@ export function Contact() {
                 <Phone className="w-6 h-6 text-primary mr-4 mt-1" />
                 <div>
                   <h4 className="font-medium">Phone</h4>
-                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                  <p className="text-gray-600">+1 (336) 754-6451</p>
                 </div>
               </div>
               <div className="flex items-start">
