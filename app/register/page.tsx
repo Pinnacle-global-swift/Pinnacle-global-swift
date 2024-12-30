@@ -131,7 +131,7 @@ export default function Register() {
             Create Your Account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-300">
-            Join Swift-Blink and experience the future of banking
+            Join Pinancle Global and experience the future of banking
           </p>
         </motion.div>
 

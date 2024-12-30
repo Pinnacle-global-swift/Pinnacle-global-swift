@@ -53,7 +53,7 @@ export function Hero() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     beforeChange: (current: number, next: number) => setCurrentSlide(next)
   }
 

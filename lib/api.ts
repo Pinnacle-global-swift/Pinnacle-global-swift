@@ -169,12 +169,12 @@ export const api = {
     return handleResponse(response);
   },
 
-  getNotifications: async (): Promise<any[]> => {
+  getNotifications: async (): Promise<any> => {
     const response = await axiosInstance.get<ApiResponse<any[]>>('/notifications');
     return handleResponse(response);
   },
 
-  markNotificationsAsRead: async (notificationIds: string[]): Promise<void> => {
+  markNotificationsAsRead: async (notificationIds: any): Promise<void> => {
     const response = await axiosInstance.post<ApiResponse<void>>('/notifications/mark-read', { notificationIds });
     return handleResponse(response);
   },

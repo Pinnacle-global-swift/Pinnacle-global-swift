@@ -181,7 +181,7 @@ export default function VerifyOTP () {
             </form>
           </Form>
 
-          <div className='mt-6'>
+          {/* <div className='mt-6'>
             <Link
               href='/forgot-password'
               className='flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900'
@@ -189,7 +189,7 @@ export default function VerifyOTP () {
               <ArrowLeft className='h-4 w-4' />
               Back to Forgot Password
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <motion.div

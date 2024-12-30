@@ -31,16 +31,16 @@ export default function Settings() {
         }
       ]
     },
-    {
-      title: "OTHERS",
-      items: [
-        {
-          icon: Languages,
-          label: "Language",
-          href: "/dashboard/settings/language"
-        }
-      ]
-    }
+    // {
+    //   title: "OTHERS",
+    //   items: [
+    //     {
+    //       icon: Languages,
+    //       label: "Language",
+    //       href: "/dashboard/settings/language"
+    //     }
+    //   ]
+    // }
   ]
 
   return (

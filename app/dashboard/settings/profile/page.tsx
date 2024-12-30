@@ -13,7 +13,7 @@ import { api } from "@/lib/api"
 
 interface UserProfile {
   fullName: string;
-  email: string;
+  // email: string;
   phoneNumber: string;
   address: string;
 }
@@ -29,8 +29,8 @@ export default function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const data = await api.getUserSettings();
-      setProfile(data);
+      const data = await api.getUserDetails();
+      setProfile(data?.data?.user);
       toast({
         title: "Profile Loaded",
         description: "Your profile information has been successfully loaded.",
@@ -38,7 +38,7 @@ export default function Profile() {
     } catch (error) {
       console.error('Error fetching profile:', error);
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Error",
         description: "Failed to fetch profile data. Please try again.",
       })
@@ -63,7 +63,7 @@ export default function Profile() {
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Update Failed",
         description: "Failed to update profile. Please try again.",
       })
@@ -71,6 +71,7 @@ export default function Profile() {
       setIsLoading(false)
     }
   }
+
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -126,7 +127,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="grid gap-2">
+              {/* <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -139,7 +140,7 @@ export default function Profile() {
                     readOnly
                   />
                 </div>
-              </div>
+              </div> */}
 
               <div className="grid gap-2">
                 <Label htmlFor="phone">Phone Number</Label>

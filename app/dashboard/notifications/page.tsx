@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Loader2, Bell, CheckCircle, AlertCircle, Info } from 'lucide-react'
+import { Loader2, Bell, CheckCircle, AlertCircle, Info, Inbox, Settings } from 'lucide-react'
+import { toast } from '@/components/ui/use-toast'
+import { api } from '@/lib/api'
+import {LoadingSpinner }from "@/components/ui/loading-spinner"
+import { motion } from 'framer-motion'
+
 
 interface Notification {
   id: number;
@@ -18,19 +23,42 @@ export default function Notifications() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
 
+
+  // useEffect(() => {
+  //   // Simulating API call
+  //   setTimeout(() => {
+  //     setNotifications([
+  //       { id: 1, type: 'info', message: 'New feature: Card management is now available', date: '2023-05-15 09:00', read: false },
+  //       { id: 2, type: 'success', message: 'Your last transaction was successful', date: '2023-05-14 14:30', read: false },
+  //       { id: 3, type: 'warning', message: 'Please update your contact information', date: '2023-05-13 11:15', read: true },
+  //       { id: 4, type: 'info', message: 'Scheduled maintenance on May 20th', date: '2023-05-12 16:45', read: true },
+  //       { id: 5, type: 'success', message: 'Your account verification is complete', date: '2023-05-11 10:20', read: true },
+  //     ])
+  //     setLoading(false)
+  //   }, 1000)
+  // }, [])
+
+
+  // getNotifications
+
+
+
+
   useEffect(() => {
-    // Simulating API call
-    setTimeout(() => {
-      setNotifications([
-        { id: 1, type: 'info', message: 'New feature: Card management is now available', date: '2023-05-15 09:00', read: false },
-        { id: 2, type: 'success', message: 'Your last transaction was successful', date: '2023-05-14 14:30', read: false },
-        { id: 3, type: 'warning', message: 'Please update your contact information', date: '2023-05-13 11:15', read: true },
-        { id: 4, type: 'info', message: 'Scheduled maintenance on May 20th', date: '2023-05-12 16:45', read: true },
-        { id: 5, type: 'success', message: 'Your account verification is complete', date: '2023-05-11 10:20', read: true },
-      ])
+    // Simulate API call
+    const fetchNotifications = async () => {
+      setLoading(true)
+      // In a real application, this would be an API call
+      const data = await api.getNotifications();
+      setNotifications(data?.data);
       setLoading(false)
-    }, 1000)
+    }
+
+    fetchNotifications()
   }, [])
+
+
+
 
   const markAsRead = (id: number) => {
     setNotifications(notifications.map(notif => 
@@ -44,9 +72,9 @@ export default function Notifications() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-full">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
+      <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
+      <LoadingSpinner size="lg" />
+    </div>
     )
   }
 
@@ -62,7 +90,10 @@ export default function Notifications() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {notifications.map((notification) => (
+          {notifications.length === 0 ? (
+                <EmptyState />
+              ) :
+            notifications?.map((notification) => (
               <div key={notification.id} className={`flex items-center p-4 rounded-lg ${notification.read ? 'bg-gray-100' : 'bg-white border border-gray-200'}`}>
                 <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                   notification.type === 'info' ? 'bg-blue-100 text-blue-600' :
@@ -86,7 +117,9 @@ export default function Notifications() {
                   {notification.read ? "Read" : "Unread"}
                 </Badge>
               </div>
-            ))}
+            ))
+
+          }
           </div>
         </CardContent>
       </Card>
@@ -94,3 +127,33 @@ export default function Notifications() {
   )
 }
 
+
+
+function EmptyState() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="text-center py-16"
+    >
+      <div className="inline-block p-4 bg-gray-100 rounded-full mb-4">
+        <Bell className="w-12 h-12 text-gray-400" />
+      </div>
+      <h3 className="text-xl font-semibold mb-2">No notifications yet</h3>
+      <p className="text-gray-500 mb-6">
+        When you have notifications, they'll show up here.
+      </p>
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <Button variant="outline" className="flex items-center">
+          <Inbox className="w-4 h-4 mr-2" />
+          Check Messages
+        </Button>
+        <Button variant="outline" className="flex items-center">
+          <Settings className="w-4 h-4 mr-2" />
+          Notification Settings
+        </Button>
+      </div>
+    </motion.div>
+  )
+}

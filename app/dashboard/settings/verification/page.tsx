@@ -20,13 +20,13 @@ const verificationSteps: VerificationStep[] = [
     title: "Identity Verification",
     description: "Upload a valid government-issued ID",
     icon: Shield,
-    status: "completed"
+    status: "pending"
   },
   {
     title: "Address Verification",
     description: "Upload proof of address (utility bill, lease agreement)",
     icon: Upload,
-    status: "in-progress"
+    status: "pending"
   },
   {
     title: "Final Review",
