@@ -36,7 +36,7 @@ export default function Language() {
     } catch (error) {
       console.error('Error updating language:', error);
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Update Failed",
         description: "Failed to update language preference. Please try again.",
         duration: 3000,

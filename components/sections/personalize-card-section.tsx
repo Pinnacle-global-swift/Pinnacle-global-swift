@@ -49,7 +49,7 @@ export function PersonalizeCardSection() {
       toast({
         title: "Submission Failed",
         description: "There was an error submitting your application. Please try again.",
-        variant: "destructive"
+        // variant: "destructive"
       })
     } finally {
       setIsSubmitting(false)

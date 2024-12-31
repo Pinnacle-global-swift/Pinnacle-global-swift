@@ -90,7 +90,7 @@ export default function KYCPage() {
       setBackImage(null)
     } catch (error) {
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Submission Failed",
         description: "Please try again later",
       })

@@ -125,14 +125,14 @@ export function Header() {
                       </Link>
                     ))}
                   </nav>
-                  <div className="px-4 space-y-2">
+                  <div className="px-4 space-y-4">
                     <Link href="/login">
-                      <Button variant="outline" className="w-full justify-center">
+                      <Button variant="outline" className="w-full text-white bg-black justify-center">
                         Login
                       </Button>
                     </Link>
                     <Link href="/register">
-                      <Button variant="default" className="w-full justify-center bg-blue-600 hover:bg-blue-700">
+                      <Button variant="default" className="w-full justify-center text-white bg-blue-600 hover:bg-blue-700">
                         Register
                       </Button>
                     </Link>

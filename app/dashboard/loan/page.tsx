@@ -86,7 +86,7 @@ export default function LoanPage() {
       setMonthlyPayment(null)
     } catch (error) {
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Application Failed",
         description: "Please try again later",
       })

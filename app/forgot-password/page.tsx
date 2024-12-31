@@ -53,7 +53,7 @@ export default function ForgotPassword() {
     } catch (error:any) {
       console.error(error?.response?.data?.error, error);
       toast({
-        variant: "destructive",
+        // variant: "destructive",
         title: "Password Reset Failed",
         description: error?.response?.data?.error?.message || "An unexpected error occurred. Please try again.",
         duration: 5000,
