@@ -51,11 +51,10 @@ export default function ForgotPassword() {
       });
   
     } catch (error:any) {
-      console.error(error?.response?.data?.error, error);
       toast({
         // variant: "destructive",
         title: "Password Reset Failed",
-        description: error?.response?.data?.error?.message || "An unexpected error occurred. Please try again.",
+        description: error?.response?.data?.errors?.message || "An unexpected error occurred. Please try again.",
         duration: 5000,
       });
     } finally {

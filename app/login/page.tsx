@@ -61,11 +61,10 @@ export default function Login() {
       });
 
     } catch (error:any) {
-      // console.error('Login error:', error?.response?.data?.error, "voke");
       toast({
         // variant: "destructive",
         title: "Login Failed",
-        description: error?.response?.data?.error?.message || "An unexpected error occurred. Please try again.",
+        description: error?.response?.data?.errors?.message || "An unexpected error occurred. Please try again.",
         duration: 5000,
       });
     } finally {
