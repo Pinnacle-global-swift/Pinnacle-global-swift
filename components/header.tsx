@@ -95,7 +95,7 @@ export function Header() {
                     className="flex items-center text-gray-900 font-bold hover:text-blue-600 transition-colors"
                   >
                     <Phone className="h-4 w-4 mr-1" />
-                    +1 (336) 754-6451
+                    +1 (336) 754-6143
                   </a>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export function Header() {
                         className="flex items-center justify-center text-blue-600 font-medium"
                       >
                         <Phone className="h-4 w-4 mr-2" />
-                        +1 (336) 754-6451
+                        +1 (336) 754-6143
                       </a>
                     </div>
                   </div>

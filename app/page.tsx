@@ -24,7 +24,7 @@ export default function Home() {
         <SecurityMeasures />
         <Testimonials />
         <CTA />
-        <Contact />
+        {/* <Contact /> */}
       </main>
       <Footer />
     </div>
