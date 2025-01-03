@@ -107,6 +107,22 @@ export default function DashboardOverview () {
 
     fetchRecentTransactions();
   }, []);
+  useEffect(() => {
+    const fetchRecentTransactions = async () => {
+      try {
+        const response = await api.spending(); // Fetch only 5 most recent transactions
+        if (response.success) {
+         console.log(response?.data, ".....")
+        }
+      } catch (error) {
+        console.error('Error fetching recent transactions:', error);
+      } finally {
+        setIsLoadingTransactions(false);
+      }
+    };
+
+    fetchRecentTransactions();
+  }, []);
 
   useEffect(() => {
     const fetchAccountInfo = async () => {

@@ -191,12 +191,24 @@ export const api = {
     const response = await axiosInstance.post<ApiResponse<void>>('/transfer', data);
     return handleResponse(response);
   },
-  applycard: async (data: any): Promise<any> => {
+  applyCard: async (data: any): Promise<any> => {
     const response = await axiosInstance.post('/cards/apply', data);
     return handleResponse(response);
   },
-  cardstatus: async (): Promise<any> => {
+  activateCard: async (data: any): Promise<any> => {
+    const response = await axiosInstance.post('/cards/apply', data);
+    return handleResponse(response);
+  },
+  activatePin: async (data: any): Promise<any> => {
+    const response = await axiosInstance.post('/cards/set', data);
+    return handleResponse(response);
+  },
+  cardStatus: async (): Promise<any> => {
     const response = await axiosInstance.get('/cards/status');
+    return handleResponse(response);
+  },
+  spending: async (): Promise<any> => {
+    const response = await axiosInstance.get('/transactions/stats/totals');
     return handleResponse(response);
   },
   submitkyc: async (data: any): Promise<any> => {
