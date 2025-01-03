@@ -31,16 +31,16 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
+                <Link href="/" className="text-gray-400 hover:text-primary transition-colors">Home</Link>
+              </li>
+              <li>
                 <Link href="/about" className="text-gray-400 hover:text-primary transition-colors">About Us</Link>
               </li>
               <li>
-                <Link href="/careers" className="text-gray-400 hover:text-primary transition-colors">Careers</Link>
+                <Link href="/services" className="text-gray-400 hover:text-primary transition-colors">Services</Link>
               </li>
               <li>
-                <Link href="/locations" className="text-gray-400 hover:text-primary transition-colors">Locations</Link>
-              </li>
-              <li>
-                <Link href="/support" className="text-gray-400 hover:text-primary transition-colors">Support</Link>
+                <Link href="/contact" className="text-gray-400 hover:text-primary transition-colors">Contact Us</Link>
               </li>
             </ul>
           </div>
