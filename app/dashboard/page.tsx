@@ -30,6 +30,7 @@ import {LoadingSpinner, CircularSpinner} from "@/components/ui/loading-spinner"
 import Link from 'next/link'
 import { api } from '@/lib/api'
 import { format } from 'date-fns'
+import { AnimatedBackground } from '@/components/animated-background'
 
 const accountData = {
   name: 'John Doe',
@@ -71,10 +72,12 @@ const upcomingBills = [
 export default function DashboardOverview () {
   const [accountInfo, setAccountInfo] = useState<any>(null)
   const [accountUser, setAccountUser] = useState<any>(null)
+  const [Quick, setQuick] = useState<any>(null)
   const [recentTransactions, setRecentTransactions] = useState<any>([])
   const [isLoadingTransactions, setIsLoadingTransactions] = useState(true)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+
 
   useEffect(() => {
     const fetchAccountInfo = async () => {
@@ -112,7 +115,7 @@ export default function DashboardOverview () {
       try {
         const response = await api.spending(); // Fetch only 5 most recent transactions
         if (response.success) {
-         console.log(response?.data, ".....")
+          setQuick(response?.data)
         }
       } catch (error) {
         console.error('Error fetching recent transactions:', error);
@@ -140,9 +143,16 @@ export default function DashboardOverview () {
   }, [])
 
   return (
-    <div className='space-y-8'>
+    <div className='relative min-h-screen'>
+      <AnimatedBackground />
+    <div className='space-y-8 relative z-10'>
       {/* Account Overview Card */}
-      <Card className='bg-gradient-to-br from-gray-800 to-gray-900 text-white'>
+      <Card className='bg-gradient-to-br from-gray-800 to-gray-900 text-white backdrop-blur-sm'>
+      <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
         <CardHeader className='pb-2'>
           <div className='flex items-center space-x-2'>
             <div className='w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center'>
@@ -232,6 +242,7 @@ export default function DashboardOverview () {
             </div>
           </div>
         </CardContent>
+        </motion.div>
       </Card>
 
    
@@ -330,7 +341,7 @@ export default function DashboardOverview () {
                 </div>
                 <div className='mt-2'>
                   <p className='text-sm text-gray-300'>Income</p>
-                  <p className='text-xl font-bold text-white'>$0.00</p>
+                  <p className='text-xl font-bold text-white'>${Quick?.totalDeposited || "0"}.00</p>
                 </div>
               </div>
               <div className='bg-gray-700 p-4 rounded-lg'>
@@ -342,13 +353,14 @@ export default function DashboardOverview () {
                 </div>
                 <div className='mt-2'>
                   <p className='text-sm text-gray-300'>Expenses</p>
-                  <p className='text-xl font-bold text-white'>$0.00</p>
+                  <p className='text-xl font-bold text-white'>$ {Quick?.totalWithdrawn || "0"}.00</p>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
+    </div>
     </div>
   )
 }

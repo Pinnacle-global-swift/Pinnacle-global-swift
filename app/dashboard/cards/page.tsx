@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CreditCard, CheckCircle2, ArrowRight, Lock } from 'lucide-react'
+import { CreditCard, CheckCircle2, ArrowRight, Lock, PinIcon as Chip } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -60,7 +60,7 @@ export default function Cards() {
         // Handle PIN activation
         const data = await api.activatePin({ pin })
         console.log(data)
-        setCardStatus({ ...cardStatus, cardDetails: { ...cardStatus.cardDetails, isPinSet: true } })
+        setCardStatus({ ...cardStatus, cardDetails: { ...cardStatus.cardDetails, hasPIN: true } })
       } else {
         // Handle card activation
         const value = { pin: pin }
@@ -109,7 +109,7 @@ export default function Cards() {
         <h1 className='text-3xl font-bold text-slate-800'>Card Services</h1>
 
         <AnimatePresence mode='wait'>
-          {cardStatus?.cardDetails?.status == "active" ? (
+          {cardStatus?.hasCard ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -130,14 +130,51 @@ export default function Cards() {
                   transition={{ delay: index * 0.2 }}
                 >
                   <Card className='h-full border-0 shadow-lg bg-white/80 backdrop-blur'>
-                    <CardHeader>
-                      <div className={`w-full h-40 rounded-lg bg-gradient-to-br ${card.color} p-6 ${card.gradientText}`}>
-                        <div className='flex justify-between items-start'>
-                          <div className='space-y-2'>
-                            <p className='text-sm opacity-80'>Pinancle Global Bank</p>
-                            <h3 className='text-lg font-semibold'>{cardStatus?.cardDetails?.cardNumber}</h3>
+                    <CardHeader className="p-0">
+                      <div className="w-full p-6 rounded-lg bg-gradient-to-br from-emerald-600 to-teal-700">
+                        <div className="flex flex-col h-52">
+                          {/* Bank Info & Logo */}
+                          <div className="flex justify-between items-start mb-6">
+                            <h3 className="text-white/90 text-lg font-medium">Pinancle Global Bank</h3>
+                            <div className="flex items-center gap-2">
+                              <div className="text-white/90">Mastercard</div>
+                              <CreditCard className="w-8 h-8 text-white" />
+                            </div>
                           </div>
-                          <CreditCard className='w-8 h-8' />
+
+                          {/* Chip & Status */}
+                          <div className="flex items-center gap-3 mb-6">
+                            <Chip className="w-12 h-9 text-yellow-300/90 rounded-md" /> {/* Chip */}
+                            <span className="text-white/80 text-sm px-2 py-1 bg-white/20 rounded-full">
+                              {cardStatus?.cardDetails?.status === 'active' ? 'Active' : 'Pending'}
+                            </span>
+                          </div>
+
+                          {/* Card Number */}
+                          <div className="mb-6">
+                            <div className="text-lg text-white font-mono tracking-wider">
+                              {cardStatus?.cardDetails?.maskedCardNumber.split('-').map((group:any, index:any) => (
+                                <span key={index} className="mr-4">{group}</span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Card Details */}
+                          <div className="flex justify-between items-end mt-auto">
+                            <div className="space-y-1">
+                              <div className="text-white/60 text-xs">VALID THRU</div>
+                              <div className="text-white font-medium">
+                                {cardStatus?.cardDetails?.expiryMonth}/{cardStatus?.cardDetails?.expiryYear}
+                              </div>
+                            </div>
+
+                            <div className="space-y-1 text-right">
+                              <div className="text-white/60 text-xs">CREDIT LIMIT</div>
+                              <div className="text-white font-medium">
+                                ${cardStatus?.cardDetails?.limit.toLocaleString()}
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </CardHeader>
@@ -146,23 +183,30 @@ export default function Cards() {
                       <p className='text-sm text-slate-600'>{card.description}</p>
                       <div className='space-y-2'>
                         <div className='flex justify-between text-sm'>
-                          <span className='text-slate-500'>Limit:</span>
-                          <span className='text-slate-700'>{card.limit}</span>
-                        </div>
-                        <div className='flex justify-between text-sm'>
                           <span className='text-slate-500'>Fee:</span>
                           <span className='text-slate-700'>{card.fee}</span>
                         </div>
                         <div className='flex justify-between text-sm'>
-                          <span className='text-slate-500'>Status:</span>
-                          <span className='text-slate-700'>{cardStatus?.cardDetails?.status}</span>
-                        </div>
-                        <div className='flex justify-between text-sm'>
                           <span className='text-slate-500'>PIN:</span>
-                          <span className='text-slate-700'>{cardStatus?.cardDetails?.isPinSet ? 'Set' : 'Not Set'}</span>
+                          <span className='text-slate-700'>{cardStatus?.cardDetails?.hasPIN ? 'Set' : 'Not Set'}</span>
                         </div>
                       </div>
                     </CardContent>
+                    {cardStatus?.cardDetails?.status === 'active' && cardStatus?.cardDetails?.hasPIN && (
+                      <CardContent className='space-y-4 p-6 bg-gray-100 rounded-b-lg'>
+                        <h4 className='font-semibold text-md text-slate-800'>Card Details</h4>
+                        <div className='space-y-2'>
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-slate-500'>Card Number:</span>
+                            <span className='text-slate-700'>{cardStatus?.cardDetails?.cardNumber}</span>
+                          </div>
+                          <div className='flex justify-between text-sm'>
+                            <span className='text-slate-500'>CVV:</span>
+                            <span className='text-slate-700'>***</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    )}
                     <CardFooter className="bg-slate-50/50 flex flex-col gap-2">
                       <Button
                         onClick={handleActivate}
@@ -174,9 +218,9 @@ export default function Cards() {
                       <Button
                         onClick={handleActivatePin}
                         className='w-full bg-blue-600 hover:bg-blue-700'
-                        disabled={isLoading || cardStatus?.cardDetails?.isPinSet}
+                        disabled={isLoading || cardStatus?.cardDetails?.hasPIN}
                       >
-                        {isLoading ? 'Processing...' : cardStatus?.cardDetails?.isPinSet ? 'PIN Set' : 'Activate PIN'}
+                        {isLoading ? 'Processing...' : cardStatus?.cardDetails?.hasPIN ? 'PIN Set' : 'Activate PIN'}
                         <Lock className='ml-2 h-4 w-4' />
                       </Button>
                     </CardFooter>
@@ -211,7 +255,7 @@ export default function Cards() {
                       {cardStatus?.hasCard && cardStatus?.cardDetails?.status === 'pending' ? (
                         <Button className='w-full bg-emerald-600 hover:bg-emerald-700'>Processing...</Button>
                       ) : (
-                        <Button onClick={() => setStep('requirements')} 
+                        <Button onClick={() => setStep('requirements')}
                           className='w-full bg-emerald-600 hover:bg-emerald-700 text-white'>
                           Start Application
                           <ArrowRight className='ml-2 w-4 h-4' />
@@ -260,8 +304,8 @@ export default function Cards() {
                       >
                         Back
                       </Button>
-                      <Button 
-                        onClick={() => setStep('options')} 
+                      <Button
+                        onClick={() => setStep('options')}
                         className='w-full bg-emerald-600 hover:bg-emerald-700'
                       >
                         Continue
@@ -298,14 +342,51 @@ export default function Cards() {
                       transition={{ delay: index * 0.2 }}
                     >
                       <Card className='h-full border-0 shadow-lg bg-white/80 backdrop-blur'>
-                        <CardHeader>
-                          <div className={`w-full h-40 rounded-lg bg-gradient-to-br ${card.color} p-6 ${card.gradientText}`}>
-                            <div className='flex justify-between items-start'>
-                              <div className='space-y-2'>
-                                <p className='text-sm opacity-80'>Pinancle Global Bank</p>
-                                <h3 className='text-lg font-semibold'>**** **** **** 4242</h3>
+                        <CardHeader className="p-0">
+                          <div className={`w-full p-6 rounded-lg bg-gradient-to-br ${card.color}`}>
+                            <div className="flex flex-col h-52">
+                              {/* Bank Info & Logo */}
+                              <div className="flex justify-between items-start mb-6">
+                                <h3 className="text-white/90 text-lg font-medium">Pinancle Global Bank</h3>
+                                <div className="flex items-center gap-2">
+                                  <div className="text-white/90">Mastercard</div>
+                                  <CreditCard className="w-8 h-8 text-white" />
+                                </div>
                               </div>
-                              <CreditCard className='w-8 h-8' />
+
+                              {/* Chip & Status */}
+                              <div className="flex items-center gap-3 mb-6">
+                                <div className="w-12 h-9 bg-yellow-300/90 rounded-md" /> {/* Chip */}
+                                <span className="text-white/80 text-sm px-2 py-1 bg-white/20 rounded-full">
+                                  {cardStatus?.cardDetails?.status === 'active' ? 'Active' : 'Pending'}
+                                </span>
+                              </div>
+
+                              {/* Card Number */}
+                              <div className="mb-6">
+                                <div className="text-lg text-white font-mono tracking-wider">
+                                  {cardStatus?.cardDetails?.maskedCardNumber.split('-').map((group:any, index:any) => (
+                                    <span key={index} className="mr-4">{group}</span>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Card Details */}
+                              <div className="flex justify-between items-end mt-auto">
+                                <div className="space-y-1">
+                                  <div className="text-white/60 text-xs">VALID THRU</div>
+                                  <div className="text-white font-medium">
+                                    {cardStatus?.cardDetails?.expiryMonth}/{cardStatus?.cardDetails?.expiryYear}
+                                  </div>
+                                </div>
+
+                                <div className="space-y-1 text-right">
+                                  <div className="text-white/60 text-xs">CREDIT LIMIT</div>
+                                  <div className="text-white font-medium">
+                                    ${cardStatus?.cardDetails?.limit.toLocaleString()}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </CardHeader>
@@ -314,12 +395,12 @@ export default function Cards() {
                           <p className='text-sm text-slate-600'>{card.description}</p>
                           <div className='space-y-2'>
                             <div className='flex justify-between text-sm'>
-                              <span className='text-slate-500'>Limit:</span>
-                              <span className='text-slate-700'>{card.limit}</span>
-                            </div>
-                            <div className='flex justify-between text-sm'>
                               <span className='text-slate-500'>Fee:</span>
                               <span className='text-slate-700'>{card.fee}</span>
+                            </div>
+                            <div className='flex justify-between text-sm'>
+                              <span className='text-slate-500'>PIN:</span>
+                              <span className='text-slate-700'>{cardStatus?.cardDetails?.hasPIN ? 'Set' : 'Not Set'}</span>
                             </div>
                           </div>
                         </CardContent>
@@ -363,8 +444,8 @@ export default function Cards() {
                       </p>
                     </CardContent>
                     <CardFooter className="bg-slate-50/50">
-                      <Button 
-                        onClick={() => setStep('intro')} 
+                      <Button
+                        onClick={() => setStep('intro')}
                         className='w-full bg-emerald-600 hover:bg-emerald-700'
                       >
                         Back to Cards
