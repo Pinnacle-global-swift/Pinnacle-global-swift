@@ -49,16 +49,16 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-4">Banking Services</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/services/personal" className="text-gray-400 hover:text-primary transition-colors">Personal Banking</Link>
+                <Link href="/personal-banking" className="text-gray-400 hover:text-primary transition-colors">Personal Banking</Link>
               </li>
               <li>
-                <Link href="/services/business" className="text-gray-400 hover:text-primary transition-colors">Business Banking</Link>
+                <Link href="/business-banking" className="text-gray-400 hover:text-primary transition-colors">Business Banking</Link>
               </li>
               <li>
                 <Link href="/investments" className="text-gray-400 hover:text-primary transition-colors">Wealth Management</Link>
               </li>
               <li>
-                <Link href="/services/loans" className="text-gray-400 hover:text-primary transition-colors">Loans & Mortgages</Link>
+                <Link href="/loans-mortgages" className="text-gray-400 hover:text-primary transition-colors">Loans & Mortgages</Link>
               </li>
             </ul>
           </div>
