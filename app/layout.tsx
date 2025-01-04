@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from "@/components/ui/toaster"
-
+import { TawkTo } from '@/components/tawk-to'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: 'https://pinanceglobalbank.com',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/pgb.png',
         width: 800,
         height: 600,
         alt: 'Pinance Global Bank',
@@ -47,6 +47,7 @@ export default function RootLayout({
 
         >
           {children}
+          <TawkTo />
           <Toaster />
         </ThemeProvider>
       </body>
