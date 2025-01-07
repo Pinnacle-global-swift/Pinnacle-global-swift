@@ -47,10 +47,8 @@ const navigation = [
   { name: 'KYC', href: '/dashboard/kyc', icon: Shield },
   { name: 'Transactions', href: '/dashboard/transactions', icon: Receipt },
   { name: 'Cards', href: '/dashboard/cards', icon: CreditCard }, // Updated from Expenses
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Settings', href: '/dashboard/settings', icon: Settings }
 ]
-
-
 
 export default function DashboardLayout ({
   children
@@ -80,13 +78,12 @@ export default function DashboardLayout ({
   //   return () => window.removeEventListener('resize', handleResize)
   // }, [])
 
-    // Close sidebar on route change on mobile
-    useEffect(() => {
-      if (window.innerWidth < 1024) {
-        setIsSidebarOpen(false)
-      }
-    }, [pathname])
-
+  // Close sidebar on route change on mobile
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      setIsSidebarOpen(false)
+    }
+  }, [pathname])
 
   useEffect(() => {
     const handleResize = () => {
@@ -103,17 +100,19 @@ export default function DashboardLayout ({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-   // Handle clicking outside sidebar on mobile
-   useEffect(() => {
+  // Handle clicking outside sidebar on mobile
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const sidebar = document.getElementById('sidebar')
       const menuButton = document.getElementById('menu-button')
-      
-      if (window.innerWidth < 1024 && 
-          sidebar && 
-          !sidebar.contains(event.target as Node) && 
-          menuButton && 
-          !menuButton.contains(event.target as Node)) {
+
+      if (
+        window.innerWidth < 1024 &&
+        sidebar &&
+        !sidebar.contains(event.target as Node) &&
+        menuButton &&
+        !menuButton.contains(event.target as Node)
+      ) {
         setIsSidebarOpen(false)
       }
     }
@@ -121,7 +120,6 @@ export default function DashboardLayout ({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-
 
   useEffect(() => {
     const fetchAccountInfo = async () => {
@@ -138,8 +136,6 @@ export default function DashboardLayout ({
     fetchAccountInfo() // Call the function when the component mounts
   }, [])
 
-
-
   return (
     <div
       className={cn(
@@ -147,18 +143,17 @@ export default function DashboardLayout ({
         theme === 'dark' ? 'dark:bg-gradient-dark' : 'light:bg-gradient-light'
       )}
     >
-
-   {/* Overlay */}
-   {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+      {/* Overlay */}
+      {isSidebarOpen && (
+        <div
+          className='fixed inset-0 bg-black/50 z-40 lg:hidden'
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <div
-         id="sidebar"
+        id='sidebar'
         className={cn(
           'fixed inset-y-0 left-0 z-50 w-64 bg-background border-r shadow-lg transform transition-transform duration-300 ease-in-out',
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
@@ -167,8 +162,10 @@ export default function DashboardLayout ({
       >
         <div className='flex flex-col h-full'>
           {/* Logo */}
-          <div className="p-6 bg-gradient-to-r from-blue-600 to-indigo-600">
-            <h1 className='text-xl font-bold  text-white'>Pinnacle Global Bank</h1>
+          <div className='p-6 bg-gradient-to-r from-blue-600 to-indigo-600'>
+            <h1 className='text-xl font-bold  text-white'>
+              Pinnacle Global Bank
+            </h1>
           </div>
 
           {/* Navigation */}
@@ -204,7 +201,9 @@ export default function DashboardLayout ({
                 </div>
               </div>
               <div className='flex-1 min-w-0'>
-                <p className='text-sm font-medium text-foreground'>{accountUser?.fullName}</p>
+                <p className='text-sm font-medium text-foreground'>
+                  {accountUser?.fullName}
+                </p>
                 <p className='text-xs text-muted-foreground'>View profile</p>
               </div>
               <DropdownMenu>
@@ -215,7 +214,10 @@ export default function DashboardLayout ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem>
-                    <Link href='/login' className='flex items-center'>
+                    <Link
+                      href='/login'
+                      className='flex items-center bg-primary hover:bg-primary/90 text-white px-3 py-2 rounded-md'
+                    >
                       <LogOut className='w-4 h-4 mr-2' />
                       Logout
                     </Link>
@@ -234,7 +236,7 @@ export default function DashboardLayout ({
           <div className='flex items-center justify-between px-4 py-4 lg:px-8'>
             <div className='flex items-center space-x-4'>
               <Button
-                id="menu-button"
+                id='menu-button'
                 variant='ghost'
                 size='icon'
                 className='lg:hidden'
@@ -275,9 +277,7 @@ export default function DashboardLayout ({
         </header>
 
         {/* Page Content */}
-        <main className='flex-grow p-4 lg:p-8 overflow-auto'>
-          {children}
-        </main>
+        <main className='flex-grow p-4 lg:p-8 overflow-auto'>{children}</main>
       </div>
     </div>
   )
