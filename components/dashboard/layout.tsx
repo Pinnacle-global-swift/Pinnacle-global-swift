@@ -216,7 +216,7 @@ export default function DashboardLayout ({
                   <DropdownMenuItem>
                     <Link
                       href='/login'
-                      className='flex items-center bg-dark  text-white px-3 py-2 rounded-md'
+                      className='flex items-center bg-blue-500  text-white px-3 py-2 rounded-md'
                     >
                       <LogOut className='w-4 h-4 mr-2' />
                       Logout

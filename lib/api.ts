@@ -216,7 +216,7 @@ export const api = {
     const response = await axiosInstance.post('/kyc/submit', data);
     return handleResponse(response);
   },
-  transactions: async (page: number = 1, limit: number = 20): Promise<any> => {
+  transactions: async (page: number = 1, limit: number = 50): Promise<any> => {
     const response = await axiosInstance.get(`/transactions/history?page=${page}&limit=${limit}`);
     return handleResponse(response);
   }

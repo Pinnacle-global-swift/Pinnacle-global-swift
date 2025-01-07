@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/components/ui/use-toast'
@@ -306,7 +307,7 @@ export default function Register () {
                   name='country'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-white'>Country</FormLabel>
+                      <FormLabel>Country</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -317,14 +318,18 @@ export default function Register () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Object.entries(countries).map(([code, country]) => (
-                            <SelectItem key={code} value={code}>
-                              {country.name}
-                            </SelectItem>
-                          ))}
+                          <ScrollArea className='h-[200px]'>
+                            {Object.entries(countries).map(
+                              ([code, country]) => (
+                                <SelectItem key={code} value={code}>
+                                  {country.name}
+                                </SelectItem>
+                              )
+                            )}
+                          </ScrollArea>
                         </SelectContent>
                       </Select>
-                      <FormMessage className='text-red-300' />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
