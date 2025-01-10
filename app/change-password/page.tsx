@@ -84,10 +84,10 @@ export default function ChangePassword() {
           transition={{ duration: 0.5 }}
         >
           <Image
-            src="/pgb.png?height=50&width=200"
+            src="/pgb.png?height=200&width=200"
             alt="Pinnacle Global Bank Logo"
             width={200}
-            height={50}
+            height={200}
             className="h-12 w-auto"
           />
         </motion.div>

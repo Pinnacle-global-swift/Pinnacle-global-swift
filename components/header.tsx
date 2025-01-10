@@ -41,8 +41,8 @@ export function Header() {
               <Image
                 src="/pgb.png"
                 alt="DBS Bank"
-                width={120}
-                height={40}
+                width={200}
+                height={200}
                 className="h-10 w-auto"
               />
             </Link>

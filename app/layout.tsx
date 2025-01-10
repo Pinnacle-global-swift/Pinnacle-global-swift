@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/pgb.png',
-        width: 800,
-        height: 600,
+        width: 900,
+        height: 900,
         alt: 'Pinance Global Bank',
       },
     ],
