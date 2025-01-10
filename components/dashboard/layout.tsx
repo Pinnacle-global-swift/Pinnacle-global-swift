@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef  } from 'react'
 import Link from 'next/link'
 import {
   LayoutGrid,
@@ -22,7 +22,7 @@ import {
   Users,
   ArrowDownRight,
   FileText,
-  Shield
+  Shield,   HomeIcon, CreditCardIcon, DiamondIcon as GoldIcon, MessageSquare 
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -50,6 +50,13 @@ const navigation = [
   { name: 'Settings', href: '/dashboard/settings', icon: Settings }
 ]
 
+const bottomNavigation = [
+  { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  { name: 'My Card', href: '/dashboard/cards', icon: CreditCardIcon },
+  { name: 'Buy Gold', href: '/dashboard/buy-gold', icon: GoldIcon },
+  { name: 'Chat', href: '/dashboard/chat', icon: MessageSquare },
+]
+
 export default function DashboardLayout ({
   children
 }: {
@@ -57,6 +64,7 @@ export default function DashboardLayout ({
 }) {
   const pathname = usePathname()
   const router = useRouter()
+  const bottomNavRef = useRef<HTMLDivElement>(null)
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [accountInfo, setAccountInfo] = useState<any>(null)
@@ -66,6 +74,7 @@ export default function DashboardLayout ({
   const [error, setError] = useState<string | null>(null)
 
   const { theme } = useTheme()
+
 
   // useEffect(() => {
   //   const handleResize = () => {
@@ -99,6 +108,23 @@ export default function DashboardLayout ({
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+
+  useEffect(() => {
+    // Hide bottom navigation on larger screens
+    const handleResize = () => {
+      if (bottomNavRef.current) {
+        bottomNavRef.current.style.display = window.innerWidth < 768 ? 'flex' : 'none'
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize() // Call on mount
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+
 
   // Handle clicking outside sidebar on mobile
   useEffect(() => {
@@ -279,6 +305,7 @@ export default function DashboardLayout ({
         {/* Page Content */}
         <main className='flex-grow p-4 lg:p-8 overflow-auto'>{children}</main>
       </div>
+    
     </div>
   )
 }
