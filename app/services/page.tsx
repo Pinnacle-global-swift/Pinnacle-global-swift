@@ -203,7 +203,7 @@ const testimonials = [
     name: 'John Doe',
     role: 'Small Business Owner',
     comment:
-      'Pinnacle Global Bank has transformed how I manage my business finances. Their online platform is intuitive and their customer service is top-notch!'
+      'Pinnacle Global Swift has transformed how I manage my business finances. Their online platform is intuitive and their customer service is top-notch!'
   },
   {
     name: 'Jane Smith',
@@ -338,7 +338,7 @@ export default function ServicesPage () {
           <div className='container mx-auto px-4'>
             <div className='text-center mb-12'>
               <h2 className='text-3xl font-bold mb-4'>
-                Why Choose Pinnacle Global Bank
+                Why Choose Pinnacle Global Swift
               </h2>
               <p className='text-xl text-gray-600'>
                 Experience banking excellence with our unique advantages

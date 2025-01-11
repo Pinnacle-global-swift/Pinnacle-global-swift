@@ -15,7 +15,7 @@ export function OurStory() {
             <div className="md:w-1/2">
               <Image
                 src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1920"
-                alt="Pinnacle Global Bank's journey"
+                alt="Pinnacle Global Swift's journey"
                 width={600}
                 height={400}
                 className="rounded-lg shadow-lg"
@@ -24,7 +24,7 @@ export function OurStory() {
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <p className="text-lg text-gray-700 mb-4">
-                Founded in 1985, Pinnacle Global Bank began as a small community bank with a vision to provide personalized financial services. Over the decades, we've grown into a global institution, never forgetting our roots and commitment to our customers.
+                Founded in 1985, Pinnacle Global Swift began as a small community bank with a vision to provide personalized financial services. Over the decades, we've grown into a global institution, never forgetting our roots and commitment to our customers.
               </p>
               <p className="text-lg text-gray-700">
                 Today, we combine cutting-edge technology with time-honored banking principles to offer innovative solutions that meet the evolving needs of individuals and businesses worldwide.

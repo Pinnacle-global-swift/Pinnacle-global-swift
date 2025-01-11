@@ -14,7 +14,7 @@ export function OurMission() {
           <Target className="w-16 h-16 mx-auto mb-6 text-primary" />
           <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
           <p className="text-lg text-gray-700">
-            At Pinnacle Global Bank, our mission is to empower individuals and businesses to achieve their financial goals by providing innovative, secure, and accessible banking solutions. We are committed to fostering long-term relationships built on trust, integrity, and mutual success.
+            At Pinnacle Global Swift, our mission is to empower individuals and businesses to achieve their financial goals by providing innovative, secure, and accessible banking solutions. We are committed to fostering long-term relationships built on trust, integrity, and mutual success.
           </p>
         </motion.div>
       </div>

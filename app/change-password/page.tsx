@@ -85,7 +85,7 @@ export default function ChangePassword() {
         >
           <Image
             src="/pgb.png?height=200&width=200"
-            alt="Pinnacle Global Bank Logo"
+            alt="Pinnacle Global Swift Logo"
             width={200}
             height={200}
             className="h-12 w-auto"

@@ -190,7 +190,7 @@ export function Contact () {
           <div className='relative h-[700px] rounded-lg overflow-hidden'>
             <Image
               src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070'
-              alt='Pinnacle Global Bank Main Branch'
+              alt='Pinnacle Global Swift Main Branch'
               layout='fill'
               objectFit='cover'
               className='rounded-lg'
@@ -198,7 +198,7 @@ export function Contact () {
             <div className='absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
               <div className='text-white text-center'>
                 <h4 className='text-2xl font-bold mb-2'>
-                  Pinnacle Global Bank
+                  Pinnacle Global Swift
                 </h4>
                 <p>2401 W Park Row Dr, Pantego, TX 76013, United States</p>
               </div>

@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
-            <h3 className="text-2xl font-bold mb-6">Pinnacle Global Bank</h3>
+            <h3 className="text-2xl font-bold mb-6">Pinnacle Global Swift</h3>
             <p className="text-gray-400 mb-4">
               Your trusted partner in banking and financial services. Building wealth and securing futures since 1990.
             </p>
@@ -82,7 +82,7 @@ export function Footer() {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              © {new Date().getFullYear()} Pinnacle Global Bank. All rights reserved.
+              © {new Date().getFullYear()} Pinnacle Global Swift. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <Link href="/privacy" className="text-gray-400 hover:text-primary text-sm transition-colors">
