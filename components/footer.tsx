@@ -70,7 +70,7 @@ export function Footer() {
                 <span>+1 (336) 754-6143</span>
               </li>
               <li className="flex items-center text-gray-400">
-                <span>contact@pinnacleglobal.com</span>
+                <span>contact@pinnacleglobalswift.com</span>
               </li>
               <li className="flex items-center text-gray-400">
                 <span>2401 W Park Row Dr, Pantego, TX 76013, United States</span>
