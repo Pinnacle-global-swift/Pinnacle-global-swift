@@ -84,7 +84,7 @@ export default function ChangePassword() {
           transition={{ duration: 0.5 }}
         >
           <Image
-            src="/pgb.png?height=200&width=200"
+            src="/pgbw.png?height=200&width=200"
             alt="Pinnacle Global Swift Logo"
             width={200}
             height={200}

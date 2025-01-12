@@ -97,10 +97,10 @@ export default function Login() {
           transition={{ duration: 0.5 }}
         >
           <Image
-            src="/pgb.png?height=50&width=200"
+            src="/pgbw.png?height=100&width=400"
             alt="Swift-Blink Logo"
-            width={200}
-            height={50}
+            width={400}
+            height={100}
             className="h-12 w-auto"
           />
         </motion.div>
