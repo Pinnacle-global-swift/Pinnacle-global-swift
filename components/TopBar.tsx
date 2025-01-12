@@ -38,7 +38,7 @@ export function TopBar() {
                 href="mailto:support@pinnaclebank.com" 
                 className="text-gray-300 hover:text-white transition-colors"
               >
-                support@pinnaclebank.com
+                support@pinnacleswift.com
               </a>
             </div>
           </div>
