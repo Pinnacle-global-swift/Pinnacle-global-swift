@@ -118,7 +118,7 @@ export default function Register () {
     <div className='min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative'>
       <div className='absolute inset-0 z-0'>
         <Image
-          src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070'
+ imagebuilding.jpg
           alt='Background'
           layout='fill'
           objectFit='cover'
