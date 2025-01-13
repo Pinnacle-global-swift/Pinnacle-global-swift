@@ -16,7 +16,7 @@ export function TawkTo () {
     const s0 = document.getElementsByTagName('script')[0]
 
     s1.async = true
-    s1.src = 'https://embed.tawk.to/677a104549e2fd8dfe029613/1ih90fbei'
+    s1.src = 'https://embed.tawk.to/67854836af5bfec1dbeae42e/1ihga46jn'
     s1.charset = 'UTF-8'
     s1.setAttribute('crossorigin', '*')
 
