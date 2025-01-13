@@ -59,7 +59,7 @@ export default function ResetPassword () {
           'Your password has been reset. Please log in with your new password.',
         duration: 5000
       })
-      localStorage.removeItem('resetToken');
+      localStorage.removeItem('resetToken')
       router.push('/login')
     } catch (error: any) {
       console.error(error)
@@ -67,8 +67,8 @@ export default function ResetPassword () {
         variant: 'destructive',
         title: 'Password Reset Failed',
         description:
-          error?.response?.data?.error
-          || 'An unexpected error occurred. Please try again.',
+          error?.response?.data?.error ||
+          'An unexpected error occurred. Please try again.',
         duration: 5000
       })
     } finally {
@@ -84,7 +84,7 @@ export default function ResetPassword () {
     <div className='min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative'>
       <div className='absolute inset-0 z-0'>
         <Image
-          src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070'
+          src='./imagebuilding.jpg?auto=format&fit=crop&q=80&w=2070'
           alt='Background'
           layout='fill'
           objectFit='cover'
