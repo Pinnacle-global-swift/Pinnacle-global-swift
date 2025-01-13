@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from 'lucide-react'
 import { fadeInUp, stagger } from '@/lib/animations'
+import Link from 'next/link'
 
 interface Feature {
   icon: React.ReactNode
@@ -53,9 +54,11 @@ export function FeatureGrid({ title, description, features }: FeatureGridProps) 
             <p className="text-gray-600 mb-4">
               {feature.description}
             </p>
+            <Link href='/register'>
             <Button variant="ghost" className="group-hover:translate-x-1 transition-transform duration-300">
               Learn More <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
+            </Link>
           </motion.div>
         ))}
       </motion.div>
