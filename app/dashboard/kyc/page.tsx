@@ -135,9 +135,14 @@ export default function KYCPage () {
                 <CardTitle className='text-2xl text-white'>
                   KYC Verification
                 </CardTitle>
-                <CardDescription className='text-gray-400'>
+               
+                <CardDescription className='text-blue-500'>
                   {kycstatus?.status == 'processing' && 'Processing, please contact customer service if not successful'  }
-                  {kycstatus?.status == 'approve' &&  'KYC APPROVED' }
+                </CardDescription>
+                <CardDescription className='text-green-500'>
+                  {kycstatus?.status == 'approved' &&  'KYC APPROVED' }
+                </CardDescription>
+                <CardDescription className='text-gray-400'>
                   {kycstatus?.status !== 'processing' && kycstatus?.status !== 'approved' &&  'Complete your identity verification' }
                 </CardDescription>
               </div>
