@@ -220,7 +220,7 @@ export default function DashboardLayout ({
           </nav>
 
           {/* User Profile */}
-          <div className='p-4 border-t'>
+          <div className='p-4'>
             <div className='flex items-center space-x-3'>
               <div className='flex-shrink-0'>
                 <div className='w-10 h-10 rounded-full bg-primary flex items-center justify-center'>
