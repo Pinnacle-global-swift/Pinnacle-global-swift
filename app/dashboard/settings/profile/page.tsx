@@ -78,7 +78,7 @@ export default function Profile() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-8 p-6">
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <div className="relative">
                   <div className="w-24 h-24 rounded-full bg-emerald-50 flex items-center justify-center">
                     <User className="w-12 h-12 text-emerald-600" />
@@ -91,7 +91,7 @@ export default function Profile() {
                     <Camera className="w-4 h-4 text-emerald-600" />
                   </Button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="grid gap-6">
                 <div className="space-y-2">
