@@ -30,10 +30,12 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select"
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from "@/components/ui/use-toast"
 import { api } from '@/lib/api'
+import { countries } from 'countries-list'
 
 const formSchema = z.object({
   fullLegalName: z.string().min(1, "Full name is required"),
@@ -179,10 +181,16 @@ export default function KYCPage() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="us">United States</SelectItem>
-                          <SelectItem value="uk">United Kingdom</SelectItem>
-                          <SelectItem value="ca">Canada</SelectItem>
-                          <SelectItem value="au">Australia</SelectItem>
+                        <ScrollArea className='h-[200px]'>
+                            {Object.entries(countries).map(
+                              ([code, country]) => (
+                                <SelectItem key={code} value={code}>
+                                  {country.name}
+                                </SelectItem>
+                              )
+                            )}
+                          </ScrollArea>
+             
                         </SelectContent>
                       </Select>
                       <FormMessage />
