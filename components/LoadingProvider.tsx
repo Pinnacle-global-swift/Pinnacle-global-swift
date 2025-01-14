@@ -15,7 +15,7 @@ export function LoadingProvider({
     // Simulate loading time (remove this in production and use real loading states)
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 3000)
+    }, 5000)
 
     return () => clearTimeout(timer)
   }, [])
