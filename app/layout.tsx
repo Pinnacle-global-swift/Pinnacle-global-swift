@@ -1,9 +1,12 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { Suspense } from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from "@/components/ui/toaster"
 import { TawkTo } from '@/components/tawk-to'
+import { LoadingProvider } from '@/components/LoadingProvider'
+import { LoadingAnimation } from '@/components/LoadingAnimation'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -40,6 +43,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+      <Suspense fallback={<LoadingAnimation />}>
+      <LoadingProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -50,6 +55,8 @@ export default function RootLayout({
           <TawkTo />
           <Toaster />
         </ThemeProvider>
+        </LoadingProvider>
+        </Suspense>
       </body>
     </html>
   )

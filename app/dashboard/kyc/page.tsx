@@ -1,10 +1,20 @@
 'use client'
 
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Shield, Upload, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { motion, usePresence } from 'framer-motion'
+import {
+  Shield,
+  Upload,
+  CheckCircle2,
+  AlertTriangle,
+  Check,
+  Loader2,
+  XCircle
+} from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+// import ConfettiExplosion from 'react-confetti-explosion';
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -36,6 +46,13 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/components/ui/use-toast'
 import { api } from '@/lib/api'
 import { countries } from 'countries-list'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog'
 
 const formSchema = z.object({
   fullLegalName: z.string().min(1, 'Full name is required'),
@@ -53,6 +70,10 @@ export default function KYCPage () {
   const [frontImage, setFrontImage] = useState<File | null>(null)
   const [backImage, setBackImage] = useState<File | null>(null)
   const [kycstatus, setKyc] = useState<any>('')
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [isPresent, safeToRemove] = usePresence()
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showRejectionModal, setShowRejectionModal] = useState(false)
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -76,6 +97,10 @@ export default function KYCPage () {
       try {
         const data = await api.statuskyc()
         setKyc(data?.data)
+        // Show confetti if KYC is approved after fetching status
+        if (data?.data?.status === 'approved') {
+          setShowConfetti(true)
+        }
         console.log(data?.data)
       } catch (err: any) {
         console.log(err)
@@ -97,12 +122,15 @@ export default function KYCPage () {
     setIsSubmitting(true)
     try {
       const response = await api.submitkyc(values)
+
       console.log(response, values)
       await new Promise(resolve => setTimeout(resolve, 2000))
       toast({
         title: 'KYC Submitted Successfully',
         description: 'We will review your documents and update you soon.'
       })
+      setShowSuccessModal(true);
+      setShowConfetti(true);
       form.reset()
       setFrontImage(null)
       setBackImage(null)
@@ -117,9 +145,152 @@ export default function KYCPage () {
     }
   }
 
+  // if (kycstatus?.status === 'approved') {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-[500px]">
+  //       <div className="bg-green-100 rounded-full p-4">
+  //         <CheckCircle2 className="w-16 h-16 text-green-600" />
+  //       </div>
+  //       <h2 className="text-3xl font-bold mt-4 text-green-700">KYC Approved</h2>
+  //       <p className="text-gray-600 mt-2">Your account is fully verified.</p>
+  //       {/* <Image
+  //         src="https://images.unsplash.com/photo-1634034379077-55550e512103?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNoZWNrJTIwbWFya3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+  //         alt="KYC Approved"
+  //         width={200}
+  //         height={200}
+  //         className="mt-8"
+  //       /> */}
+  //     </div>
+  //   )
+  // }
+
+  if (kycstatus.status === 'approved') {
+    return (
+      <div className='flex flex-col items-center justify-center min-h-[500px]'>
+        {/* {showConfetti && <ConfettiExplosion />} */}
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+          className='bg-gradient-to-r from-green-400 to-blue-500 rounded-full p-4'
+        >
+          <Check className='w-16 h-16 text-white' />
+        </motion.div>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className='text-3xl font-bold mt-4 text-green-700'
+        >
+          KYC Approved
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className='text-gray-600 mt-2'
+        >
+          Your account is fully verified.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          {/* <Image
+            src='https://images.unsplash.com/photo-1634034379077-55550e512103?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNoZWNrJTIwbWFya3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
+            alt='KYC Approved'
+            width={200}
+            height={200}
+            className='mt-8'
+          /> */}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className='mt-8 text-center text-gray-600'
+        >
+          You can now enjoy all the features of Pinnacle Global Swift. Start
+          exploring!
+        </motion.div>
+      </div>
+    )
+  }
+
+  if (kycstatus?.status === 'rejected') {
+    return (
+      <div className='flex flex-col items-center justify-center min-h-[500px]'>
+        <div className='bg-red-100 rounded-full p-4'>
+          <XCircle className='w-16 h-16 text-red-600' />
+        </div>
+        <h2 className='text-3xl font-bold mt-4 text-red-700'>KYC Rejected</h2>
+        <p className='text-gray-600 mt-2'>
+          Your KYC application has been rejected. Please contact support for
+          more information.
+        </p>
+      </div>
+    )
+  }
+
+  if (kycstatus?.status === 'processing') {
+    return (
+      <div className='flex flex-col items-center justify-center min-h-[500px]'>
+        <div className='bg-yellow-100 rounded-full p-4'>
+          <Loader2 className='w-16 h-16 text-yellow-600 animate-spin' />
+        </div>
+        <h2 className='text-3xl font-bold mt-4 text-yellow-700'>KYC Pending</h2>
+        <p className='text-gray-600 mt-2'>
+          Your application is currently under review.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className='container max-w-xl mx-auto py-10'>
+      {/* Success Modal */}
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="bg-white text-gray-900 rounded-lg shadow-lg p-8">
+          <div className="flex flex-col items-center justify-center">
+            {/* {showConfetti && <ConfettiExplosion />} */}
+            <div className="bg-green-100 rounded-full p-4 mb-4">
+              <CheckCircle2 className="w-16 h-16 text-green-600" />
+            </div>
+            <DialogTitle className="text-3xl font-bold text-green-700 mb-4">KYC Approved</DialogTitle>
+            <DialogDescription className="text-gray-600 mb-8">
+              Your account is fully verified. You can now enjoy all the features of Pinnacle Global Bank.
+            </DialogDescription>
+            <Button
+              onClick={() => setShowSuccessModal(false)}
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg"
+            >
+              Start Exploring
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Rejection Modal */}
+      <Dialog open={showRejectionModal} onOpenChange={setShowRejectionModal}>
+        <DialogContent className="bg-white text-gray-900 rounded-lg shadow-lg p-8">
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-red-100 rounded-full p-4 mb-4">
+              <XCircle className="w-16 h-16 text-red-600" />
+            </div>
+            <DialogTitle className="text-3xl font-bold text-red-700 mb-4">KYC Rejected</DialogTitle>
+            <DialogDescription className="text-gray-600 mb-8">
+              Your KYC application has been rejected. Please contact support for more information.
+            </DialogDescription>
+            <Button
+              onClick={() => setShowRejectionModal(false)}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg"
+            >
+              Contact Support
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -135,15 +306,18 @@ export default function KYCPage () {
                 <CardTitle className='text-2xl text-white'>
                   KYC Verification
                 </CardTitle>
-               
+
                 <CardDescription className='text-blue-500'>
-                  {kycstatus?.status == 'processing' && 'Processing, please contact customer service if not successful'  }
+                  {kycstatus?.status == 'processing' &&
+                    'Processing, please contact customer service if not successful'}
                 </CardDescription>
                 <CardDescription className='text-green-500'>
-                  {kycstatus?.status == 'approved' &&  'KYC APPROVED' }
+                  {kycstatus?.status == 'approved' && 'KYC APPROVED'}
                 </CardDescription>
                 <CardDescription className='text-gray-400'>
-                  {kycstatus?.status !== 'processing' && kycstatus?.status !== 'approved' &&  'Complete your identity verification' }
+                  {kycstatus?.status !== 'processing' &&
+                    kycstatus?.status !== 'approved' &&
+                    'Complete your identity verification'}
                 </CardDescription>
               </div>
             </div>
