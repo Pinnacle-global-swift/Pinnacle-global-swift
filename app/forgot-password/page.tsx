@@ -67,7 +67,7 @@ export default function ForgotPassword () {
     <div className='min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative'>
       <div className='absolute inset-0 z-0'>
         <Image
-          src='./imagebuilding.jpg?auto=format&fit=crop&q=80&w=2070'
+          src='https://firebasestorage.googleapis.com/v0/b/first-project-a5bbf.appspot.com/o/imagebuilding.jpg?alt=media&token=cdceeabf-1e6e-4c5d-8143-56e9d1917612?auto=format&fit=crop&q=80&w=2070'
           alt='Background'
           layout='fill'
           objectFit='cover'

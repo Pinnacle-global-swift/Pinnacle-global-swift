@@ -43,25 +43,25 @@ export default function VerifyOTP () {
   })
 
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    const storedEmail = localStorage.getItem('resetEmail');
+    const storedEmail = localStorage.getItem('resetEmail')
     setIsSubmitting(true)
     try {
-     const data = await api.verifyOTP(storedEmail, values.otp);
-     router.push('/login')
-     localStorage.removeItem('resetEmail');
+      const data = await api.verifyOTP(storedEmail, values.otp)
+      router.push('/login')
+      localStorage.removeItem('resetEmail')
       toast({
         title: 'OTP Verified',
         description: 'Your OTP has been successfully verified.',
         duration: 5000
       })
-
     } catch (error: any) {
       console.error(error)
       toast({
         // variant: 'destructive',
         title: 'Verification Failed',
         description:
-          error.response.data.error || 'An unexpected error occurred. Please try again.',
+          error.response.data.error ||
+          'An unexpected error occurred. Please try again.',
         duration: 5000
       })
     } finally {
@@ -70,16 +70,16 @@ export default function VerifyOTP () {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+    <div className='min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative'>
       <div className='absolute inset-0 z-0'>
         <Image
-          src='/imagebuilding.jpg?auto=format&fit=crop&q=80&w=2070'
+          src='https://firebasestorage.googleapis.com/v0/b/first-project-a5bbf.appspot.com/o/imagebuilding.jpg?alt=media&token=cdceeabf-1e6e-4c5d-8143-56e9d1917612?auto=format&fit=crop&q=80&w=2070'
           alt='Background'
           layout='fill'
           objectFit='cover'
           quality={100}
         />
-        <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
+        <div className='absolute inset-0 bg-gray-900 opacity-75'></div>
       </div>
 
       <div className='sm:mx-auto sm:w-full sm:max-w-md z-10'>

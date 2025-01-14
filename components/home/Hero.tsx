@@ -16,7 +16,8 @@ const heroSlides = [
     subtitle: 'Secure, and Smart',
     description:
       'Experience modern banking with our sleek, user-friendly interface. Stay on top of your finances effortlessly with Pinnacle Global Swift.',
-    image: './imagebuilding.jpg',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/first-project-a5bbf.appspot.com/o/imagebuilding.jpg?alt=media&token=cdceeabf-1e6e-4c5d-8143-56e9d1917612',
     cta: {
       primary: { text: 'Get Started', link: '/register' },
       secondary: { text: 'Learn More', link: '/about' }
