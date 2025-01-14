@@ -117,7 +117,6 @@ export default function KYCPage () {
     }
   }
 
-  console.log(kycstatus?.status)
 
   return (
     <div className='container max-w-xl mx-auto py-10'>
