@@ -141,7 +141,7 @@ export default function Register () {
             className='mx-auto h-12 w-auto'
           />
           <h2 className='mt-6 text-center text-3xl font-extrabold text-white'>
-            Create Your Account
+            Create Your Accounts
           </h2>
           <p className='mt-2 text-center text-sm text-gray-300'>
             Join Pinancle Global and experience the future of banking
