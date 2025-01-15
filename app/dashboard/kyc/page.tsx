@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import ConfettiExplosion from 'react-confetti-explosion'
+// import ConfettiExplosion from 'react-confetti-explosion'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -168,7 +168,7 @@ export default function KYCPage () {
   if (kycstatus.status === 'approved') {
     return (
       <div className='flex flex-col items-center justify-center min-h-[500px]'>
-        {showConfetti && <ConfettiExplosion />}
+        {/* {showConfetti && <ConfettiExplosion />} */}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -254,7 +254,7 @@ export default function KYCPage () {
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
         <DialogContent className='bg-white text-gray-900 rounded-lg shadow-lg p-8'>
           <div className='flex flex-col items-center justify-center'>
-            {showConfetti && <ConfettiExplosion />}
+            {/* {showConfetti && <ConfettiExplosion />} */}
             <div className='bg-green-100 rounded-full p-4 mb-4'>
               <CheckCircle2 className='w-16 h-16 text-green-600' />
             </div>

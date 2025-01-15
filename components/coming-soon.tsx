@@ -47,7 +47,7 @@ export function ComingSoon({ pageName }: { pageName: string }) {
         className="mt-12 flex items-center space-x-4"
       >
         <Mail className="w-6 h-6" />
-        <span>Contact us: support@finebank.io</span>
+        <span>Contact us:  support@pinnacleglobalswift.com</span>
       </motion.div>
     </div>
   )

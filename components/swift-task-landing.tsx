@@ -6,16 +6,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, CreditCard, ShieldCheck, Zap } from 'lucide-react'
-
-import { BankingSection } from './sections/banking-section'
+import { PersonalizeCardSection } from './sections/personalize-card-section'
+import { CustomerFeedbackSection } from './sections/customer-feedback-section'
 import { TaxSavingsSection } from './sections/tax-savings-section'
 import { BenefitsSection } from './sections/benefits-section'
 import { EmergencyServiceSection } from './sections/emergency-service-section'
 import { AccountStepsSection } from './sections/account-steps-section'
-import { PersonalizeCardSection } from './sections/personalize-card-section'
-import { CustomerFeedbackSection } from './sections/customer-feedback-section'
+import { BankingSection } from './sections/banking-section'
 import { Header } from './header'
 import { Footer } from './footer'
+
+
 
 export default function PinnacleGlobalBank () {
   return (

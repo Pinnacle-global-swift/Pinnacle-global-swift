@@ -2,10 +2,12 @@
   "name": "pinnacle",
   "version": "0.1.0",
   "private": true,
+  "homepage": "pinnacleglobalswift.com",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "export": "next build && next export ",
+  "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -32,7 +34,6 @@
     "next": "15.1.0",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
-    "react-confetti-explosion": "^2.1.2",
     "react-day-picker": "^9.4.4",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.0",
