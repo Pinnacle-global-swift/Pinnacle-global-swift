@@ -162,12 +162,13 @@ export default function DashboardOverview () {
       toast({
         title: "Copied!",
         description: "Account number copied to clipboard.",
+                type: 'success'
       })
       setTimeout(() => setCopied(false), 2000) // Reset after 2 seconds
     } catch (err) {
       console.error('Failed to copy: ', err)
       toast({
-        variant: "destructive",
+        type:"error",
         title: "Copy failed",
         description: "Unable to copy account number. Please try again.",
       })

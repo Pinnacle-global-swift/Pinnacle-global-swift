@@ -57,14 +57,15 @@ export default function ResetPassword () {
         title: 'Password Reset Successful',
         description:
           'Your password has been reset. Please log in with your new password.',
-        duration: 5000
+        duration: 5000,
+          type:"success"
       })
       localStorage.removeItem('resetToken')
       router.push('/login')
     } catch (error: any) {
       console.error(error)
       toast({
-        variant: 'destructive',
+       type:"error",
         title: 'Password Reset Failed',
         description:
           error?.response?.data?.error ||

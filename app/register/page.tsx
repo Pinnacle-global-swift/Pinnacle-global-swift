@@ -97,17 +97,17 @@ export default function Register () {
       toast({
         title: 'Registration Successful',
         description: 'You have successfully registered. Please log in.',
-        duration: 5000
+        duration: 5000,
+          type:"success"
       })
       router.push('/verify-otp')
     } catch (error: any) {
       console.error(error)
       toast({
-        // variant: "destructive",
         title: 'Registration Failed',
         description:
-          error.message || 'An unexpected error occurred. Please try again.',
-        duration: 5000
+          error.response?.data?.error?.message || 'An unexpected error occurred. Please try again.',
+          type: 'error',
       })
     } finally {
       setIsSubmitting(false)

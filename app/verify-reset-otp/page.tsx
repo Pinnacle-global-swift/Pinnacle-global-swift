@@ -55,18 +55,19 @@ export default function VerifyResetOTP () {
       toast({
         title: 'OTP Verified',
         description: 'Your OTP has been successfully verified.',
-        duration: 5000
+        duration: 5000,
+          type:"success"
       })
       router.push('/reset-password')
     } catch (error: any) {
       console.error(error)
       toast({
-        // variant: 'destructive',
+        type: 'error',
         title: 'Verification Failed',
         description:
           error?.response?.data?.errors?.message ||
           'An unexpected error occurred. Please try again.',
-        duration: 5000
+     
       })
     } finally {
       setIsSubmitting(false)

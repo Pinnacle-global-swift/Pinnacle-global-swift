@@ -108,14 +108,15 @@ export default function WithdrawPage () {
       toast({
         title: 'Withdrawal Initiated',
         description: `Your withdrawal request for $${values.amount} has been submitted. Reference: ${response.data?.transaction.reference}`,
-        duration: 5000
+        duration: 5000,
+                type: 'success'
       })
 
       form.reset()
     } catch (error: any) {
       console.error('Withdrawal error:', error?.response?.data?.error?.message)
       toast({
-        // variant: "destructive",
+        type:"error",
         title: 'Withdrawal Failed',
         description:
           error?.response?.data?.error?.message ||

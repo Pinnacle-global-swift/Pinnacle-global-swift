@@ -57,16 +57,16 @@ export default function Login () {
       toast({
         title: 'Login Successful',
         description: 'You have successfully logged in.',
-        duration: 3000
+        type: 'success'
       })
     } catch (error: any) {
       toast({
-        // variant: "destructive",
         title: 'Login Failed',
         description:
           error?.response?.data?.errors?.message ||
           'An unexpected error occurred. Please try again.',
-        duration: 5000
+        duration: 5000,
+        type: 'error'
       })
     } finally {
       setIsSubmitting(false)

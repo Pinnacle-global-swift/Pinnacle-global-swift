@@ -86,6 +86,7 @@ export default function DepositPage() {
     toast({
       title: "Address Copied",
       description: "The address has been copied to your clipboard",
+      type:"success"
     })
     setTimeout(() => setCopiedAddress(null), 2000)
   }

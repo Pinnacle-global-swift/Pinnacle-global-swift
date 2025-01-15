@@ -57,12 +57,13 @@ export default function TransactionLimits () {
       toast({
         title: 'Limits Upgraded',
         description: 'Your transaction limits have been successfully upgraded.',
-        duration: 3000
+        duration: 3000,
+                type: 'success'
       })
     } catch (error) {
       console.error('Error upgrading limits:', error)
       toast({
-        // variant: "destructive",
+        type:"error",
         title: 'Upgrade Failed',
         description: 'Failed to upgrade transaction limits. Please try again.',
         duration: 3000

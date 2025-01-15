@@ -52,7 +52,8 @@ export default function VerifyOTP () {
       toast({
         title: 'OTP Verified',
         description: 'Your OTP has been successfully verified.',
-        duration: 5000
+        duration: 5000,
+          type:"success"
       })
     } catch (error: any) {
       console.error(error)
@@ -62,7 +63,7 @@ export default function VerifyOTP () {
         description:
           error.response.data.error ||
           'An unexpected error occurred. Please try again.',
-        duration: 5000
+          type: 'error',
       })
     } finally {
       setIsSubmitting(false)

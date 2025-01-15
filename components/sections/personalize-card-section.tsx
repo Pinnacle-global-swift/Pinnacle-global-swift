@@ -43,12 +43,14 @@ export function PersonalizeCardSection() {
       toast({
         title: "Application Submitted",
         description: "Your card application has been received successfully.",
+          type:"success"
       })
     } catch (error) {
       console.error('Error submitting application:', error)
       toast({
         title: "Submission Failed",
         description: "There was an error submitting your application. Please try again.",
+          type:"error"
         // variant: "destructive"
       })
     } finally {

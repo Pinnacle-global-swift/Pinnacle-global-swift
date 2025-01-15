@@ -1,18 +1,19 @@
+'use client'
+
 import * as React from "react"
 
-import type {
-  ToastActionElement,
-  ToastProps,
-} from "@/components/ui/toast"
+const TOAST_LIMIT = 5
+const TOAST_REMOVE_DELAY = 3000
 
-const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+type ToastType = "success" | "error" | "info"
 
-type ToasterToast = ToastProps & {
+export interface ToastProperties {
   id: string
-  title?: React.ReactNode
-  description?: React.ReactNode
-  action?: ToastActionElement
+  title: string
+  description?: string
+  type: ToastType
+  duration?: number
+  onClose: () => void
 }
 
 const actionTypes = {
@@ -34,23 +35,23 @@ type ActionType = typeof actionTypes
 type Action =
   | {
       type: ActionType["ADD_TOAST"]
-      toast: ToasterToast
+      toast: ToastProperties
     }
   | {
       type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast>
+      toast: Partial<ToastProperties>
     }
   | {
       type: ActionType["DISMISS_TOAST"]
-      toastId?: ToasterToast["id"]
+      toastId?: string
     }
   | {
       type: ActionType["REMOVE_TOAST"]
-      toastId?: ToasterToast["id"]
+      toastId?: string
     }
 
 interface State {
-  toasts: ToasterToast[]
+  toasts: ToastProperties[]
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
@@ -90,8 +91,6 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId)
       } else {
@@ -137,34 +136,29 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
+type ToastOptions = Omit<ToastProperties, "id" | "onClose"> 
 
-function toast({ ...props }: Toast) {
+function toast({ title, description, type = "info", duration = 5000 }: ToastOptions) {
   const id = genId()
 
-  const update = (props: ToasterToast) =>
-    dispatch({
-      type: "UPDATE_TOAST",
-      toast: { ...props, id },
-    })
   const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
 
   dispatch({
     type: "ADD_TOAST",
     toast: {
-      ...props,
       id,
-      open: true,
-      onOpenChange: (open) => {
-        if (!open) dismiss()
-      },
+      title,
+      description,
+      type,
+      onClose: dismiss,
     },
   })
+
+  setTimeout(dismiss, duration)
 
   return {
     id: id,
     dismiss,
-    update,
   }
 }
 

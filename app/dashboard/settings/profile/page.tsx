@@ -30,10 +30,10 @@ export default function Profile() {
     try {
       const data = await api.getUserDetails();
       setProfile(data?.data?.user);
-      toast({ title: "Profile Loaded", description: "Your profile information has been successfully loaded." });
+      toast({ title: "Profile Loaded", description: "Your profile information has been successfully loaded.",   type:"success" });
     } catch (error) {
       console.error('Error fetching profile:', error);
-      toast({ title: "Error", description: "Failed to fetch profile data. Please try again." })
+      toast({ title: "Error", description: "Failed to fetch profile data. Please try again.",   type:"error" })
     } finally {
       setIsLoading(false)
     }
@@ -48,10 +48,10 @@ export default function Profile() {
         phoneNumber: profile!.phoneNumber,
         address: profile!.address,
       });
-      toast({ title: "Profile Updated", description: "Your profile has been successfully updated." })
+      toast({ title: "Profile Updated", description: "Your profile has been successfully updated.",   type:"success" })
     } catch (error) {
       console.error('Error updating profile:', error);
-      toast({ title: "Update Failed", description: "Failed to update profile. Please try again." })
+      toast({ title: "Update Failed", description: "Failed to update profile. Please try again.",   type:"error" })
     } finally {
       setIsLoading(false)
     }

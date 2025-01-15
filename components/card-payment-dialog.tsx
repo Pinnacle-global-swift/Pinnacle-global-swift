@@ -70,6 +70,7 @@ export function CardPaymentDialog({
     toast({
       title: 'Copied!',
       description: 'The wallet address has been copied to your clipboard.',
+        type:"success"
     })
     setTimeout(() => setCopied(false), 2000)
   }

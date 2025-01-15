@@ -76,7 +76,7 @@ export default function TransactionsPage() {
        toast({
          title: "Error",
          description: "Failed to fetch transactions. Please try again.",
-        //  variant: "destructive"
+         type:"success"
        })
      }
    } catch (error) {
@@ -84,7 +84,7 @@ export default function TransactionsPage() {
      toast({
        title: "Error",
        description: "An unexpected error occurred. Please try again.",
-      //  variant: "destructive"
+  type:"error"
      })
    } finally {
      setLoading(false)

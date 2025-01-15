@@ -3,11 +3,18 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, Globe } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
-import { useToast } from "@/components/ui/use-toast"
-import { api } from "@/lib/api"
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
+import { useToast } from '@/components/ui/use-toast'
+import { api } from '@/lib/api'
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -15,10 +22,10 @@ const languages = [
   { code: 'fr', name: 'French', flag: '🇫🇷' },
   { code: 'de', name: 'German', flag: '🇩🇪' },
   { code: 'it', name: 'Italian', flag: '🇮🇹' },
-  { code: 'pt', name: 'Portuguese', flag: '🇵🇹' },
+  { code: 'pt', name: 'Portuguese', flag: '🇵🇹' }
 ]
 
-export default function Language() {
+export default function Language () {
   const [selectedLang, setSelectedLang] = useState('en')
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
@@ -26,21 +33,22 @@ export default function Language() {
   const handleLanguageChange = async (code: string) => {
     setIsLoading(true)
     try {
-      await api.updateLanguage(code);
+      await api.updateLanguage(code)
       setSelectedLang(code)
       toast({
-        title: "Language Updated",
-        description: "Your language preference has been updated successfully.",
+        title: 'Language Updated',
+        description: 'Your language preference has been updated successfully.',
         duration: 3000,
-      });
+                type: 'success'
+      })
     } catch (error) {
-      console.error('Error updating language:', error);
+      console.error('Error updating language:', error)
       toast({
-        // variant: "destructive",
-        title: "Update Failed",
-        description: "Failed to update language preference. Please try again.",
-        duration: 3000,
-      });
+        type:"error",
+        title: 'Update Failed',
+        description: 'Failed to update language preference. Please try again.',
+        duration: 3000
+      })
     } finally {
       setIsLoading(false)
     }
@@ -51,10 +59,10 @@ export default function Language() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="max-w-2xl mx-auto space-y-8"
+      className='max-w-2xl mx-auto space-y-8'
     >
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Language Settings</h1>
+      <div className='flex justify-between items-center'>
+        <h1 className='text-2xl font-bold'>Language Settings</h1>
       </div>
 
       {isLoading ? (
@@ -67,7 +75,7 @@ export default function Language() {
               Choose your preferred language for the dashboard
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-2">
+          <CardContent className='grid gap-2'>
             {languages.map((lang, index) => (
               <motion.button
                 key={lang.code}
@@ -81,18 +89,16 @@ export default function Language() {
                     : 'hover:bg-muted'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{lang.flag}</span>
-                  <span className="font-medium">{lang.name}</span>
+                <div className='flex items-center gap-3'>
+                  <span className='text-2xl'>{lang.flag}</span>
+                  <span className='font-medium'>{lang.name}</span>
                 </div>
-                {selectedLang === lang.code && (
-                  <Check className="w-5 h-5" />
-                )}
+                {selectedLang === lang.code && <Check className='w-5 h-5' />}
               </motion.button>
             ))}
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-muted-foreground text-center w-full">
+            <p className='text-sm text-muted-foreground text-center w-full'>
               Language changes will be applied immediately
             </p>
           </CardFooter>
@@ -101,4 +107,3 @@ export default function Language() {
     </motion.div>
   )
 }
-

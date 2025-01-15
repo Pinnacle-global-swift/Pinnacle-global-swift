@@ -47,11 +47,12 @@ export default function ForgotPassword () {
       toast({
         title: 'Password Reset Initiated',
         description: 'Check your email for further instructions.',
-        duration: 5000
+        duration: 5000,
+        type: 'success'
       })
     } catch (error: any) {
       toast({
-        // variant: "destructive",
+        type: 'error',
         title: 'Password Reset Failed',
         description:
           error?.response?.data?.errors?.message ||

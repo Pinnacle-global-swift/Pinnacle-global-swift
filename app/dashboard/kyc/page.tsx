@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-// import ConfettiExplosion from 'react-confetti-explosion';
+import ConfettiExplosion from 'react-confetti-explosion'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -112,7 +112,7 @@ export default function KYCPage () {
   async function onSubmit (values: z.infer<typeof formSchema>) {
     if (!frontImage || !backImage) {
       toast({
-        // variant: "destructive",
+        type: 'error',
         title: 'Missing Documents',
         description: 'Please upload both front and back images of your ID'
       })
@@ -127,18 +127,19 @@ export default function KYCPage () {
       await new Promise(resolve => setTimeout(resolve, 2000))
       toast({
         title: 'KYC Submitted Successfully',
-        description: 'We will review your documents and update you soon.'
+        description: 'We will review your documents and update you soon.',
+        type: 'success'
       })
-      setShowSuccessModal(true);
-      setShowConfetti(true);
+      setShowSuccessModal(true)
+      setShowConfetti(true)
       form.reset()
       setFrontImage(null)
       setBackImage(null)
     } catch (error) {
       toast({
-        // variant: "destructive",
         title: 'Submission Failed',
-        description: 'Please try again later'
+        description: 'Please try again later',
+        type: 'error'
       })
     } finally {
       setIsSubmitting(false)
@@ -167,7 +168,7 @@ export default function KYCPage () {
   if (kycstatus.status === 'approved') {
     return (
       <div className='flex flex-col items-center justify-center min-h-[500px]'>
-        {/* {showConfetti && <ConfettiExplosion />} */}
+        {showConfetti && <ConfettiExplosion />}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -251,19 +252,22 @@ export default function KYCPage () {
     <div className='container max-w-xl mx-auto py-10'>
       {/* Success Modal */}
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-        <DialogContent className="bg-white text-gray-900 rounded-lg shadow-lg p-8">
-          <div className="flex flex-col items-center justify-center">
-            {/* {showConfetti && <ConfettiExplosion />} */}
-            <div className="bg-green-100 rounded-full p-4 mb-4">
-              <CheckCircle2 className="w-16 h-16 text-green-600" />
+        <DialogContent className='bg-white text-gray-900 rounded-lg shadow-lg p-8'>
+          <div className='flex flex-col items-center justify-center'>
+            {showConfetti && <ConfettiExplosion />}
+            <div className='bg-green-100 rounded-full p-4 mb-4'>
+              <CheckCircle2 className='w-16 h-16 text-green-600' />
             </div>
-            <DialogTitle className="text-3xl font-bold text-green-700 mb-4">KYC Approved</DialogTitle>
-            <DialogDescription className="text-gray-600 mb-8">
-              Your account is fully verified. You can now enjoy all the features of Pinnacle Global Bank.
+            <DialogTitle className='text-3xl font-bold text-green-700 mb-4'>
+              KYC Approved
+            </DialogTitle>
+            <DialogDescription className='text-gray-600 mb-8'>
+              Your account is fully verified. You can now enjoy all the features
+              of Pinnacle Global Bank.
             </DialogDescription>
             <Button
               onClick={() => setShowSuccessModal(false)}
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg"
+              className='bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg'
             >
               Start Exploring
             </Button>
@@ -273,18 +277,21 @@ export default function KYCPage () {
 
       {/* Rejection Modal */}
       <Dialog open={showRejectionModal} onOpenChange={setShowRejectionModal}>
-        <DialogContent className="bg-white text-gray-900 rounded-lg shadow-lg p-8">
-          <div className="flex flex-col items-center justify-center">
-            <div className="bg-red-100 rounded-full p-4 mb-4">
-              <XCircle className="w-16 h-16 text-red-600" />
+        <DialogContent className='bg-white text-gray-900 rounded-lg shadow-lg p-8'>
+          <div className='flex flex-col items-center justify-center'>
+            <div className='bg-red-100 rounded-full p-4 mb-4'>
+              <XCircle className='w-16 h-16 text-red-600' />
             </div>
-            <DialogTitle className="text-3xl font-bold text-red-700 mb-4">KYC Rejected</DialogTitle>
-            <DialogDescription className="text-gray-600 mb-8">
-              Your KYC application has been rejected. Please contact support for more information.
+            <DialogTitle className='text-3xl font-bold text-red-700 mb-4'>
+              KYC Rejected
+            </DialogTitle>
+            <DialogDescription className='text-gray-600 mb-8'>
+              Your KYC application has been rejected. Please contact support for
+              more information.
             </DialogDescription>
             <Button
               onClick={() => setShowRejectionModal(false)}
-              className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg"
+              className='bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg'
             >
               Contact Support
             </Button>
