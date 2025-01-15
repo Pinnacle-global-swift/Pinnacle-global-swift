@@ -7,9 +7,9 @@ export function LoadingAnimation() {
   
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-      <div className="relative">
+      <div className="relative w-full max-w-screen-lg px-4 sm:px-6 lg:px-8">
         {/* Animated text */}
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap justify-center">
           {letters.map((letter, index) => (
             <motion.span
               key={index}
@@ -20,7 +20,7 @@ export function LoadingAnimation() {
                 delay: index * 0.1,
                 ease: [0.215, 0.610, 0.355, 1.000]
               }}
-              className="text-4xl md:text-6xl font-bold text-white"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white m-1"
             >
               {letter === " " ? "\u00A0" : letter}
             </motion.span>
@@ -48,7 +48,7 @@ export function LoadingAnimation() {
                 delay: dot * 0.2,
                 ease: "easeInOut"
               }}
-              className="w-3 h-3 rounded-full bg-white"
+              className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-white"
             />
           ))}
         </div>
@@ -56,4 +56,5 @@ export function LoadingAnimation() {
     </div>
   )
 }
+
 

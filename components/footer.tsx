@@ -91,9 +91,9 @@ export function Footer() {
               <Link href="/terms" className="text-gray-400 hover:text-primary text-sm transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/security" className="text-gray-400 hover:text-primary text-sm transition-colors">
+              {/* <Link href="/security" className="text-gray-400 hover:text-primary text-sm transition-colors">
                 Security
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
