@@ -2,33 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import {
-  LayoutGrid,
-  WalletCards,
-  ArrowLeftRight,
-  Receipt,
-  PieChart,
-  Target,
-  Settings,
-  LogOut,
-  Search,
-  Bell,
-  ChevronRight,
-  User,
-  MoreVertical,
-  Menu,
-  X,
-  CreditCard,
-  Users,
-  ArrowDownRight,
-  FileText,
-  Shield,
-  HomeIcon,
-  CreditCardIcon,
-  DiamondIcon as GoldIcon,
-  MessageSquare
-} from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
+import { LayoutGrid, WalletCards, ArrowLeftRight, Receipt, PieChart, Target, Settings, LogOut, Search, Bell, ChevronRight, User, MoreVertical, Menu, X, CreditCard, Users, ArrowDownRight, FileText, Shield, HomeIcon, CreditCardIcon, DiamondIcon as GoldIcon, MessageSquare } from 'lucide-react'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -50,7 +25,7 @@ const navigation = [
   { name: 'Loan', href: '/dashboard/loan', icon: FileText },
   { name: 'KYC', href: '/dashboard/kyc', icon: Shield },
   { name: 'Transactions', href: '/dashboard/transactions', icon: Receipt },
-  { name: 'Cards', href: '/dashboard/cards', icon: CreditCard }, // Updated from Expenses
+  { name: 'Cards', href: '/dashboard/cards', icon: CreditCard },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings }
 ]
 
@@ -67,35 +42,19 @@ export default function DashboardLayout ({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const router = useRouter()
   const bottomNavRef = useRef<HTMLDivElement>(null)
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [accountInfo, setAccountInfo] = useState<any>(null)
   const [accountUser, setAccountUser] = useState<any>(null)
+  const [isNavigating, setIsNavigating] = useState(false)
 
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
   const { theme } = useTheme()
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setIsSidebarOpen(window.innerWidth >= 1024)
-  //   }
-
-  //   window.addEventListener('resize', handleResize)
-  //   handleResize()
-
-  //   return () => window.removeEventListener('resize', handleResize)
-  // }, [])
-
-  // Close sidebar on route change on mobile
-  useEffect(() => {
-    if (window.innerWidth < 1024) {
-      setIsSidebarOpen(false)
-    }
-  }, [pathname])
 
   useEffect(() => {
     const handleResize = () => {
@@ -162,6 +121,16 @@ export default function DashboardLayout ({
 
     fetchAccountInfo() // Call the function when the component mounts
   }, [])
+
+  useEffect(() => {
+    setIsNavigating(true)
+    // Simulate a delay to show the loading indicator
+    const timer = setTimeout(() => {
+      setIsNavigating(false)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [pathname, searchParams])
 
   return (
     <div
@@ -306,6 +275,12 @@ export default function DashboardLayout ({
         {/* Page Content */}
         <main className='flex-grow p-4 lg:p-8 overflow-auto'>{children}</main>
       </div>
+      {isNavigating && (
+        <div className="fixed top-0 left-0 w-full h-1 bg-primary z-50">
+          <div className="h-full w-1/3 bg-white animate-loading"></div>
+        </div>
+      )}
     </div>
   )
 }
+

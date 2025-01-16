@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     url: 'https://pinanceglobalswift.com',
     images: [
       {
-        url: '/pgb.png',
+        url: '/pgbw.png',
         width: 900,
         height: 900,
         alt: 'Pinance Global Swift',
