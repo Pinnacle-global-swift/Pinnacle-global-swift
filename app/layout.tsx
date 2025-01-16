@@ -12,25 +12,25 @@ import { LoadingAnimation } from '@/components/LoadingAnimation'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Pinance Global Bank - Supercharge Your Workflow',
-  description: 'Pinance Global Bank is the ultimate productivity tool...',
+  title: 'Pinance Global Swift - Supercharge Your Workflow',
+  description: 'Pinance Global Swift is the ultimate productivity tool...',
   openGraph: {
-    title: 'Pinance Global Bank',
-    description: 'Pinance Global Bank is the ultimate productivity tool...',
-    url: 'https://pinanceglobalbank.com',
+    title: 'Pinance Global Swift',
+    description: 'Pinance Global Swift is the ultimate productivity tool...',
+    url: 'https://pinanceglobalswift.com',
     images: [
       {
         url: '/pgb.png',
         width: 900,
         height: 900,
-        alt: 'Pinance Global Bank',
+        alt: 'Pinance Global Swift',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pinance Global Bank',
-    description: 'Supercharge your workflow with Pinance Global Bank...',
+    title: 'Pinance Global Swift',
+    description: 'Supercharge your workflow with Pinance Global Swift...',
     images: ['/twitter-image.jpg'],
   },
 }
