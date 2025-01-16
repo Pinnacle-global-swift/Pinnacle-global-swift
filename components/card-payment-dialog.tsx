@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Copy, Wallet } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -70,25 +69,25 @@ export function CardPaymentDialog({
     toast({
       title: 'Copied!',
       description: 'The wallet address has been copied to your clipboard.',
-        type:"success"
+      type: "success"
     })
     setTimeout(() => setCopied(false), 2000)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#1a1a1a] text-white border-gray-800 sm:max-w-[425px]">
-        <DialogHeader className="space-y-3">
-          <DialogTitle className="flex items-center gap-2">
+      <DialogContent className="bg-[#1a1a1a] text-white border-gray-800 w-[90vw] max-w-[425px] p-4 sm:p-6">
+        <DialogHeader className="space-y-3 px-0">
+          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <Wallet className="w-5 h-5" />
             Card Payment
           </DialogTitle>
         </DialogHeader>
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Amount Section */}
-          <div>
+          <div className="w-full">
             <label className="text-xs text-gray-400">AMOUNT (USD)</label>
-            <div className="relative mt-1">
+            <div className="relative mt-1 w-full">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                 $
               </span>
@@ -96,16 +95,16 @@ export function CardPaymentDialog({
                 type="text"
                 value={amount.toFixed(2)}
                 readOnly
-                className="w-full bg-[#2a2a2a] border border-gray-700 rounded-md py-2 px-7 text-white"
+                className="w-full bg-[#2a2a2a] border border-gray-700 rounded-md py-2 px-7 text-white block text-sm sm:text-base"
               />
             </div>
           </div>
 
           {/* Payment Method Section */}
-          <div>
+          <div className="w-full">
             <label className="text-xs text-gray-400">PAYMENT METHOD</label>
             <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-              <SelectTrigger className="w-full bg-[#2a2a2a] border-gray-700 text-white mt-1">
+              <SelectTrigger className="w-full bg-[#2a2a2a] border-gray-700 text-white mt-1 text-sm sm:text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-[#2a2a2a] border-gray-700">
@@ -119,40 +118,43 @@ export function CardPaymentDialog({
           </div>
 
           {/* QR Code Section */}
-          <div className="flex justify-center bg-white p-4 rounded-lg">
-            {selectedAddress ? (
-              <Image
-                src={selectedAddress.qrCode}
-                alt={`${paymentMethod} QR Code`}
-                width={200}
-                height={200}
-                className="w-full max-w-[200px]"
-              />
-            ) : (
-              <p className="text-gray-500">QR Code unavailable</p>
-            )}
+          <div className="flex justify-center">
+            <div className="bg-white p-2 sm:p-4 rounded-lg w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] relative">
+              {selectedAddress ? (
+                <Image
+                  src={selectedAddress.qrCode || "/placeholder.svg"}
+                  alt={`${paymentMethod} QR Code`}
+                  fill
+                  className="object-contain p-1 sm:p-2"
+                  priority
+                  sizes="(max-width: 640px) 150px, 200px"
+                />
+              ) : (
+                <p className="text-gray-500 text-xs sm:text-sm">QR Code unavailable</p>
+              )}
+            </div>
           </div>
 
           {/* Wallet Address Section */}
           <div>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-400 mb-2">
               You are to pay the amount above to the crypto address provided
               below. Contact support to verify the transaction.
             </p>
-            <div className="flex items-center gap-2 bg-[#2a2a2a] p-2 rounded-lg mt-2">
-              <div className="flex-1 text-sm truncate">
-                {selectedAddress?.address || 'Address unavailable'}
+            <div className="flex items-center gap-2 bg-[#2a2a2a] p-2 rounded-lg">
+              <div className="flex-1 text-xs sm:text-sm truncate">
+                {selectedAddress
+                  ? `${selectedAddress.address.slice(0, 30)}...`
+                  : 'Address unavailable'}
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
+              <button
                 onClick={copyToClipboard}
-                className="h-8 px-3 text-primary hover:text-primary hover:bg-primary/10"
+                className="text-primary hover:text-primary-dark focus:outline-none"
                 disabled={!selectedAddress}
+                aria-label="Copy address"
               >
-                {copied ? 'Copied!' : 'Copy'}
-                <Copy className="w-4 h-4 ml-2" />
-              </Button>
+                <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
             </div>
           </div>
         </div>
@@ -160,3 +162,4 @@ export function CardPaymentDialog({
     </Dialog>
   )
 }
+
