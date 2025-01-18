@@ -259,7 +259,7 @@ export default function KYCPage () {
               <CheckCircle2 className='w-16 h-16 text-green-600' />
             </div>
             <DialogTitle className='text-3xl font-bold text-green-700 mb-4'>
-              KYC Approved
+              KYC Sent Successfully
             </DialogTitle>
             <DialogDescription className='text-gray-600 mb-8'>
               Your account is fully verified. You can now enjoy all the features
