@@ -44,6 +44,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/PGSLOGO.ico" />
+        
       </head>
       <body className={inter.className}>
       <Suspense fallback={<LoadingAnimation />}>
