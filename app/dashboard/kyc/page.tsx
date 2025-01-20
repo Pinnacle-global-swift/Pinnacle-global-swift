@@ -274,6 +274,7 @@ export default function KYCPage () {
           </div>
         </DialogContent>
       </Dialog>
+      
 
       {/* Rejection Modal */}
       <Dialog open={showRejectionModal} onOpenChange={setShowRejectionModal}>

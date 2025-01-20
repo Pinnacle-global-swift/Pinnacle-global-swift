@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Pinance Global Swift',
     description: 'Pinance Global Swift is the ultimate productivity tool...',
-    url: 'https://pinanceglobalswift.com',
+    url: 'https://pinnacleglobalswift.com/',
     images: [
       {
         url: '/pgbw.png',
@@ -42,6 +42,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/PGSLOGO.ico" />
+      </head>
       <body className={inter.className}>
       <Suspense fallback={<LoadingAnimation />}>
       <LoadingProvider>
