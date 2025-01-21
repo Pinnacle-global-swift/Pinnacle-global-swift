@@ -103,13 +103,15 @@ export default function Cards() {
     fetchAccountInfo()
   }, [])
 
+  console.log(cardStatus)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 p-8">
       <div className='space-y-8 max-w-4xl mx-auto'>
         <h1 className='text-3xl font-bold text-slate-800'>Card Services</h1>
 
         <AnimatePresence mode='wait'>
-          {cardStatus?.hasCard ? (
+          {cardStatus?.hasCard &&  cardStatus?.cardDetails?.status == "approved"  ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

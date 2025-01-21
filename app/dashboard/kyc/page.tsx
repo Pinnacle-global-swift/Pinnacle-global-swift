@@ -261,10 +261,10 @@ export default function KYCPage () {
             <DialogTitle className='text-3xl font-bold text-green-700 mb-4'>
               KYC Sent Successfully
             </DialogTitle>
-            <DialogDescription className='text-gray-600 mb-8'>
-              Your account is fully verified. You can now enjoy all the features
-              of Pinnacle Global Bank.
-            </DialogDescription>
+            {/* <DialogDescription className='text-gray-600 mb-8'>
+              Your account is on. You can now enjoy all the features
+              of Pinnacle Global Swoft.
+            </DialogDescription> */}
             <Button
               onClick={() => setShowSuccessModal(false)}
               className='bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg'
