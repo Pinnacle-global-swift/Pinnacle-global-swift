@@ -106,7 +106,7 @@ export default function Register () {
       toast({
         title: 'Registration Failed',
         description:
-          error.response?.data?.error?.message || 'An unexpected error occurred. Please try again.',
+          error.response?.data?.error || 'An unexpected error occurred. Please try again.',
           type: 'error',
       })
     } finally {

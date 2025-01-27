@@ -2,7 +2,32 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { LayoutGrid, WalletCards, ArrowLeftRight, Receipt, PieChart, Target, Settings, LogOut, Search, Bell, ChevronRight, User, MoreVertical, Menu, X, CreditCard, Users, ArrowDownRight, FileText, Shield, HomeIcon, CreditCardIcon, DiamondIcon as GoldIcon, MessageSquare } from 'lucide-react'
+import {
+  LayoutGrid,
+  WalletCards,
+  ArrowLeftRight,
+  Receipt,
+  PieChart,
+  Target,
+  Settings,
+  LogOut,
+  Search,
+  Bell,
+  ChevronRight,
+  User,
+  MoreVertical,
+  Menu,
+  X,
+  CreditCard,
+  Users,
+  ArrowDownRight,
+  FileText,
+  Shield,
+  HomeIcon,
+  CreditCardIcon,
+  DiamondIcon as GoldIcon,
+  MessageSquare
+} from 'lucide-react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -132,6 +157,14 @@ export default function DashboardLayout ({
     return () => clearTimeout(timer)
   }, [pathname, searchParams])
 
+  const handleLogout = () => {
+    // Clear cookies
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    document.cookie = 'expiry=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' // Clear expiry cookie as well
+    // Redirect to login
+    router.push('/login')
+  }
+
   return (
     <div
       className={cn(
@@ -210,13 +243,13 @@ export default function DashboardLayout ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem>
-                    <Link
-                      href='/login'
-                      className='flex items-center bg-blue-500  text-white px-3 py-2 rounded-md'
+                    <button
+                      onClick={handleLogout}
+                      className='flex items-center bg-blue-500 text-white px-3 py-2 rounded-md w-full'
                     >
                       <LogOut className='w-4 h-4 mr-2' />
                       Logout
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -276,11 +309,10 @@ export default function DashboardLayout ({
         <main className='flex-grow p-4 lg:p-8 overflow-auto'>{children}</main>
       </div>
       {isNavigating && (
-        <div className="fixed top-0 left-0 w-full h-1 bg-primary z-50">
-          <div className="h-full w-1/3 bg-white animate-loading"></div>
+        <div className='fixed top-0 left-0 w-full h-1 bg-primary z-50'>
+          <div className='h-full w-1/3 bg-white animate-loading'></div>
         </div>
       )}
     </div>
   )
 }
-

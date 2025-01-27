@@ -52,6 +52,9 @@ export default function Login () {
     setIsSubmitting(true)
     try {
       const data = await api.login(values.email, values.password)
+        // Set both token and expiry cookies
+      document.cookie = `token=${data.token}; path=/`
+      document.cookie = `expiry=${data.expiry}; path=/` // Set expiry cookie
       router.push('/dashboard')
       localStorage.setItem('token', data.token)
       toast({
@@ -63,7 +66,7 @@ export default function Login () {
       toast({
         title: 'Login Failed',
         description:
-          error?.response?.data?.errors?.message ||
+          error?.response?.data?.error ||
           'An unexpected error occurred. Please try again.',
         duration: 5000,
         type: 'error'

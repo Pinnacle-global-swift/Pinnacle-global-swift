@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import { API_BASE_URL } from './config';
-import Router from 'next/router';
 
 // Define types for API responses and request payloads
 interface ApiResponse<T> {
@@ -223,6 +222,10 @@ export const api = {
   transactions: async (page: number = 1, limit: number = 50): Promise<any> => {
     const response = await axiosInstance.get(`/transactions/history?page=${page}&limit=${limit}`);
     return handleResponse(response);
-  }
+  },
+    // Helper function to check token expiry
+    isTokenExpired: (expiry: number) => {
+      return expiry * 1000 < Date.now() // Convert expiry to milliseconds
+    },
 };
 

@@ -65,7 +65,7 @@ export default function VerifyResetOTP () {
         type: 'error',
         title: 'Verification Failed',
         description:
-          error?.response?.data?.errors?.message ||
+          error?.response?.data?.error ||
           'An unexpected error occurred. Please try again.',
      
       })

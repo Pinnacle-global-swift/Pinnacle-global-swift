@@ -55,7 +55,7 @@ export default function ForgotPassword () {
         type: 'error',
         title: 'Password Reset Failed',
         description:
-          error?.response?.data?.errors?.message ||
+          error?.response?.data?.error ||
           'An unexpected error occurred. Please try again.',
         duration: 5000
       })
