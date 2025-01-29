@@ -87,18 +87,7 @@ export function Header() {
                   </Button>
                 </Link>
               </div>
-              <div className="border-l border-gray-200 pl-4">
-                <div className="flex flex-col items-end">
-                  <span className="text-sm text-blue-600 font-medium">Free Consultancy</span>
-                  <a 
-                    href="tel:+6561002373" 
-                    className="flex items-center text-gray-900 font-bold hover:text-blue-600 transition-colors"
-                  >
-                    <Phone className="h-4 w-4 mr-1" />
-                    +1 (336) 754-6143
-                  </a>
-                </div>
-              </div>
+             
             </div>
           </div>
 
