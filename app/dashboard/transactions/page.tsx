@@ -40,7 +40,7 @@ interface TransactionResponse {
   }
 }
 
-export function getTransactionIcon(type: string) {
+function getTransactionIcon(type: string) {
   switch (type.toLowerCase()) {
     case "deposit":
       return <ArrowDownRight className="w-4 h-4 text-green-400" />
@@ -53,7 +53,7 @@ export function getTransactionIcon(type: string) {
   }
 }
 
-export const getStatusBadge = (status: string) => {
+function getStatusBadge(status: string) {
   switch (status.toLowerCase()) {
     case "completed":
       return (
@@ -77,8 +77,6 @@ export const getStatusBadge = (status: string) => {
       return null
   }
 }
-
-
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
