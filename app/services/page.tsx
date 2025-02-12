@@ -449,22 +449,7 @@ export default function ServicesPage () {
                 Our financial experts are here to help you find the perfect
                 banking solutions
               </p>
-              <div className='flex flex-col sm:flex-row items-center justify-center gap-4'>
-                <div className='flex items-center gap-3 bg-blue-100 rounded-lg px-6 py-4'>
-                  <Phone className='w-6 h-6 text-blue-600' />
-                  <div className='text-left'>
-                    <p className='text-sm text-blue-600'>Call us at</p>
-                    <p className='font-semibold text-blue-800'>+1 (336) 754-6143</p>
-                  </div>
-                </div>
-                <Button
-                  size='lg'
-                  className='bg-blue-600 text-white hover:bg-blue-700'
-                >
-                  Schedule a Consultation
-                  <ArrowRight className='ml-2 h-5 w-5' />
-                </Button>
-              </div>
+          
             </div>
           </div>
         </section>

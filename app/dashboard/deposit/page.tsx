@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Copy, Wallet, QrCode } from 'lucide-react'
+import { Copy, Wallet, QrCode, Check } from 'lucide-react'
 import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -34,6 +34,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { useToast } from '@/components/ui/use-toast'
+import { cn } from '@/lib/utils'
 
 const cryptoAddresses = [
   {
@@ -115,51 +116,58 @@ export default function DepositPage () {
   }
 
   return (
-    <div className='container max-w-xl mx-auto py-10'>
+    <div className='container max-w-xl mx-auto py-10 px-4 sm:px-6 lg:px-8'>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
       >
-        <Card className='border-0 shadow-lg bg-gradient-to-br from-gray-900 to-gray-800'>
-          <CardHeader className='border-b border-gray-700 pb-7'>
+        <Card className='border-0 shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10'>
+          <CardHeader className='border-b border-white/20 pb-7'>
             <div className='flex items-center gap-4'>
-              <div className='p-3 bg-green-500/10 rounded-lg'>
-                <Wallet className='w-6 h-6 text-green-500' />
+              <div className='p-3 bg-blue-500/20 rounded-xl backdrop-blur-sm'>
+                <Wallet className='w-7 h-7 text-blue-400' />
               </div>
               <div>
-                <CardTitle className='text-2xl text-white'>
+                <CardTitle className='text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent'>
                   Deposit Funds
                 </CardTitle>
-                <CardDescription className='text-gray-400'>
-                  Add money to your account
+                <CardDescription className='text-gray-300/90'>
+                  Add money to your account securely
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
-          <CardContent className='pt-6'>
+
+          <CardContent className='pt-8'>
             <Form {...form}>
-              <form className='space-y-6' onSubmit={(e) => e.preventDefault()}>
+              <form className='space-y-8' onSubmit={(e) => e.preventDefault()}>
                 <FormField
                   control={form.control}
                   name='amount'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>Amount</FormLabel>
+                      <FormLabel className='text-gray-100 font-medium'>
+                        Amount
+                      </FormLabel>
                       <FormControl>
-                        <div className='relative'>
-                          <span className='absolute left-3 top-2.5 text-gray-500'>
+                        <div className='relative group'>
+                          <span className='absolute left-3 top-3.5 text-gray-400 text-lg'>
                             $
                           </span>
                           <Input
                             type='number'
                             placeholder='0.00'
-                            className='pl-7 bg-gray-800 border-gray-700 text-white'
+                            className={cn(
+                              'pl-10 bg-gray-950/50 border-white/20 text-gray-100',
+                              'rounded-xl h-14 text-lg font-medium focus:ring-2 focus:ring-blue-400',
+                              'focus:border-transparent transition-all duration-300 hover:border-white/40'
+                            )}
                             {...field}
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className='text-red-300' />
                     </FormItem>
                   )}
                 />
@@ -169,7 +177,7 @@ export default function DepositPage () {
                   name='paymentMethod'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>
+                      <FormLabel className='text-gray-100 font-medium'>
                         Payment Method
                       </FormLabel>
                       <Select
@@ -177,42 +185,54 @@ export default function DepositPage () {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className='bg-gray-800 border-gray-700 text-white'>
+                          <SelectTrigger className='bg-gray-950/50 border-white/20 text-gray-100 rounded-xl h-14 px-4'>
                             <SelectValue placeholder='Select payment method' />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className='bg-gray-800 border-gray-700'>
-                          <SelectItem value='bitcoin'>Bitcoin (BTC)</SelectItem>
-                          <SelectItem value='ethereum'>
-                            Ethereum (ETH)
-                          </SelectItem>
-                          <SelectItem value='usdt'>USDT (TRC20)</SelectItem>
+                        <SelectContent className='bg-gray-900 border-white/20 backdrop-blur-lg rounded-xl'>
+                          {cryptoAddresses.map((crypto) => (
+                            <SelectItem
+                              key={crypto.type}
+                              value={crypto.type.toLowerCase()}
+                              className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
+                            >
+                              <div className='flex items-center gap-3'>
+                                <img
+                                  src={crypto.icon}
+                                  alt={crypto.type}
+                                  className='w-6 h-6'
+                                />
+                                {crypto.type} ({crypto.coin})
+                              </div>
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className='text-red-300' />
                     </FormItem>
                   )}
                 />
 
-                <div className='space-y-4'>
-                  <div className='flex justify-center'>
-                    <div className='bg-white p-4 rounded-lg'>
+                <div className='space-y-6'>
+                  <div className='flex justify-center group relative'>
+                    <div className='bg-white/5 p-5 rounded-2xl backdrop-blur-sm border border-white/20 transition-all duration-300 hover:border-blue-400/50'>
+                      <div className='absolute inset-0 bg-blue-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity' />
                       <Image
                         src={selectedCrypto.qrCode}
                         alt='QR Code'
-                        width={200}
-                        height={200}
-                        className='w-full max-w-[200px]'
+                        width={240}
+                        height={240}
+                        className='w-full max-w-[240px] aspect-square'
                       />
                     </div>
                   </div>
 
-                  <div className='space-y-2'>
-                    <label className='text-sm text-gray-200'>
-                      Wallet Address
+                  <div className='space-y-3'>
+                    <label className='text-sm font-medium text-gray-200'>
+                      Deposit Address
                     </label>
-                    <div className='flex items-center gap-2 bg-gray-800 p-3 rounded-lg'>
-                      <QrCode className='w-5 h-5 text-gray-400' />
+                    <div className='flex items-center gap-2 bg-gray-950/50 p-4 rounded-xl border border-white/20 group hover:border-blue-400/50 transition-all duration-300'>
+                      <QrCode className='w-6 h-6 text-blue-400' />
                       <code className='flex-1 text-sm text-gray-300 font-mono break-all'>
                         {selectedCrypto.address}
                       </code>
@@ -220,10 +240,16 @@ export default function DepositPage () {
                         variant='ghost'
                         size='sm'
                         onClick={(e) => copyToClipboard(e, selectedCrypto.address)}
-                        className='h-8 px-3 text-gray-400 hover:text-white hover:bg-gray-700'
+                        className={cn(
+                          'h-9 px-3 text-gray-400 hover:text-white',
+                          'hover:bg-white/10 transition-all duration-200',
+                          copiedAddress === selectedCrypto.address && 'text-green-400'
+                        )}
                       >
                         {copiedAddress === selectedCrypto.address ? (
-                          'Copied!'
+                          <span className='flex items-center gap-2'>
+                            <Check className='w-4 h-4' /> Copied
+                          </span>
                         ) : (
                           <Copy className='w-4 h-4' />
                         )}
@@ -234,15 +260,21 @@ export default function DepositPage () {
               </form>
             </Form>
           </CardContent>
-          <CardFooter className='border-t border-gray-700 mt-6 flex flex-col items-start pt-6'>
-            <h4 className='text-sm font-medium text-gray-200 mb-2'>
-              Important Note
-            </h4>
-            <p className='text-sm text-gray-400'>
-              Please make sure to send only {selectedCrypto.type} (
-              {selectedCrypto.coin}) to this address. Sending any other
-              cryptocurrency may result in permanent loss.
-            </p>
+
+          <CardFooter className='border-t border-white/20 mt-6 py-6'>
+            <div className='w-full space-y-3'>
+              <h4 className='text-lg font-semibold text-gray-100'>
+                Important Note
+              </h4>
+              <p className='text-sm text-gray-400/90 leading-relaxed'>
+                Please ensure to send only{' '}
+                <span className='font-medium text-blue-400'>
+                  {selectedCrypto.type} ({selectedCrypto.coin})
+                </span>{' '}
+                to this address. Sending other assets may result in permanent loss.
+                Network confirmations typically take 2-30 minutes.
+              </p>
+            </div>
           </CardFooter>
         </Card>
       </motion.div>

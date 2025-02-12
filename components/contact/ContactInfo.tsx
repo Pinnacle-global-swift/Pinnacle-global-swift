@@ -3,7 +3,6 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 
 const contactDetails = [
   { icon: MapPin, title: 'Visit Us', content: '2401 W Park Row Dr, Pantego, TX 76013, United States' },
-  { icon: Phone, title: 'Call Us', content: '+1 (336) 754-6143' },
   { icon: Mail, title: 'Email Us', content: 'contact@pinnacleglobalswift.com' },
   { icon: Clock, title: 'Working Hours', content: 'Mon-Fri: 9am-5pm, Sat: 10am-2pm' },
 ]

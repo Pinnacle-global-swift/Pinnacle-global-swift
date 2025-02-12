@@ -1,68 +1,60 @@
-'use client'
+"use client"
 
-import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
+import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
 import {
   LayoutGrid,
   WalletCards,
   ArrowLeftRight,
   Receipt,
-  PieChart,
-  Target,
   Settings,
   LogOut,
   Search,
   Bell,
-  ChevronRight,
   User,
   MoreVertical,
   Menu,
   X,
   CreditCard,
-  Users,
   ArrowDownRight,
   FileText,
   Shield,
   HomeIcon,
   CreditCardIcon,
   DiamondIcon as GoldIcon,
-  MessageSquare
-} from 'lucide-react'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { useTheme } from 'next-themes'
-import { api } from '@/lib/api'
+  MessageSquare,
+} from "lucide-react"
+import { usePathname, useSearchParams, useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { useTheme } from "next-themes"
+import { api } from "@/lib/api"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const navigation = [
-  { name: 'Overview', href: '/dashboard', icon: LayoutGrid },
-  { name: 'Transfer', href: '/dashboard/transfer', icon: ArrowLeftRight },
-  { name: 'Deposit', href: '/dashboard/deposit', icon: WalletCards },
-  { name: 'Withdraw', href: '/dashboard/withdraw', icon: ArrowDownRight },
-  { name: 'Loan', href: '/dashboard/loan', icon: FileText },
-  { name: 'KYC', href: '/dashboard/kyc', icon: Shield },
-  { name: 'Transactions', href: '/dashboard/transactions', icon: Receipt },
-  { name: 'Cards', href: '/dashboard/cards', icon: CreditCard },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings }
+  { name: "Overview", href: "/dashboard", icon: LayoutGrid },
+  { name: "Transfer", href: "/dashboard/transfer", icon: ArrowLeftRight },
+  { name: "Deposit", href: "/dashboard/deposit", icon: WalletCards },
+  { name: "Withdraw", href: "/dashboard/withdraw", icon: ArrowDownRight },
+  { name: "Loan", href: "/dashboard/loan", icon: FileText },
+  { name: "KYC", href: "/dashboard/kyc", icon: Shield },
+  { name: "Transactions", href: "/dashboard/transactions", icon: Receipt },
+  { name: "Cards", href: "/dashboard/cards", icon: CreditCard },
+  { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ]
 
 const bottomNavigation = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  { name: 'My Card', href: '/dashboard/cards', icon: CreditCardIcon },
-  { name: 'Buy Gold', href: '/dashboard/buy-gold', icon: GoldIcon },
-  { name: 'Chat', href: '/dashboard/chat', icon: MessageSquare }
+  { name: "Home", href: "/dashboard", icon: HomeIcon, className: "text-gray-600" },
+  { name: "My Card", href: "/dashboard/cards", icon: CreditCardIcon, className: "text-gray-600" },
+  { name: "Buy Gold", href: "/dashboard/buy-gold", icon: GoldIcon, className: "text-gray-600" },
+  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare, className: "text-gray-600" },
 ]
 
-export default function DashboardLayout ({
-  children
+export default function DashboardLayout({
+  children,
 }: {
   children: React.ReactNode
 }) {
@@ -75,6 +67,7 @@ export default function DashboardLayout ({
   const [accountInfo, setAccountInfo] = useState<any>(null)
   const [accountUser, setAccountUser] = useState<any>(null)
   const [isNavigating, setIsNavigating] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -83,6 +76,7 @@ export default function DashboardLayout ({
 
   useEffect(() => {
     const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
       if (window.innerWidth >= 1024) {
         setIsSidebarOpen(true)
       } else {
@@ -90,32 +84,31 @@ export default function DashboardLayout ({
       }
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize)
     handleResize()
 
-    return () => window.removeEventListener('resize', handleResize)
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   useEffect(() => {
     // Hide bottom navigation on larger screens
     const handleResize = () => {
       if (bottomNavRef.current) {
-        bottomNavRef.current.style.display =
-          window.innerWidth < 768 ? 'flex' : 'none'
+        bottomNavRef.current.style.display = window.innerWidth < 768 ? "flex" : "none"
       }
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize)
     handleResize() // Call on mount
 
-    return () => window.removeEventListener('resize', handleResize)
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   // Handle clicking outside sidebar on mobile
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.getElementById('sidebar')
-      const menuButton = document.getElementById('menu-button')
+      const sidebar = document.getElementById("sidebar")
+      const menuButton = document.getElementById("menu-button")
 
       if (
         window.innerWidth < 1024 &&
@@ -128,8 +121,8 @@ export default function DashboardLayout ({
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
   useEffect(() => {
@@ -138,7 +131,7 @@ export default function DashboardLayout ({
         const data = await api.getUserDetails() // Call the API method
         setAccountUser(data?.data?.user) // Set the fetched data to state
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch account info') // Handle error
+        setError(err.message || "Failed to fetch account info") // Handle error
       } finally {
         setLoading(false) // Stop loading indicator
       }
@@ -155,51 +148,61 @@ export default function DashboardLayout ({
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [pathname, searchParams])
+  }, [pathname]) // Removed searchParams from dependencies
 
   const handleLogout = () => {
     // Clear cookies
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-    document.cookie = 'expiry=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' // Clear expiry cookie as well
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    document.cookie = "expiry=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;" // Clear expiry cookie as well
     // Redirect to login
-    router.push('/login')
+    router.push("/login")
+  }
+
+  // Enhanced navigation click handler
+  const handleNavigationClick = () => {
+    const isMobile = window.innerWidth < 1024
+    if (isMobile && isSidebarOpen) {
+      setIsSidebarOpen(false)
+    }
   }
 
   return (
-    <div
-      className={cn(
-        'min-h-screen   transition-colors  duration-300',
-        theme === 'dark' ? 'dark:bg-gradient-dark' : 'light:bg-gradient-light'
-      )}
-    >
-      {/* Overlay */}
-      {isSidebarOpen && (
-        <div
-          className='fixed inset-0 bg-black/50 z-40 lg:hidden'
-          onClick={() => setIsSidebarOpen(false)}
-        />
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      {/* Progress Indicator */}
+      {isNavigating && (
+        <div className="fixed top-0 left-0 w-full h-1 bg-blue-100 z-50">
+          <div className="h-full w-1/3 bg-blue-500 animate-loading rounded-r-full" />
+        </div>
       )}
 
       {/* Sidebar */}
       <div
-        id='sidebar'
+        id="sidebar"
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 bg-background border-r shadow-lg transform transition-transform duration-300 ease-in-out',
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
-          'lg:translate-x-0'
+          "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 shadow-lg transform transition-all duration-300 ease-out dark:bg-gray-800 dark:border-gray-700",
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full",
+          "lg:translate-x-0",
         )}
       >
-        <div className='flex flex-col h-full'>
-          {/* Logo */}
-          <div className='p-6 bg-gradient-to-r from-blue-600 to-indigo-600'>
-            <h1 className='text-xl font-bold  text-white'>
-              Pinnacle Global Swift
-            </h1>
+        <div className="flex flex-col h-full">
+          {/* Logo Section */}
+          <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-700">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <GoldIcon className="w-6 h-6 text-blue-600" />
+              </div>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                Pinnacle Global
+                <span className="block text-sm font-medium text-gray-500 dark:text-gray-400 mt-0.5">
+                  Wealth Management
+                </span>
+              </h1>
+            </div>
           </div>
 
           {/* Navigation */}
-          <nav className='flex-1 px-4 space-y-1 overflow-y-auto py-4'>
-            {navigation.map(item => {
+          <nav className="flex-1 px-3 space-y-1 overflow-y-auto py-6">
+            {navigation.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href
 
@@ -207,112 +210,139 @@ export default function DashboardLayout ({
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={handleNavigationClick}
                   className={cn(
-                    'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-150 ease-in-out',
+                    "flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors",
+                    "group hover:bg-blue-50/50 hover:text-blue-600 dark:hover:bg-gray-700/50 dark:hover:text-gray-200",
                     isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted'
+                      ? "bg-blue-50 text-blue-600 font-semibold dark:bg-gray-700 dark:text-gray-200"
+                      : "text-gray-600 dark:text-gray-400",
                   )}
                 >
-                  <Icon className='w-5 h-5 mr-3' />
-                  {item.name}
+                  <Icon
+                    className={cn(
+                      "w-5 h-5 mr-3 shrink-0 transition-colors",
+                      isActive
+                        ? "text-blue-500 dark:text-gray-200"
+                        : "text-gray-400 dark:text-gray-500 group-hover:text-blue-500 dark:group-hover:text-gray-200",
+                    )}
+                  />
+                  <span className="truncate">{item.name}</span>
+                  {item.name === "KYC" && (
+                    <span className="ml-auto px-2 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded-full">
+                      Action Needed
+                    </span>
+                  )}
                 </Link>
               )
             })}
           </nav>
 
           {/* User Profile */}
-          <div className='p-4'>
-            <div className='flex items-center space-x-3'>
-              <div className='flex-shrink-0'>
-                <div className='w-10 h-10 rounded-full bg-primary flex items-center justify-center'>
-                  <User className='w-6 h-6 text-white' />
+          <div className="p-4 mt-auto border-t border-gray-100 dark:border-gray-700">
+            <div className="p-4 rounded-xl bg-white border border-gray-100 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+              {loading ? (
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[140px]" />
+                    <Skeleton className="h-3 w-[100px]" />
+                  </div>
                 </div>
-              </div>
-              <div className='flex-1 min-w-0'>
-                <p className='text-sm font-medium text-foreground'>
-                  {accountUser?.fullName}
-                </p>
-                <p className='text-xs text-muted-foreground'>View profile</p>
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant='ghost' size='icon'>
-                    <MoreVertical className='w-4 h-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='end'>
-                  <DropdownMenuItem>
-                    <button
-                      onClick={handleLogout}
-                      className='flex items-center bg-blue-500 text-white px-3 py-2 rounded-md w-full'
-                    >
-                      <LogOut className='w-4 h-4 mr-2' />
-                      Logout
-                    </button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              ) : error ? (
+                <div className="text-red-500 text-sm">{error}</div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <div className="relative flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                      <User className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                      {accountUser?.fullName || "Guest User"}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {accountUser?.email || "Premium Member"}
+                    </p>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-1.5">
+                      <MoreVertical className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-48 border-gray-100 shadow-lg dark:border-gray-700">
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:bg-red-50 cursor-pointer">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className='lg:pl-64 flex flex-col min-h-screen'>
+      <div className="lg:pl-64 flex flex-col min-h-screen">
         {/* Header */}
-        <header className='bg-background  border-b sticky top-0 z-40'>
-          <div className='flex items-center justify-between px-4 py-4 lg:px-8'>
-            <div className='flex items-center space-x-4'>
+        <header className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 z-40">
+          <div className="flex items-center justify-between px-6 py-4">
+            <div className="flex items-center gap-3">
               <Button
-                id='menu-button'
-                variant='ghost'
-                size='icon'
-                className='lg:hidden'
+                id="menu-button"
+                variant="ghost"
+                size="icon"
+                className="lg:hidden rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               >
-                {isSidebarOpen ? (
-                  <X className='w-6 h-6' />
-                ) : (
-                  <Menu className='w-6 h-6' />
-                )}
+                {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
-              <h2 className='text-xl font-semibold text-foreground'>
-                Dashboard
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 capitalize">
+                {pathname.split("/").pop()?.replace(/-/g, " ") || "Dashboard"}
               </h2>
             </div>
-            <div className='flex items-center space-x-4'>
-              <div className='relative hidden md:block'>
-                <Input
-                  type='search'
-                  placeholder='Search...'
-                  className='w-64 pl-10'
-                  onFocus={() => setIsSearching(true)}
-                  onBlur={() => setIsSearching(false)}
-                />
-                <Search className='w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground' />
-              </div>
+
+            {/* Header Actions */}
+            <div className="flex items-center gap-3">
+              {!isMobile && (
+                <div className="relative">
+                  <Input
+                    type="search"
+                    placeholder="Search..."
+                    className="pl-10 pr-4 rounded-full bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 focus:ring-1 focus:ring-blue-500 w-48 lg:w-64 transition-all"
+                  />
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                </div>
+              )}
+
               <ThemeToggle />
-              <Link href='/dashboard/notifications' passHref>
-                <Button variant='ghost' size='icon' asChild>
-                  <span>
-                    <Bell className='w-5 h-5' />
-                    <span className='sr-only'>Notifications</span>
-                  </span>
-                </Button>
-              </Link>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 relative"
+                asChild
+              >
+                <Link href="/dashboard/notifications">
+                  <Bell className="w-5 h-5" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                </Link>
+              </Button>
             </div>
           </div>
         </header>
 
-        {/* Page Content */}
-        <main className='flex-grow p-4 lg:p-8 overflow-auto'>{children}</main>
+        {/* Main Content */}
+        <main className="flex-grow p-1 lg:p-8 bg-gray-50 dark:bg-gray-900">
+          <div className="w-full px-1 lg:max-w-screen-xl lg:mx-auto bg-white dark:bg-gray-800 rounded-none lg:rounded-xl shadow-none lg:shadow-sm border-0 lg:border border-gray-100 dark:border-gray-700 p-4 lg:p-6">
+            {children}
+          </div>
+        </main>
       </div>
-      {isNavigating && (
-        <div className='fixed top-0 left-0 w-full h-1 bg-primary z-50'>
-          <div className='h-full w-1/3 bg-white animate-loading'></div>
-        </div>
-      )}
     </div>
   )
 }
+

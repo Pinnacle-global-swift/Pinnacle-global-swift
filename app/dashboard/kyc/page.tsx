@@ -16,6 +16,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 // import ConfettiExplosion from 'react-confetti-explosion'
 import * as z from 'zod'
+import { cn } from '@/lib/utils'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -75,6 +78,8 @@ export default function KYCPage () {
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showRejectionModal, setShowRejectionModal] = useState(false)
   const { toast } = useToast()
+  const [animationParent] = useAutoAnimate()
+  const { t } = useTranslation()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -146,76 +151,37 @@ export default function KYCPage () {
     }
   }
 
-  // if (kycstatus?.status === 'approved') {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center min-h-[500px]">
-  //       <div className="bg-green-100 rounded-full p-4">
-  //         <CheckCircle2 className="w-16 h-16 text-green-600" />
-  //       </div>
-  //       <h2 className="text-3xl font-bold mt-4 text-green-700">KYC Approved</h2>
-  //       <p className="text-gray-600 mt-2">Your account is fully verified.</p>
-  //       {/* <Image
-  //         src="https://images.unsplash.com/photo-1634034379077-55550e512103?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNoZWNrJTIwbWFya3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-  //         alt="KYC Approved"
-  //         width={200}
-  //         height={200}
-  //         className="mt-8"
-  //       /> */}
-  //     </div>
-  //   )
-  // }
-
   if (kycstatus.status === 'approved') {
     return (
-      <div className='flex flex-col items-center justify-center min-h-[500px]'>
-        {/* {showConfetti && <ConfettiExplosion />} */}
+      <motion.div 
+        className="flex flex-col items-center justify-center min-h-[500px] px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-          className='bg-gradient-to-r from-green-400 to-blue-500 rounded-full p-4'
+          className="bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl p-6 shadow-2xl"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 100 }}
         >
-          <Check className='w-16 h-16 text-white' />
+          <Check className="w-20 h-20 text-white" />
         </motion.div>
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className='text-3xl font-bold mt-4 text-green-700'
+          className="mt-8 text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent"
+          initial={{ y: 20 }}
+          animate={{ y: 0 }}
         >
-          KYC Approved
+          {t('kyc.approvedTitle')}
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className='text-gray-600 mt-2'
+          className="mt-4 text-gray-300 text-center max-w-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          Your account is fully verified.
+          {t('kyc.approvedDescription')}
         </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          {/* <Image
-            src='https://images.unsplash.com/photo-1634034379077-55550e512103?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGNoZWNrJTIwbWFya3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
-            alt='KYC Approved'
-            width={200}
-            height={200}
-            className='mt-8'
-          /> */}
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className='mt-8 text-center text-gray-600'
-        >
-          You can now enjoy all the features of Pinnacle Global Swift. Start
-          exploring!
-        </motion.div>
-      </div>
+      </motion.div>
     )
   }
 
@@ -249,137 +215,79 @@ export default function KYCPage () {
   }
 
   return (
-    <div className='container max-w-xl mx-auto py-10'>
-      {/* Success Modal */}
-      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
-        <DialogContent className='bg-white text-gray-900 rounded-lg shadow-lg p-8'>
-          <div className='flex flex-col items-center justify-center'>
-            {/* {showConfetti && <ConfettiExplosion />} */}
-            <div className='bg-green-100 rounded-full p-4 mb-4'>
-              <CheckCircle2 className='w-16 h-16 text-green-600' />
-            </div>
-            <DialogTitle className='text-3xl font-bold text-green-700 mb-4'>
-              KYC Sent Successfully
-            </DialogTitle>
-            {/* <DialogDescription className='text-gray-600 mb-8'>
-              Your account is on. You can now enjoy all the features
-              of Pinnacle Global Swoft.
-            </DialogDescription> */}
-            <Button
-              onClick={() => setShowSuccessModal(false)}
-              className='bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg'
-            >
-              Start Exploring
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-      
-
-      {/* Rejection Modal */}
-      <Dialog open={showRejectionModal} onOpenChange={setShowRejectionModal}>
-        <DialogContent className='bg-white text-gray-900 rounded-lg shadow-lg p-8'>
-          <div className='flex flex-col items-center justify-center'>
-            <div className='bg-red-100 rounded-full p-4 mb-4'>
-              <XCircle className='w-16 h-16 text-red-600' />
-            </div>
-            <DialogTitle className='text-3xl font-bold text-red-700 mb-4'>
-              KYC Rejected
-            </DialogTitle>
-            <DialogDescription className='text-gray-600 mb-8'>
-              Your KYC application has been rejected. Please contact support for
-              more information.
-            </DialogDescription>
-            <Button
-              onClick={() => setShowRejectionModal(false)}
-              className='bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg'
-            >
-              Contact Support
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+    <div className="container max-w-3xl mx-auto py-10 px-4 sm:px-6">
       <motion.div
+        className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 rounded-2xl shadow-2xl border border-white/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
       >
-        <Card className='border-0 shadow-lg bg-gradient-to-br from-gray-900 to-gray-800'>
-          <CardHeader className='border-b border-gray-700 pb-7'>
-            <div className='flex items-center gap-4'>
-              <div className='p-3 bg-green-500/10 rounded-lg'>
-                <Shield className='w-6 h-6 text-green-500' />
-              </div>
-              <div>
-                <CardTitle className='text-2xl text-white'>
-                  KYC Verification
-                </CardTitle>
-
-                <CardDescription className='text-blue-500'>
-                  {kycstatus?.status == 'processing' &&
-                    'Processing, please contact customer service if not successful'}
-                </CardDescription>
-                <CardDescription className='text-green-500'>
-                  {kycstatus?.status == 'approved' && 'KYC APPROVED'}
-                </CardDescription>
-                <CardDescription className='text-gray-400'>
-                  {kycstatus?.status !== 'processing' &&
-                    kycstatus?.status !== 'approved' &&
-                    'Complete your identity verification'}
-                </CardDescription>
-              </div>
+        <CardHeader className="border-b border-white/20 p-8">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-blue-500/20 rounded-xl backdrop-blur-sm">
+              <Shield className="w-7 h-7 text-blue-400" />
             </div>
-          </CardHeader>
-          <CardContent className='pt-6'>
-            <div className='mb-6 p-4 bg-yellow-500/10 rounded-lg flex items-center gap-3'>
-              <AlertTriangle className='w-5 h-5 text-yellow-500' />
-              <p className='text-sm text-yellow-200'>
-                Please ensure all information provided matches your official
-                documents
-              </p>
+            <div>
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                {t('kyc.title')}
+              </CardTitle>
+              <CardDescription className="text-gray-300/90">
+                {t('kyc.description')}
+              </CardDescription>
             </div>
+          </div>
+        </CardHeader>
 
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-6'
-              >
+        <CardContent className="p-8">
+          <Form {...form}>
+            <form 
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8"
+              ref={animationParent}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name='fullLegalName'
+                  name="fullLegalName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>
-                        Full Legal Name
+                      <FormLabel className="text-gray-100">
+                        {t('kyc.fullName')}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='Enter your full name'
-                          className='bg-gray-800 border-gray-700 text-white'
+                          className={cn(
+                            'bg-gray-950/50 border-white/20 text-gray-100',
+                            'rounded-xl h-12 focus:ring-2 focus:ring-blue-400',
+                            'transition-all duration-300 hover:border-white/40'
+                          )}
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-300" />
                     </FormItem>
                   )}
                 />
-
+                
                 <FormField
                   control={form.control}
                   name='dateOfBirth'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>
-                        Date of Birth
+                      <FormLabel className='text-gray-100'>
+                        {t('kyc.dateOfBirth')}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type='date'
-                          className='bg-gray-800 border-gray-700 text-white'
+                          className={cn(
+                            'bg-gray-950/50 border-white/20 text-gray-100',
+                            'rounded-xl h-12 focus:ring-2 focus:ring-blue-400',
+                            'transition-all duration-300 hover:border-white/40'
+                          )}
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -389,19 +297,26 @@ export default function KYCPage () {
                   name='nationality'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>
-                        Nationality
+                      <FormLabel className='text-gray-100'>
+                        {t('kyc.nationality')}
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className='bg-gray-800 border-gray-700 text-white'>
-                            <SelectValue placeholder='Select your nationality' />
+                          <SelectTrigger className={cn(
+                            'bg-gray-950/50 border-white/20 text-gray-100',
+                            'rounded-xl h-12 focus:ring-2 focus:ring-blue-400',
+                            'transition-all duration-300 hover:border-white/40'
+                          )}>
+                            <SelectValue placeholder={t('kyc.selectNationality')} />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className='bg-gray-800 border-gray-700'>
+                        <SelectContent className={cn(
+                          'bg-gray-950/50 border-white/20 text-gray-100',
+                          'rounded-xl'
+                        )}>
                           <ScrollArea className='h-[200px]'>
                             {Object.entries(countries).map(
                               ([code, country]) => (
@@ -413,7 +328,7 @@ export default function KYCPage () {
                           </ScrollArea>
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className="text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -423,17 +338,26 @@ export default function KYCPage () {
                   name='idType'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>ID Type</FormLabel>
+                      <FormLabel className='text-gray-100'>
+                        {t('kyc.idType')}
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className='bg-gray-800 border-gray-700 text-white'>
-                            <SelectValue placeholder='Select ID type' />
+                          <SelectTrigger className={cn(
+                            'bg-gray-950/50 border-white/20 text-gray-100',
+                            'rounded-xl h-12 focus:ring-2 focus:ring-blue-400',
+                            'transition-all duration-300 hover:border-white/40'
+                          )}>
+                            <SelectValue placeholder={t('kyc.selectIdType')} />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className='bg-gray-800 border-gray-700'>
+                        <SelectContent className={cn(
+                          'bg-gray-950/50 border-white/20 text-gray-100',
+                          'rounded-xl'
+                        )}>
                           <SelectItem value='passport'>Passport</SelectItem>
                           <SelectItem value='driving_license'>
                             Driving License
@@ -443,7 +367,7 @@ export default function KYCPage () {
                           </SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormMessage />
+                      <FormMessage className="text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -453,15 +377,20 @@ export default function KYCPage () {
                   name='idNumber'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>ID Number</FormLabel>
+                      <FormLabel className='text-gray-100'>
+                        {t('kyc.idNumber')}
+                      </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='Enter ID number'
-                          className='bg-gray-800 border-gray-700 text-white'
+                          className={cn(
+                            'bg-gray-950/50 border-white/20 text-gray-100',
+                            'rounded-xl h-12 focus:ring-2 focus:ring-blue-400',
+                            'transition-all duration-300 hover:border-white/40'
+                          )}
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-300" />
                     </FormItem>
                   )}
                 />
@@ -471,110 +400,132 @@ export default function KYCPage () {
                   name='residentialAddress'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>
-                        Residential Address
+                      <FormLabel className='text-gray-100'>
+                        {t('kyc.residentialAddress')}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='Enter your address'
-                          className='bg-gray-800 border-gray-700 text-white'
+                          className={cn(
+                            'bg-gray-950/50 border-white/20 text-gray-100',
+                            'rounded-xl h-12 focus:ring-2 focus:ring-blue-400',
+                            'transition-all duration-300 hover:border-white/40'
+                          )}
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-300" />
                     </FormItem>
                   )}
                 />
+              </div>
 
-                <div className='space-y-4'>
-                  <div>
-                    <label className='block text-sm font-medium text-gray-200 mb-2'>
-                      ID Front Image
-                    </label>
-                    <div className='flex items-center justify-center w-full'>
-                      <label className='flex flex-col items-center justify-center w-full h-32 border-2 border-gray-700 border-dashed rounded-lg cursor-pointer bg-gray-800 hover:bg-gray-700'>
-                        <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                          <Upload className='w-8 h-8 mb-3 text-gray-400' />
-                          <p className='mb-2 text-sm text-gray-400'>
-                            <span className='font-semibold'>
-                              Click to upload
-                            </span>{' '}
-                            or drag and drop
-                          </p>
-                        </div>
-                        <input
-                          type='file'
-                          className='hidden'
-                          accept='image/*'
-                          onChange={e =>
-                            setFrontImage(e.target.files?.[0] || null)
-                          }
-                        />
-                      </label>
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <label className="block text-gray-100 font-medium">
+                    {t('kyc.idFront')}
+                  </label>
+                  <div className="group relative">
+                    <div className={cn(
+                      'border-2 border-dashed border-white/20 rounded-xl p-8',
+                      'bg-gray-950/50 transition-all duration-300',
+                      'hover:border-blue-400/50 hover:bg-gray-900/50'
+                    )}>
+                      <div className="flex flex-col items-center justify-center gap-4">
+                        <Upload className="w-10 h-10 text-blue-400" />
+                        <p className="text-center text-gray-400">
+                          {t('kyc.uploadHint')}
+                        </p>
+                      </div>
+                      <input
+                        type="file"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        onChange={e => setFrontImage(e.target.files?.[0] || null)}
+                      />
                     </div>
-                    {frontImage && (
-                      <p className='mt-2 text-sm text-green-400 flex items-center gap-1'>
-                        <CheckCircle2 className='w-4 h-4' />
-                        {frontImage.name}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className='block text-sm font-medium text-gray-200 mb-2'>
-                      ID Back Image
-                    </label>
-                    <div className='flex items-center justify-center w-full'>
-                      <label className='flex flex-col items-center justify-center w-full h-32 border-2 border-gray-700 border-dashed rounded-lg cursor-pointer bg-gray-800 hover:bg-gray-700'>
-                        <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                          <Upload className='w-8 h-8 mb-3 text-gray-400' />
-                          <p className='mb-2 text-sm text-gray-400'>
-                            <span className='font-semibold'>
-                              Click to upload
-                            </span>{' '}
-                            or drag and drop
-                          </p>
-                        </div>
-                        <input
-                          type='file'
-                          className='hidden'
-                          accept='image/*'
-                          onChange={e =>
-                            setBackImage(e.target.files?.[0] || null)
-                          }
-                        />
-                      </label>
-                    </div>
-                    {backImage && (
-                      <p className='mt-2 text-sm text-green-400 flex items-center gap-1'>
-                        <CheckCircle2 className='w-4 h-4' />
-                        {backImage.name}
-                      </p>
-                    )}
                   </div>
                 </div>
 
-                <Button
-                  type='submit'
-                  className='w-full bg-green-600 hover:bg-green-700 text-white'
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit Verification'}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-          <CardFooter className='border-t border-gray-700 mt-6 flex flex-col items-start pt-6'>
-            <h4 className='text-sm font-medium text-gray-200 mb-2'>
-              Verification Process
+                <div className="space-y-4">
+                  <label className="block text-gray-100 font-medium">
+                    {t('kyc.idBack')}
+                  </label>
+                  <div className="group relative">
+                    <div className={cn(
+                      'border-2 border-dashed border-white/20 rounded-xl p-8',
+                      'bg-gray-950/50 transition-all duration-300',
+                      'hover:border-blue-400/50 hover:bg-gray-900/50'
+                    )}>
+                      <div className="flex flex-col items-center justify-center gap-4">
+                        <Upload className="w-10 h-10 text-blue-400" />
+                        <p className="text-center text-gray-400">
+                          {t('kyc.uploadHint')}
+                        </p>
+                      </div>
+                      <input
+                        type="file"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        onChange={e => setBackImage(e.target.files?.[0] || null)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className={cn(
+                  'w-full h-14 bg-gradient-to-r from-blue-600 to-purple-600',
+                  'text-white text-lg font-semibold rounded-xl',
+                  'transition-all duration-300 transform hover:scale-[1.01]',
+                  'shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40',
+                  'disabled:opacity-50 disabled:cursor-not-allowed'
+                )}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  t('kyc.submit')
+                )}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+
+        <CardFooter className="border-t border-white/20 p-8">
+          <div className="space-y-3">
+            <h4 className="text-lg font-semibold text-gray-100">
+              {t('kyc.processTitle')}
             </h4>
-            <p className='text-sm text-gray-400'>
-              Your documents will be reviewed within 24-48 hours. You will be
-              notified via email once the verification is complete.
+            <p className="text-gray-400/90 leading-relaxed">
+              {t('kyc.processDescription')}
             </p>
-          </CardFooter>
-        </Card>
+          </div>
+        </CardFooter>
       </motion.div>
+
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="bg-gray-900 border-white/20 rounded-2xl backdrop-blur-lg">
+          <motion.div
+            className="flex flex-col items-center p-8"
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+          >
+            <div className="bg-green-500/20 p-6 rounded-2xl mb-6">
+              <CheckCircle2 className="w-16 h-16 text-green-400" />
+            </div>
+            <DialogTitle className="text-3xl font-bold text-green-400 mb-4">
+              {t('kyc.successTitle')}
+            </DialogTitle>
+            <Button
+              className="w-full bg-green-600/20 hover:bg-green-600/30 text-green-400 border border-green-400/30"
+              onClick={() => setShowSuccessModal(false)}
+            >
+              {t('kyc.continue')}
+            </Button>
+          </motion.div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

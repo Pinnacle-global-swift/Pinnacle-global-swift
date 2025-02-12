@@ -125,15 +125,7 @@ export function Header() {
                         Register
                       </Button>
                     </Link>
-                    <div className="pt-4 border-t border-gray-200">
-                      <a 
-                        href="tel:+6561002373"
-                        className="flex items-center justify-center text-blue-600 font-medium"
-                      >
-                        <Phone className="h-4 w-4 mr-2" />
-                        +1 (336) 754-6143
-                      </a>
-                    </div>
+                  
                   </div>
                 </div>
               </motion.div>

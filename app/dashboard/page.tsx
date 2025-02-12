@@ -177,10 +177,10 @@ export default function DashboardOverview () {
 
 
   return (
-    <div className='relative min-h-screen'>
+    <div className='relative min-h-screen bg-gray-100'>
       {/* <AnimatedBackground /> */}
-      <div className='space-y-8 relative z-10'>
-        <Card className='bg-gradient-to-br from-gray-800 to-gray-900 text-white backdrop-blur-sm'>
+      <div className='space-y-8 relative z-10 p-4'>
+        <Card className='bg-gradient-to-br from-gray-800 to-gray-900 text-white backdrop-blur-sm shadow-lg'>
           <Image
             src='https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&q=80&w=1920&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' // Replace with your online image URL
             alt='Card background'
@@ -301,7 +301,7 @@ export default function DashboardOverview () {
           <Card>
             <CardHeader>
               <div className='flex items-center justify-between'>
-                <CardTitle>Recent Transactions</CardTitle>
+                <CardTitle className='text-lg font-semibold'>Recent Transactions</CardTitle>
                 <Link href='/dashboard/transactions'>
                   <Button variant='ghost' size='sm'>
                     View All
@@ -323,7 +323,7 @@ export default function DashboardOverview () {
                   {recentTransactions.map((transaction: any) => (
                     <div
                       key={transaction.reference}
-                      className='flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg'
+                      className='flex items-center justify-between p-4 hover:bg-gray-200 rounded-lg transition duration-200'
                     >
                       <div className='flex items-center gap-3'>
                         <div
@@ -391,11 +391,11 @@ export default function DashboardOverview () {
           {/* Quick Stats */}
           <Card>
             <CardHeader>
-              <CardTitle>Quick Stats</CardTitle>
+              <CardTitle className='text-lg font-semibold'>Quick Stats</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className='grid grid-cols-2 gap-4'>
-                <div className='bg-gray-700 p-4 rounded-lg'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                <div className='bg-gray-700 p-4 rounded-lg shadow-md'>
                   <div className='flex items-center justify-between'>
                     <div className='text-green-400'>
                       <ArrowUpRight className='w-5 h-5' />
@@ -409,7 +409,7 @@ export default function DashboardOverview () {
                     </p>
                   </div>
                 </div>
-                <div className='bg-gray-700 p-4 rounded-lg'>
+                <div className='bg-gray-700 p-4 rounded-lg shadow-md'>
                   <div className='flex items-center justify-between'>
                     <div className='text-red-400'>
                       <ArrowDownRight className='w-5 h-5' />
@@ -419,7 +419,7 @@ export default function DashboardOverview () {
                   <div className='mt-2'>
                     <p className='text-sm text-gray-300'>Expenses</p>
                     <p className='text-xl font-bold text-white'>
-                      $ {Quick?.totalWithdrawn || '0'}.00
+                      ${Quick?.totalWithdrawn || '0'}.00
                     </p>
                   </div>
                 </div>
