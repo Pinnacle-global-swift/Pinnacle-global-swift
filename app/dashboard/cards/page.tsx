@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { CardPaymentDialog } from "@/components/card-payment-dialog"
 import { PinEntryDialog } from "@/components/pin-entry-dialog"
+import { ProofOfPaymentUpload } from "@/components/proof-of-payment-upload"
 import { api } from "@/lib/api"
 import { cn } from "@/lib/utils"
 
@@ -29,12 +30,16 @@ const requirements = [
 ]
 
 export default function Cards() {
-  const [step, setStep] = useState<"intro" | "requirements" | "options" | "payment" | "loading" | "success">("intro")
+  const [step, setStep] = useState<
+    "intro" | "requirements" | "options" | "payment" | "proofOfPayment" | "loading" | "success"
+  >("intro")
   const [isLoading, setIsLoading] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [showPinEntry, setShowPinEntry] = useState(false)
   const [isPinActivation, setIsPinActivation] = useState(false)
   const [cardStatus, setCardStatus] = useState<any>(null)
+  const [showProofOfPaymentUpload, setShowProofOfPaymentUpload] = useState(false)
+  const [isPaymentCompleted, setIsPaymentCompleted] = useState(false)
 
   const handleActivate = async () => {
     setIsPinActivation(false)
@@ -76,12 +81,29 @@ export default function Cards() {
 
   const handlePaymentComplete = async () => {
     setShowPayment(false)
+    if (isPaymentCompleted) {
+      setShowProofOfPaymentUpload(true)
+    }
+    setIsPaymentCompleted(false)
+  }
+
+  const handleProofOfPaymentUpload = async (file: File) => {
+    setShowProofOfPaymentUpload(false)
     setIsLoading(true)
-    const value = { type: "mastercard" }
-    const data = await api.applyCard(value)
-    console.log(data)
-    setStep("success")
-    setIsLoading(false)
+    try {
+      const formData = new FormData()
+      formData.append("paymentReceipt", file)
+      formData.append("type", "mastercard")
+      console.log(formData)
+      const data = await api.applyCard(formData)
+      console.log(data)
+      setStep("success")
+    } catch (error) {
+      console.error("Error uploading proof of payment:", error)
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -106,7 +128,7 @@ export default function Cards() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10">
+        <Card className="shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10">
           <CardHeader className="border-b border-white/20 pb-7">
             <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Card Services
@@ -368,10 +390,13 @@ export default function Cards() {
                       <CardPaymentDialog
                         open={showPayment}
                         onOpenChange={(open) => {
-                          setShowPayment(open)
                           if (!open) {
                             handlePaymentComplete()
                           }
+                          setShowPayment(open)
+                        }}
+                        onPaymentSuccess={() => {
+                          setIsPaymentCompleted(true)
                         }}
                         amount={2000}
                       />
@@ -454,6 +479,17 @@ export default function Cards() {
                     </motion.div>
                   )}
 
+                  {step === "proofOfPayment" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ProofOfPaymentUpload onUpload={handleProofOfPaymentUpload} onClose={() => setStep("options")} />
+                    </motion.div>
+                  )}
+
                   {step === "success" && (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
@@ -469,7 +505,7 @@ export default function Cards() {
                             </div>
                             <CardTitle className="text-white">Application Submitted!</CardTitle>
                             <CardDescription className="text-gray-300">
-                              We've received your card application and will process it shortly.
+                              We've received your card application and proof of payment. We will process it shortly.
                             </CardDescription>
                           </div>
                         </CardHeader>
@@ -499,6 +535,29 @@ export default function Cards() {
           </CardContent>
         </Card>
       </motion.div>
+
+      <CardPaymentDialog
+        open={showPayment}
+        onOpenChange={(open) => {
+          if (!open) {
+            handlePaymentComplete()
+          }
+          setShowPayment(open)
+        }}
+        onPaymentSuccess={() => {
+          setIsPaymentCompleted(true)
+        }}
+        amount={2000}
+      />
+
+      <PinEntryDialog open={showPinEntry} onOpenChange={setShowPinEntry} onSubmit={handlePinSubmit} />
+
+      {showProofOfPaymentUpload && (
+        <ProofOfPaymentUpload
+          onUpload={handleProofOfPaymentUpload}
+          onClose={() => setShowProofOfPaymentUpload(false)}
+        />
+      )}
     </div>
   )
 }

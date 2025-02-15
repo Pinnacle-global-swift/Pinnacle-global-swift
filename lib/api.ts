@@ -42,6 +42,10 @@ interface CardApplicationData {
   cardType: string;
 }
 
+interface KYCData extends FormData {
+  // We don't need to define properties since FormData is dynamic
+}
+
 // Create an axios instance with default config
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -84,14 +88,23 @@ axiosInstance.interceptors.response.use(
 );
 
 
-// Helper function to handle API responses
-const handleResponse = <T>(response: any): any => {
-  if (response.data.success) {
-    return response.data;
-  } else {
-    console.error("error voke  handleResponse", response.data)
-    throw new Error( response.data.message || 'An error occurred');
+// Updated helper function to handle API responses
+const handleResponse = <T>(response: AxiosResponse): any => {
+  // Check if response has data property
+  if (!response?.data) {
+    throw new Error('Invalid response format');
   }
+
+  // Handle JSON responses
+  if (typeof response.data === 'object') {
+    if (response.data.success) {
+      return response.data;
+    }
+    throw new Error(response.data.message || 'An error occurred');
+  }
+
+  // If response is not JSON, return the raw data
+  return response.data;
 };
 
 export const api = {
@@ -191,10 +204,16 @@ export const api = {
     return handleResponse(response);
   },
   applyCard: async (data: any): Promise<any> => {
-    const response = await axiosInstance.post('/cards/apply', data);
+    const response = await axiosInstance.post('/cards/apply', data,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      // Add responseType to handle potential binary responses
+      responseType: 'json',
+    });
     return handleResponse(response);
   },
-  activateCard: async (data: any): Promise<any> => {
+  activateCard: async (data: FormData): Promise<any> => {
     const response = await axiosInstance.post('/cards/apply', data);
     return handleResponse(response);
   },
@@ -210,9 +229,14 @@ export const api = {
     const response = await axiosInstance.get('/transactions/stats/totals');
     return handleResponse(response);
   },
-  submitkyc: async (data: any): Promise<any> => {
-  
-    const response = await axiosInstance.post('/kyc/submit', data);
+  submitkyc: async (data: FormData): Promise<any> => {
+    const response = await axiosInstance.post('/kyc/submit', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      // Add responseType to handle potential binary responses
+      responseType: 'json',
+    });
     return handleResponse(response);
   },
   statuskyc: async (): Promise<any> => {

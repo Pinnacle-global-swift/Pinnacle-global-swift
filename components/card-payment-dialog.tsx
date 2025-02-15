@@ -45,15 +45,19 @@ const cryptoAddresses = [
   },
 ]
 
+interface CardPaymentDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  onPaymentSuccess?: () => void
+  amount: number
+}
+
 export function CardPaymentDialog({
   open,
   onOpenChange,
+  onPaymentSuccess,
   amount,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  amount: number
-}) {
+}: CardPaymentDialogProps) {
   const [copied, setCopied] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState(cryptoAddresses[0].type)
 
@@ -72,6 +76,10 @@ export function CardPaymentDialog({
       type: "success"
     })
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handlePaymentSuccess = () => {
+    onPaymentSuccess?.()
   }
 
   return (
@@ -95,6 +103,7 @@ export function CardPaymentDialog({
                 type="text"
                 value={amount.toFixed(2)}
                 readOnly
+                aria-label="Payment amount in USD"
                 className="w-full bg-[#2a2a2a] border border-gray-700 rounded-md py-2 px-7 text-white block text-sm sm:text-base"
               />
             </div>
@@ -157,6 +166,16 @@ export function CardPaymentDialog({
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Add this button at the bottom of the dialog content */}
+        <div className="mt-6">
+          <button
+            onClick={handlePaymentSuccess}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl h-12 text-lg font-medium transition-all duration-300 hover:from-blue-600 hover:to-purple-600"
+          >
+            Confirm Payment
+          </button>
         </div>
       </DialogContent>
     </Dialog>
