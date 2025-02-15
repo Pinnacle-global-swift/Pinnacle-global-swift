@@ -62,8 +62,9 @@ export default function Cards() {
         setCardStatus({ ...cardStatus, cardDetails: { ...cardStatus.cardDetails, hasPIN: true } })
       } else {
         // Handle card activation
-        const value = { pin: pin }
-        const data = await api.activateCard(value)
+        const formData = new FormData()
+        formData.append('pin', pin)
+        const data = await api.activateCard(formData)
         console.log(data)
         setCardStatus({ ...cardStatus, cardDetails: { ...cardStatus.cardDetails, status: "active" } })
       }
