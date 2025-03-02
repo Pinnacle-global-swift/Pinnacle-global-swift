@@ -16,6 +16,7 @@ import { api } from "@/lib/api"
 import { useToast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import type { DateRange } from "react-day-picker"
+import { TransactionReceipt } from '@/components/dashboard/TransactionReceipt'
 
 interface Transaction {
   type: "withdrawal" | "deposit" | "transfer"
@@ -87,6 +88,7 @@ export default function TransactionsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const { toast } = useToast()
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   useEffect(() => {
     fetchTransactions()
@@ -197,7 +199,11 @@ export default function TransactionsPage() {
                   </TableHeader>
                   <TableBody>
                     {filteredTransactions.map((transaction) => (
-                      <TransactionRow key={transaction.reference} transaction={transaction} />
+                      <TransactionRow 
+                        key={transaction.reference} 
+                        transaction={transaction}
+                        onSelect={() => setSelectedTransaction(transaction)}
+                      />
                     ))}
                   </TableBody>
                 </Table>
@@ -227,13 +233,27 @@ export default function TransactionsPage() {
           </CardContent>
         </Card>
       </motion.div>
+      <TransactionReceipt
+        isOpen={!!selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+        transaction={selectedTransaction}
+      />
     </div>
   )
 }
 
-function TransactionRow({ transaction }: { transaction: Transaction }) {
+function TransactionRow({ 
+  transaction, 
+  onSelect 
+}: { 
+  transaction: Transaction
+  onSelect: () => void 
+}) {
   return (
-    <TableRow className="border-b border-white/10 hover:bg-white/5">
+    <TableRow 
+      className="border-b border-white/10 hover:bg-white/5 cursor-pointer" 
+      onClick={onSelect}
+    >
       <TableCell className="text-white">
         <div className="flex items-center gap-2">
           {getTransactionIcon(transaction.type)}
