@@ -23,8 +23,7 @@ export default function Home() {
         <FinancialTools />
         <SecurityMeasures />
         <Testimonials />
-        {/* <CTA /> */}
-        {/* <Contact /> */}
+       
       </main>
       <Footer />
     </div>

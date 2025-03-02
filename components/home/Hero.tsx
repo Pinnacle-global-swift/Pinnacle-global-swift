@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
@@ -49,8 +49,39 @@ const heroSlides = [
   }
 ]
 
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (custom: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: custom * 0.2
+    }
+  })
+}
+
+const slideVariants = {
+  enter: { opacity: 0, scale: 1.1 },
+  center: { 
+    opacity: 1, 
+    scale: 1,
+    transition: {
+      duration: 0.7
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.9,
+    transition: {
+      duration: 0.7
+    }
+  }
+}
+
 export function Hero () {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   const settings = {
     dots: false,
@@ -60,7 +91,13 @@ export function Hero () {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    beforeChange: (current: number, next: number) => setCurrentSlide(next)
+    beforeChange: (current: number, next: number) => {
+      setIsAnimating(true)
+      setCurrentSlide(next)
+    },
+    afterChange: () => {
+      setIsAnimating(false)
+    }
   }
 
   return (
@@ -68,7 +105,13 @@ export function Hero () {
       <Slider {...settings}>
         {heroSlides.map((slide, index) => (
           <div key={index} className='relative'>
-            <div className='absolute inset-0 z-0'>
+            <motion.div
+              className='absolute inset-0 z-0'
+              initial="enter"
+              animate="center"
+              exit="exit"
+              variants={slideVariants}
+            >
               <Image
                 src={slide.image}
                 alt={slide.title}
@@ -79,23 +122,44 @@ export function Hero () {
                 quality={90}
               />
               <div className='absolute inset-0 bg-black opacity-50'></div>
-            </div>
+            </motion.div>
             <div className='container mx-auto px-4 py-20 lg:py-32 relative z-10'>
               <div className='flex flex-col lg:flex-row items-center'>
-                <motion.div
-                  className='lg:w-1/2 mb-10 lg:mb-0'
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  <h2 className='text-4xl lg:text-5xl font-bold mb-2'>
+                <div className='lg:w-1/2 mb-10 lg:mb-0'>
+                  <motion.h2
+                    className='text-4xl lg:text-5xl font-bold mb-2'
+                    variants={textVariants}
+                    initial="hidden"
+                    animate={isAnimating ? "hidden" : "visible"}
+                    custom={0}
+                  >
                     {slide.title}
-                  </h2>
-                  <h3 className='text-2xl lg:text-3xl font-semibold mb-4'>
+                  </motion.h2>
+                  <motion.h3
+                    className='text-2xl lg:text-3xl font-semibold mb-4'
+                    variants={textVariants}
+                    initial="hidden"
+                    animate={isAnimating ? "hidden" : "visible"}
+                    custom={1}
+                  >
                     {slide.subtitle}
-                  </h3>
-                  <p className='text-lg mb-8'>{slide.description}</p>
-                  <div className='flex flex-col sm:flex-row gap-4'>
+                  </motion.h3>
+                  <motion.p
+                    className='text-lg mb-8'
+                    variants={textVariants}
+                    initial="hidden"
+                    animate={isAnimating ? "hidden" : "visible"}
+                    custom={2}
+                  >
+                    {slide.description}
+                  </motion.p>
+                  <motion.div
+                    className='flex flex-col sm:flex-row gap-4'
+                    variants={textVariants}
+                    initial="hidden"
+                    animate={isAnimating ? "hidden" : "visible"}
+                    custom={3}
+                  >
                     <Link href={slide.cta.primary.link}>
                       <Button
                         size='lg'
@@ -114,8 +178,8 @@ export function Hero () {
                         {slide.cta.secondary.text}
                       </Button>
                     </Link>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </div>
               </div>
             </div>
           </div>

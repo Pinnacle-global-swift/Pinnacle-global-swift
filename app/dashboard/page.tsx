@@ -29,6 +29,7 @@ import { api } from "@/lib/api"
 import { format } from "date-fns"
 import { useToast } from "@/components/ui/use-toast"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { TransactionReceipt } from '@/components/dashboard/TransactionReceipt'
 
 export default function DashboardOverview() {
   const [accountInfo, setAccountInfo] = useState<any>(null)
@@ -39,6 +40,7 @@ export default function DashboardOverview() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState<any>(null)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -57,6 +59,7 @@ export default function DashboardOverview() {
       try {
         const response = await api.transactions(1, 5)
         if (response.success) {
+          console.log(response.success)
           setRecentTransactions(response.data.transactions)
         }
       } catch (error) {
@@ -112,14 +115,7 @@ export default function DashboardOverview() {
     }
   }
 
-  const chartData = [
-    { name: "Jan", income: 4000, expenses: 2400 },
-    { name: "Feb", income: 3000, expenses: 1398 },
-    { name: "Mar", income: 2000, expenses: 9800 },
-    { name: "Apr", income: 2780, expenses: 3908 },
-    { name: "May", income: 1890, expenses: 4800 },
-    { name: "Jun", income: 2390, expenses: 3800 },
-  ]
+
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -254,10 +250,13 @@ export default function DashboardOverview() {
                   <div className="text-center py-8 text-gray-400">No transactions yet</div>
                 ) : (
                   <div className="space-y-4">
-                    {recentTransactions.map((transaction: any) => (
+                    {recentTransactions.map((transaction: any) =>  {
+
+                    return   (
                       <div
-                        key={transaction.reference}
-                        className="flex items-center justify-between p-4 hover:bg-white/5 rounded-lg transition duration-200"
+                        key={transaction?.reference}
+                        onClick={() => setSelectedTransaction(transaction)}
+                        className="flex items-center justify-between p-4 hover:bg-white/5 rounded-lg transition duration-200 cursor-pointer"
                       >
                         <div className="flex items-center gap-3">
                           <div
@@ -280,7 +279,7 @@ export default function DashboardOverview() {
                           <div>
                             <p className="font-medium text-white">{transaction.description}</p>
                             <p className="text-sm text-gray-400">
-                              {format(new Date(transaction.createdAt), "MMM dd, yyyy")}
+                              {format(new Date(transaction?.date), "MMM dd, yyyy")}
                             </p>
                           </div>
                         </div>
@@ -310,7 +309,9 @@ export default function DashboardOverview() {
                           </Badge>
                         </div>
                       </div>
-                    ))}
+                    )
+                  }
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -377,49 +378,11 @@ export default function DashboardOverview() {
           </motion.div>
         </div>
 
-        {/* <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          <Card className="bg-white/10 backdrop-blur-sm shadow-lg border-white/10">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-white">Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <Button
-                  variant="outline"
-                  className="flex flex-col items-center justify-center h-24 bg-blue-500/20 hover:bg-blue-500/30 text-white border-blue-500/50"
-                >
-                  <CreditCard className="w-6 h-6 mb-2" />
-                  <span>Pay Bills</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex flex-col items-center justify-center h-24 bg-purple-500/20 hover:bg-purple-500/30 text-white border-purple-500/50"
-                >
-                  <Target className="w-6 h-6 mb-2" />
-                  <span>Set Goals</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex flex-col items-center justify-center h-24 bg-green-500/20 hover:bg-green-500/30 text-white border-green-500/50"
-                >
-                  <Receipt className="w-6 h-6 mb-2" />
-                  <span>Invoices</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex flex-col items-center justify-center h-24 bg-yellow-500/20 hover:bg-yellow-500/30 text-white border-yellow-500/50"
-                >
-                  <Bell className="w-6 h-6 mb-2" />
-                  <span>Notifications</span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div> */}
+        <TransactionReceipt
+          isOpen={!!selectedTransaction}
+          onClose={() => setSelectedTransaction(null)}
+          transaction={selectedTransaction}
+        />
       </div>
     </div>
   )

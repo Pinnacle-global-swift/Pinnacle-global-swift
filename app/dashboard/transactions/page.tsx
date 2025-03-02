@@ -240,7 +240,7 @@ function TransactionRow({ transaction }: { transaction: Transaction }) {
           <span className="capitalize">{transaction.type}</span>
         </div>
       </TableCell>
-      <TableCell className="text-gray-300">{format(new Date(transaction.createdAt), "MMM dd, yyyy HH:mm")}</TableCell>
+      <TableCell className="text-gray-300">{format(new Date(transaction.date), "MMM dd, yyyy HH:mm")}</TableCell>
       <TableCell className="text-gray-300">{transaction.description}</TableCell>
       <TableCell>
         <code className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-300">{transaction.reference}</code>
