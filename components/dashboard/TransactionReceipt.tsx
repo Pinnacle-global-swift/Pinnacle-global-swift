@@ -30,6 +30,7 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
     toast({
       title: "Copied!",
       description: "Transaction reference copied to clipboard.",
+      type: 'success'
     })
     setTimeout(() => setCopied(false), 2000)
   }
