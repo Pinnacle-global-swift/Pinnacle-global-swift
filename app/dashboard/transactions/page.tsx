@@ -24,7 +24,7 @@ interface Transaction {
   status: "completed" | "pending" | "failed"
   reference: string
   description: string
-  createdAt: string
+  date: string
   balanceAfter: number
 }
 
