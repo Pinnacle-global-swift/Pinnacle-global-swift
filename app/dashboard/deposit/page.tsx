@@ -77,7 +77,7 @@ export default function DepositPage () {
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: '',
-      paymentMethod: 'bitcoin'
+      paymentMethod: 'BTC' // Changed to match crypto type
     }
   })
 
@@ -101,17 +101,12 @@ export default function DepositPage () {
     }
   }
   const handlePaymentMethodChange = (value: string) => {
-    form.setValue('paymentMethod', value)
-    switch (value) {
-      case 'bitcoin':
-        setSelectedCrypto(cryptoAddresses[0])
-        break
-      case 'ethereum':
-        setSelectedCrypto(cryptoAddresses[1])
-        break
-      case 'usdt':
-        setSelectedCrypto(cryptoAddresses[2])
-        break
+    console.log('Selected value:', value) // Debug logging
+    
+    const selectedCrypto = cryptoAddresses.find(crypto => crypto.type === value)
+    if (selectedCrypto) {
+      setSelectedCrypto(selectedCrypto)
+      form.setValue('paymentMethod', value)
     }
   }
 
@@ -193,7 +188,7 @@ export default function DepositPage () {
                           {cryptoAddresses.map((crypto) => (
                             <SelectItem
                               key={crypto.type}
-                              value={crypto.type.toLowerCase()}
+                              value={crypto.type} // Use exact crypto type
                               className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
                             >
                               <div className='flex items-center gap-3'>
