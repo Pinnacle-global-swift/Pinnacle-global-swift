@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react'
 
 const testimonials = [
   {
@@ -35,85 +35,143 @@ const testimonials = [
   }
 ]
 
-export function Testimonials () {
+export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+
+  useEffect(() => {
+    if (!isAutoPlaying) return
+
+    const timer = setInterval(next, 5000)
+    return () => clearInterval(timer)
+  }, [currentIndex, isAutoPlaying])
 
   const next = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % testimonials.length)
+    setCurrentIndex(prev => (prev + 1) % testimonials.length)
   }
 
   const prev = () => {
-    setCurrentIndex(
-      prevIndex => (prevIndex - 1 + testimonials.length) % testimonials.length
-    )
+    setCurrentIndex(prev => (prev - 1 + testimonials.length) % testimonials.length)
   }
 
   return (
-    <section
-      id='testimonials'
-      className='bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20'
-    >
-      <div className='container mx-auto px-4'>
-        <motion.h2
+    <section className="relative overflow-hidden bg-gradient-to-b from-blue-600 via-blue-700 to-indigo-800">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      </div>
+
+      <div className="container relative mx-auto px-4 py-24">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className='text-3xl font-bold text-center mb-12'
+          className="text-center mb-16"
         >
-          What Our Customers Say
-        </motion.h2>
-        <div className='relative max-w-4xl mx-auto'>
-          <AnimatePresence mode='wait'>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent mb-4">
+            What Our Customers Say
+          </h2>
+          <p className="text-white/80 text-lg max-w-2xl mx-auto">
+            Trusted by thousands of customers worldwide
+          </p>
+        </motion.div>
+
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className='bg-white bg-opacity-10 p-8 rounded-lg flex flex-col items-center text-center'
+              className="relative"
             >
-              <div className='w-24 h-24 rounded-full overflow-hidden mb-6 border-4 border-white'>
-                <Image
-                  src={testimonials[currentIndex].image}
-                  alt={testimonials[currentIndex].name}
-                  width={96}
-                  height={96}
-                  className='object-cover'
-                />
+              <div className="absolute -left-4 top-0 text-white/20">
+                <Quote size={60} className="rotate-180" />
               </div>
-              <p className='text-xl mb-6 italic'>
-                "{testimonials[currentIndex].quote}"
-              </p>
-              <div className='flex mb-2'>
-                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className='w-5 h-5 text-yellow-400 fill-current'
-                  />
-                ))}
+              
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 md:p-12 border border-white/10">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <motion.div 
+                    className="relative flex-shrink-0"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden ring-4 ring-white/20">
+                      <Image
+                        src={testimonials[currentIndex].image}
+                        alt={testimonials[currentIndex].name}
+                        width={128}
+                        height={128}
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-500 px-4 py-1 rounded-full">
+                      <div className="flex items-center gap-1">
+                        {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 text-white fill-current" />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <div className="flex-1 text-center md:text-left">
+                    <p className="text-xl md:text-2xl text-white leading-relaxed mb-6">
+                      "{testimonials[currentIndex].quote}"
+                    </p>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white">
+                        {testimonials[currentIndex].name}
+                      </h3>
+                      <p className="text-white/60">
+                        {testimonials[currentIndex].role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className='text-lg font-semibold'>
-                {testimonials[currentIndex].name}
-              </h3>
-              <p className='text-sm opacity-75'>
-                {testimonials[currentIndex].role}
-              </p>
             </motion.div>
           </AnimatePresence>
-          <button
-            onClick={prev}
-            className='absolute top-1/2 -left-12 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-2 focus:outline-none'
-            aria-label='Previous testimonial'
-          >
-            <ChevronLeft className='w-6 h-6' />
-          </button>
-          <button
-            onClick={next}
-            className='absolute top-1/2 -right-12 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 rounded-full p-2 focus:outline-none'
-            aria-label='Next testimonial'
-          >
-            <ChevronRight className='w-6 h-6' />
-          </button>
+
+          {/* Navigation Controls */}
+          <div className="flex justify-center gap-4 mt-8">
+            <button
+              onClick={() => {
+                setIsAutoPlaying(false)
+                prev()
+              }}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 group"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+            </button>
+            <div className="flex gap-2 items-center">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setIsAutoPlaying(false)
+                    setCurrentIndex(index)
+                  }}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    index === currentIndex 
+                      ? 'bg-white w-8' 
+                      : 'bg-white/40 hover:bg-white/60'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                setIsAutoPlaying(false)
+                next()
+              }}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 group"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

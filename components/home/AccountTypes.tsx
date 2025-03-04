@@ -11,28 +11,28 @@ export function AccountTypes() {
       icon: Piggy,
       title: "Personal Savings",
       description: "Grow your wealth with our high-yield savings accounts and personalized financial planning services.",
-      link: "/accounts/personal",
+      link: "/services",
       gradient: "from-blue-500 to-cyan-400"
     },
     {
       icon: Briefcase,
       title: "Business Checking",
       description: "Streamlined business banking solutions with advanced cash management tools and dedicated support.",
-      link: "/accounts/business",
+      link: "/services",
       gradient: "from-purple-500 to-pink-400"
     },
     {
       icon: Building,
       title: "Corporate Banking",
       description: "Comprehensive financial solutions for large corporations with global banking capabilities.",
-      link: "/accounts/corporate",
+      link: "/services",
       gradient: "from-emerald-500 to-teal-400"
     },
     {
       icon: Users,
       title: "Joint Accounts",
       description: "Simplified shared banking with smart features for families and partnerships.",
-      link: "/accounts/joint",
+      link: "/services",
       gradient: "from-orange-500 to-amber-400"
     },
   ]

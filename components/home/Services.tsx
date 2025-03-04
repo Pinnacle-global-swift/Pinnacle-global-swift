@@ -14,11 +14,11 @@ export function Services() {
       gradient: "from-blue-500 to-indigo-600",
       link: "/services/personal"
     },
-    { icon: Briefcase, name: "Business Accounts", description: "Comprehensive banking services to help your business thrive.", gradient: "from-green-500 to-teal-600", link: "/services/business" },
+    { icon: Briefcase, name: "Business Accounts", description: "Comprehensive banking services to help your business thrive.", gradient: "from-green-500 to-teal-600", link: "/services" },
     { icon: Home, name: "Mortgages", description: "Competitive rates and flexible terms for your dream home.", gradient: "from-red-500 to-pink-600", link: "/services/mortgages" },
-    { icon: ChartBar, name: "Investment Services", description: "Expert guidance and diverse portfolio options for wealth growth.", gradient: "from-purple-500 to-violet-600", link: "/services/investment" },
-    { icon: Plane, name: "International Banking", description: "Seamless cross-border transactions and multi-currency accounts.", gradient: "from-yellow-500 to-orange-600", link: "/services/international" },
-    { icon: Shield, name: "Insurance Products", description: "Protect what matters most with our range of insurance offerings.", gradient: "from-gray-500 to-gray-600", link: "/services/insurance" },
+    { icon: ChartBar, name: "Investment Services", description: "Expert guidance and diverse portfolio options for wealth growth.", gradient: "from-purple-500 to-violet-600", link: "/services" },
+    { icon: Plane, name: "International Banking", description: "Seamless cross-border transactions and multi-currency accounts.", gradient: "from-yellow-500 to-orange-600", link: "/services" },
+    { icon: Shield, name: "Insurance Products", description: "Protect what matters most with our range of insurance offerings.", gradient: "from-gray-500 to-gray-600", link: "/services" },
   ]
 
   const containerVariants = {
