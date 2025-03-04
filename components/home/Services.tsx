@@ -12,7 +12,7 @@ export function Services() {
       name: "Personal Banking",
       description: "Checking, savings, and credit card solutions tailored to your needs.",
       gradient: "from-blue-500 to-indigo-600",
-      link: "/services/personal"
+      link: "/services"
     },
     { icon: Briefcase, name: "Business Accounts", description: "Comprehensive banking services to help your business thrive.", gradient: "from-green-500 to-teal-600", link: "/services" },
     { icon: Home, name: "Mortgages", description: "Competitive rates and flexible terms for your dream home.", gradient: "from-red-500 to-pink-600", link: "/services/mortgages" },
