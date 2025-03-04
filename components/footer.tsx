@@ -87,27 +87,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Banking Services Section */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold mb-6 flex items-center">
-              <Shield className="w-5 h-5 mr-2 text-primary" />
-              Banking Services
-            </h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/personal-banking" className="text-gray-400 hover:text-primary transition-colors">Personal Banking</Link>
-              </li>
-              <li>
-                <Link href="/business-banking" className="text-gray-400 hover:text-primary transition-colors">Business Banking</Link>
-              </li>
-              <li>
-                <Link href="/investments" className="text-gray-400 hover:text-primary transition-colors">Wealth Management</Link>
-              </li>
-              <li>
-                <Link href="/loans-mortgages" className="text-gray-400 hover:text-primary transition-colors">Loans & Mortgages</Link>
-              </li>
-            </ul>
-          </div>
+         
 
           {/* Newsletter & Contact Section */}
           <motion.div
@@ -156,13 +136,17 @@ export function Footer() {
               © {new Date().getFullYear()} Pinnacle Global Swift. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
-              {['Privacy Policy', 'Terms of Service', 'Security'].map((item, index) => (
+              {[
+                { title: 'Privacy policy', path: 'privacy' },
+                { title: 'Terms and conditions', path: 'terms' }
+                // { title: 'Security-practices', path: 'security' }
+              ].map((link) => (
                 <Link
-                  key={index}
-                  href={`/${item.toLowerCase().replace(' ', '-')}`}
+                  key={link.path}
+                  href={`/${link.path}`}
                   className="text-gray-400 hover:text-primary text-sm transition-colors"
                 >
-                  {item}
+                  {link.title}
                 </Link>
               ))}
             </div>
