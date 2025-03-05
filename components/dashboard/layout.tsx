@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {
   LayoutGrid,
   WalletCards,
@@ -238,48 +239,78 @@ export default function DashboardLayout({
             })}
           </nav>
 
-          {/* User Profile */}
-          <div className="p-4 mt-auto border-t border-gray-100 dark:border-gray-700">
-            <div className="p-4 rounded-xl bg-white border border-gray-100 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-              {loading ? (
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[140px]" />
-                    <Skeleton className="h-3 w-[100px]" />
-                  </div>
-                </div>
-              ) : error ? (
-                <div className="text-red-500 text-sm">{error}</div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <div className="relative flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <User className="w-5 h-5 text-blue-600" />
+          {/* User Profile - Improved */}
+          <div className="sticky bottom-0 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700">
+            <div className="p-3">
+              <div className="relative p-3 rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                {loading ? (
+                  <div className="flex items-center gap-3 p-1">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-3 w-32" />
                     </div>
-                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                      {accountUser?.fullName || "Guest User"}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      {accountUser?.email || "Premium Member"}
-                    </p>
+                ) : error ? (
+                  <div className="p-2 text-sm text-red-500 bg-red-50 dark:bg-red-900/10 rounded-lg">
+                    {error}
                   </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-1.5">
-                      <MoreVertical className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-48 border-gray-100 shadow-lg dark:border-gray-700">
-                      <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:bg-red-50 cursor-pointer">
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Logout
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              )}
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <div className="relative flex-shrink-0">
+                      {accountUser?.avatar ? (
+                        <Image
+                          src={accountUser.avatar}
+                          alt={accountUser?.fullName || "User"}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 flex items-center justify-center ring-2 ring-white dark:ring-gray-700">
+                          <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                      )}
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full ring-2 ring-white dark:ring-gray-800 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-green-200 rounded-full animate-ping" />
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        {accountUser?.fullName || "Guest User"}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                        {accountUser?.email || "Premium Member"}
+                      </p>
+                    </div>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          <MoreVertical className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="w-56 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg"
+                      >
+                        <DropdownMenuItem
+                          onClick={handleLogout}
+                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 cursor-pointer focus:bg-red-50 dark:focus:bg-red-900/10"
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          <span>Sign Out</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
