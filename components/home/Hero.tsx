@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
@@ -63,20 +63,32 @@ const textVariants = {
 
 const slideVariants = {
   enter: { opacity: 0, scale: 1.1 },
-  center: { 
-    opacity: 1, 
+  center: {
+    opacity: 1,
     scale: 1,
     transition: {
       duration: 0.7
     }
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     scale: 0.9,
     transition: {
       duration: 0.7
     }
   }
+}
+
+const imageVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1 } },
+  exit: { opacity: 0, transition: { duration: 1 } }
+}
+
+const textSlideVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  exit: { opacity: 0, x: 50, transition: { duration: 0.5 } }
 }
 
 export function Hero () {
@@ -107,10 +119,10 @@ export function Hero () {
           <div key={index} className='relative'>
             <motion.div
               className='absolute inset-0 z-0'
-              initial="enter"
-              animate="center"
-              exit="exit"
-              variants={slideVariants}
+              initial='hidden'
+              animate='visible'
+              exit='exit'
+              variants={imageVariants}
             >
               <Image
                 src={slide.image}
@@ -128,37 +140,37 @@ export function Hero () {
                 <div className='lg:w-1/2 mb-10 lg:mb-0'>
                   <motion.h2
                     className='text-4xl lg:text-5xl font-bold mb-2'
-                    variants={textVariants}
-                    initial="hidden"
-                    animate={isAnimating ? "hidden" : "visible"}
-                    custom={0}
+                    variants={textSlideVariants}
+                    initial='hidden'
+                    animate={isAnimating ? 'hidden' : 'visible'}
+                    exit='exit'
                   >
                     {slide.title}
                   </motion.h2>
                   <motion.h3
                     className='text-2xl lg:text-3xl font-semibold mb-4'
-                    variants={textVariants}
-                    initial="hidden"
-                    animate={isAnimating ? "hidden" : "visible"}
-                    custom={1}
+                    variants={textSlideVariants}
+                    initial='hidden'
+                    animate={isAnimating ? 'hidden' : 'visible'}
+                    exit='exit'
                   >
                     {slide.subtitle}
                   </motion.h3>
                   <motion.p
                     className='text-lg mb-8'
-                    variants={textVariants}
-                    initial="hidden"
-                    animate={isAnimating ? "hidden" : "visible"}
-                    custom={2}
+                    variants={textSlideVariants}
+                    initial='hidden'
+                    animate={isAnimating ? 'hidden' : 'visible'}
+                    exit='exit'
                   >
                     {slide.description}
                   </motion.p>
                   <motion.div
                     className='flex flex-col sm:flex-row gap-4'
-                    variants={textVariants}
-                    initial="hidden"
-                    animate={isAnimating ? "hidden" : "visible"}
-                    custom={3}
+                    variants={textSlideVariants}
+                    initial='hidden'
+                    animate={isAnimating ? 'hidden' : 'visible'}
+                    exit='exit'
                   >
                     <Link href={slide.cta.primary.link}>
                       <Button

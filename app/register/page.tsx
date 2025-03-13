@@ -12,7 +12,9 @@ import {
   MapPin,
   Phone,
   CheckCircle,
-  ArrowRight
+  ArrowRight,
+  ArrowLeft,
+  Info
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -40,6 +42,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/components/ui/use-toast'
+import { Tooltip } from '@/components/ui/tooltip'
 
 const formSchema = z
   .object({
@@ -98,7 +101,7 @@ export default function Register () {
         title: 'Registration Successful',
         description: 'You have successfully registered. Please log in.',
         duration: 5000,
-          type:"success"
+        type: 'success'
       })
       router.push('/verify-otp')
     } catch (error: any) {
@@ -106,8 +109,9 @@ export default function Register () {
       toast({
         title: 'Registration Failed',
         description:
-          error.response?.data?.error || 'An unexpected error occurred. Please try again.',
-          type: 'error',
+          error.response?.data?.error ||
+          'An unexpected error occurred. Please try again.',
+        type: 'error'
       })
     } finally {
       setIsSubmitting(false)
@@ -116,6 +120,14 @@ export default function Register () {
 
   return (
     <div className='min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative'>
+      <Link
+        href='/'
+        className='absolute top-4 left-4 p-2 flex items-center gap-2 text-white hover:text-gray-200 transition-colors z-20'
+      >
+        <ArrowLeft className='h-5 w-5' />
+        <span className='hidden sm:inline'>Back to Home</span>
+      </Link>
+
       <div className='absolute inset-0 z-0'>
         <Image
           src='https://firebasestorage.googleapis.com/v0/b/first-project-a5bbf.appspot.com/o/imagebuilding.jpg?alt=media&token=cdceeabf-1e6e-4c5d-8143-56e9d1917612?auto=format&fit=crop&q=80&w=2070'
@@ -144,7 +156,7 @@ export default function Register () {
             Create Your Accounts
           </h2>
           <p className='mt-2 text-center text-sm text-gray-300'>
-            Join Pinancle Global and experience the future of banking
+            Join Pinnacle Global and experience the future of banking
           </p>
         </motion.div>
 
@@ -168,11 +180,11 @@ export default function Register () {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className='bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'>
                             <SelectValue placeholder='Select account type' />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className='bg-white border-gray-200 shadow-lg rounded-lg'>
                           <SelectItem value='personal'>
                             Personal Account
                           </SelectItem>
@@ -199,7 +211,7 @@ export default function Register () {
                         <div className='relative'>
                           <User className='absolute left-3 top-3 h-4 w-4 text-gray-400' />
                           <Input
-                            className='pl-10'
+                            className='pl-10 bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
                             placeholder='Enter your full name'
                             {...field}
                           />
@@ -221,11 +233,11 @@ export default function Register () {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className='bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'>
                             <SelectValue placeholder='Select gender' />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className='bg-white border-gray-200 shadow-lg rounded-lg'>
                           <SelectItem value='male'>Male</SelectItem>
                           <SelectItem value='female'>Female</SelectItem>
                           <SelectItem value='other'>Other</SelectItem>
@@ -246,7 +258,7 @@ export default function Register () {
                         <div className='relative'>
                           <Mail className='absolute left-3 top-3 h-4 w-4 text-gray-400' />
                           <Input
-                            className='pl-10'
+                            className='pl-10 bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
                             type='email'
                             placeholder='Enter your email'
                             {...field}
@@ -268,7 +280,7 @@ export default function Register () {
                         <div className='relative'>
                           <Lock className='absolute left-3 top-3 h-4 w-4 text-gray-400' />
                           <Input
-                            className='pl-10'
+                            className='pl-10 bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
                             type='password'
                             placeholder='Enter your password'
                             {...field}
@@ -290,7 +302,7 @@ export default function Register () {
                         <div className='relative'>
                           <Lock className='absolute left-3 top-3 h-4 w-4 text-gray-400' />
                           <Input
-                            className='pl-10'
+                            className='pl-10 bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
                             type='password'
                             placeholder='Confirm your password'
                             {...field}
@@ -313,11 +325,11 @@ export default function Register () {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className='bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'>
                             <SelectValue placeholder='Select country' />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className='bg-white border-gray-200 shadow-lg rounded-lg'>
                           <ScrollArea className='h-[200px]'>
                             {Object.entries(countries).map(
                               ([code, country]) => (
@@ -344,7 +356,7 @@ export default function Register () {
                         <div className='relative'>
                           <MapPin className='absolute left-3 top-3 h-4 w-4 text-gray-400' />
                           <Input
-                            className='pl-10'
+                            className='pl-10 bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
                             placeholder='Enter your address'
                             {...field}
                           />
@@ -365,7 +377,7 @@ export default function Register () {
                         <div className='relative'>
                           <Phone className='absolute left-3 top-3 h-4 w-4 text-gray-400' />
                           <Input
-                            className='pl-10'
+                            className='pl-10 bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
                             placeholder='Enter your phone number'
                             {...field}
                           />

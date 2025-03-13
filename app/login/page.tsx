@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff, Mail, Lock, Shield, Key } from 'lucide-react'
+import { Eye, EyeOff, Mail, Lock, Shield, Key, ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -82,6 +82,14 @@ export default function Login () {
 
   return (
     <div className='min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative'>
+      <Link 
+        href="/"
+        className="absolute top-4 left-4 p-2 flex items-center gap-2 text-white hover:text-gray-200 transition-colors z-20"
+      >
+        <ArrowLeft className="h-5 w-5" />
+        <span className="hidden sm:inline">Back to Home</span>
+      </Link>
+
       <div className='absolute inset-0 z-0'>
         <Image
           src='https://firebasestorage.googleapis.com/v0/b/first-project-a5bbf.appspot.com/o/imagebuilding.jpg?alt=media&token=cdceeabf-1e6e-4c5d-8143-56e9d1917612?auto=format&fit=crop&q=80&w=2070'

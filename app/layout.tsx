@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Suspense } from 'react'
-import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { TawkTo } from '@/components/tawk-to'
 import { LoadingProvider } from '@/components/LoadingProvider'
@@ -34,8 +33,8 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout ({
-  children
+export default function RootLayout({
+  children,
 }: {
   children: React.ReactNode
 }) {
@@ -51,12 +50,10 @@ export default function RootLayout ({
       <body className={inter.className}>
         <Suspense fallback={<LoadingAnimation />}>
           <LoadingProvider>
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-              {children}
+            {children}
             
-              <Toaster />
-              <TawkTo />
-            </ThemeProvider>
+            <Toaster />
+            <TawkTo />
           </LoadingProvider>
         </Suspense>
       </body>
