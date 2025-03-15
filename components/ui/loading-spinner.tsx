@@ -3,7 +3,10 @@
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
-interface LoadingSpinnerProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface LoadingSpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
+  size?: 'sm' | 'md' | 'lg'
+  variant?: 'default' | 'white'
+}
 
 export function LoadingSpinner ({ className, ...props }: LoadingSpinnerProps) {
   return (
