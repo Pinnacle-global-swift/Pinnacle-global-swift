@@ -472,7 +472,6 @@ export default function Cards () {
                             setShowPayment(open)
                           }}
                           amount={2000}
-                          className='max-w-[90vw] sm:max-w-lg'
                         />
                         {cardTypes.map((card, index) => (
                           <motion.div
@@ -648,7 +647,6 @@ export default function Cards () {
             setShowPayment(open)
           }}
           amount={2000}
-          className='max-w-[90vw] sm:max-w-lg'
         />
 
         <PinEntryDialog
