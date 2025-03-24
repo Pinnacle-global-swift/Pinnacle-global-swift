@@ -41,7 +41,7 @@ export default function RootLayout ({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-        {/* <meta name='robots' content='noindex' /> */}
+        <meta name='robots' content='noindex' />
         <link rel='icon' href='/PGSLOGO.ico' />
         <link rel='icon' type='image/png' sizes='32x32' href='/PGSLOGO.png' />
         <link rel='icon' type='image/png' sizes='16x16' href='/PGSLOGO.png' />
