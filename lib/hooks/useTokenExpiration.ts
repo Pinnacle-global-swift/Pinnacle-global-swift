@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
@@ -13,10 +15,8 @@ function useTokenExpiration() {
 
       const expiryDate = new Date(expiry)
       const now = new Date()
-      const timeUntilExpiry = expiryDate.getTime() - now.getTime()
-      console.log(timeUntilExpiry)
-      // If less than 10 minutes remaining
-      if (timeUntilExpiry < 600000 && timeUntilExpiry > 0) {
+      
+      if (now >= expiryDate) {
         // Clear stored data
         localStorage.removeItem('token')
         localStorage.removeItem('expires_at')
@@ -30,7 +30,7 @@ function useTokenExpiration() {
           type: "error",
         })
         
-        window.location.href = '/login'
+        router.push('/login')
       }
     }
 
@@ -41,7 +41,7 @@ function useTokenExpiration() {
     checkExpiration()
 
     return () => clearInterval(intervalId)
-  }, [toast])
+  }, [router, toast])
 }
 
-export default useTokenExpiration 
+export default useTokenExpiration

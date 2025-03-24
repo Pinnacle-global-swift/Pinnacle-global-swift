@@ -1,30 +1,34 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { api } from "@/lib/api" // Import api helper
-
-// ... other imports
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value
-  const expiry = Number.parseInt(request.cookies.get("expiry")?.value || "0", 10) // Get expiry timestamp
-  const protectedRoutes = ["/dashboard", "/admin"]
+  const expiry = request.cookies.get("expiry")?.value
 
-  const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+  // Allow access to login page
+  if (request.nextUrl.pathname === '/login') {
+    if (token && expiry && new Date(expiry) > new Date()) {
+      // If user is already logged in, redirect to dashboard
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+    return NextResponse.next()
+  }
 
-  if (isProtectedRoute) {
-    if (!token || api.isTokenExpired(expiry)) {
-      // Check token and expiry
-      const url = request.nextUrl.clone()
-      url.pathname = "/login"
-      // Clear cookies on expiry or missing token
-      request.cookies.delete("token")
-      request.cookies.delete("expiry")
-      return NextResponse.redirect(url)
+  // Protected routes
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!token || !expiry || new Date(expiry) <= new Date()) {
+      // Invalid or expired session
+      const response = NextResponse.redirect(new URL('/login', request.url))
+      response.cookies.delete("token")
+      response.cookies.delete("expiry")
+      return response
     }
   }
 
-  // ... other middleware logic
+  return NextResponse.next()
 }
 
-// ... other code
+export const config = {
+  matcher: ['/login', '/dashboard/:path*']
+}
 
