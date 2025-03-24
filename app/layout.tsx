@@ -33,15 +33,15 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({
-  children,
+export default function RootLayout ({
+  children
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-      {/* <meta name='robots' content='noindex' /> */}
+        {/* <meta name='robots' content='noindex' /> */}
         <link rel='icon' href='/PGSLOGO.ico' />
         <link rel='icon' type='image/png' sizes='32x32' href='/PGSLOGO.png' />
         <link rel='icon' type='image/png' sizes='16x16' href='/PGSLOGO.png' />
@@ -52,7 +52,7 @@ export default function RootLayout({
         <Suspense fallback={<LoadingAnimation />}>
           <LoadingProvider>
             {children}
-            
+
             <Toaster />
             <TawkTo />
           </LoadingProvider>

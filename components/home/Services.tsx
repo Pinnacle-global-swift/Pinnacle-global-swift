@@ -137,7 +137,7 @@ export function Services () {
               />
 
               {/* Card */}
-              <div className='relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 h-full flex flex-col'>
+              <div className='relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 h-full flex flex-col'>
                 {/* Icon */}
                 <div
                   className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${service.gradient} mb-6 self-start`}
@@ -147,10 +147,10 @@ export function Services () {
 
                 {/* Content */}
                 <div className='flex-grow'>
-                  <h3 className='text-xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-primary transition-colors'>
+                  <h3 className='text-xl font-semibold mb-3 text-gray-900 group-hover:text-primary transition-colors'>
                     {service.name}
                   </h3>
-                  <p className='text-gray-600 dark:text-gray-300 mb-6 leading-relaxed'>
+                  <p className='text-gray-600 mb-6 leading-relaxed'>
                     {service.description}
                   </p>
                 </div>

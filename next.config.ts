@@ -5,6 +5,16 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  remotePatterns: [
+    {
+      protocol: 'https',
+      hostname: '**.unsplash.com',
+    },
+    {
+      protocol: 'https',
+      hostname: '**.googleapis.com',
+    },
+  ],
 };
 
 module.exports = nextConfig;
