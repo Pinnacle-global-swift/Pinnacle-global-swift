@@ -10,7 +10,7 @@ export const useSession = () => {
 
   useEffect(() => {
     let inactivityTimeout: NodeJS.Timeout
-    let checkInterval: NodeJS.Timer
+    let checkInterval: ReturnType<typeof setInterval> // Changed type definition here
 
     const checkExpiry = () => {
       const expiry = localStorage.getItem('expires_at')
@@ -63,8 +63,8 @@ export const useSession = () => {
     }, 60000) // Check every minute
 
     return () => {
-      clearTimeout(inactivityTimeout)
-      clearInterval(checkInterval)
+      if (inactivityTimeout) clearTimeout(inactivityTimeout)
+      if (checkInterval) clearInterval(checkInterval)
       events.forEach(event => {
         document.removeEventListener(event, resetInactivityTimer)
       })
