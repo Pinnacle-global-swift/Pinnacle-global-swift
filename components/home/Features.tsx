@@ -159,7 +159,6 @@ export function Features () {
           ))}
         </motion.div>
       </div>
-      s
     </section>
   )
 }
