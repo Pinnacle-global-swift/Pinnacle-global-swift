@@ -52,7 +52,6 @@ export default function RootLayout ({
         <Suspense fallback={<LoadingAnimation />}>
           <LoadingProvider>
             {children}
-
             <Toaster />
             <TawkTo />
           </LoadingProvider>

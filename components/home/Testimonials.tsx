@@ -38,6 +38,68 @@ const testimonials = [
   }
 ]
 
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 50 : -50,
+    opacity: 0,
+    scale: 0.95
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.4, 0.0, 0.2, 1]
+    }
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 50 : -50,
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.4,
+      ease: [0.4, 0.0, 0.2, 1]
+    }
+  })
+}
+
+const fadeInUpVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: delay * 0.2,
+      ease: [0.4, 0.0, 0.2, 1]
+    }
+  })
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 50 }, // Start from bottom
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      bounce: 0.3,
+      duration: 0.8
+    }
+  }
+}
+
 export function Testimonials () {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
@@ -59,59 +121,90 @@ export function Testimonials () {
     )
   }
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.5
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.5
-    })
-  }
-
   return (
-    <section className='relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950'>
-      {/* Enhanced Background Pattern */}
-      <div className='absolute inset-0'>
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-5" />
+    <section className='relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-950 py-24 lg:py-32'>
+      {/* Background Elements */}
+      <div className='absolute inset-0 overflow-hidden'>
+        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
         <div className='absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-blue-500/10' />
+        <motion.div
+          className='absolute -top-[40%] -right-[20%] w-[600px] h-[600px] rounded-full bg-blue-500/20 blur-[100px]'
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.3, 0.2]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut'
+          }}
+        />
+        <motion.div
+          className='absolute -bottom-[40%] -left-[20%] w-[600px] h-[600px] rounded-full bg-indigo-500/20 blur-[100px]'
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.2, 0.3]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut'
+          }}
+        />
       </div>
 
-      <div className='container relative mx-auto px-4 py-24'>
-        {/* Section Header */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.2 }}
+        variants={containerVariants}
+        className='container relative mx-auto px-4'
+      >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          variants={itemVariants}
           className='text-center mb-20'
         >
-          <span className='text-blue-400 font-semibold tracking-wider uppercase text-sm mb-4 block'>
-            Testimonials
-          </span>
-          <h2 className='text-4xl md:text-5xl font-bold text-white mb-6'>
-            What Our Customers Say
-          </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full mb-6' />
-          <p className='text-blue-100 text-lg max-w-2xl mx-auto'>
-            Join thousands of satisfied customers who trust Pinnacle Global
-            Swift
-          </p>
+          <motion.div
+            className='flex flex-col items-center gap-6'
+            initial='hidden'
+            whileInView='visible'
+            viewport={{ once: true }}
+          >
+            <motion.span
+              variants={fadeInUpVariants}
+              custom={0}
+              className='inline-flex items-center px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20'
+            >
+              <span className='w-2 h-2 rounded-full bg-blue-400 mr-2' />
+              <span className='text-blue-400 text-sm font-medium'>
+                Testimonials
+              </span>
+            </motion.span>
+            <motion.h2
+              variants={fadeInUpVariants}
+              custom={1}
+              className='text-4xl lg:text-5xl font-bold text-white tracking-tight'
+            >
+              What Our Customers Say
+            </motion.h2>
+            <motion.div
+              variants={fadeInUpVariants}
+              custom={2}
+              className='max-w-2xl'
+            >
+              <p className='text-lg text-blue-100/80'>
+                Join thousands of satisfied customers who trust Pinnacle Global
+                Swift
+              </p>
+            </motion.div>
+          </motion.div>
         </motion.div>
 
-        {/* Testimonial Slider */}
-        <div className='relative max-w-6xl mx-auto'>
-          <AnimatePresence initial={false} custom={currentIndex}>
+        <motion.div
+          variants={itemVariants}
+          className='relative max-w-6xl mx-auto'
+        >
+          <AnimatePresence mode='wait' initial={false} custom={currentIndex}>
             <motion.div
               key={currentIndex}
               custom={currentIndex}
@@ -119,16 +212,9 @@ export function Testimonials () {
               initial='enter'
               animate='center'
               exit='exit'
-              transition={{ duration: 0.5 }}
               className='relative'
             >
-              {/* Quote Decoration */}
-              <div className='absolute -left-4 top-0 text-blue-500/20'>
-                <Quote size={120} className='rotate-180' />
-              </div>
-
-              {/* Testimonial Card */}
-              <div className='bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl p-8 md:p-12 border border-white/10 shadow-2xl'>
+              <div className='bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-2xl p-8 lg:p-12 border border-white/10'>
                 <div className='flex flex-col lg:flex-row items-center gap-12'>
                   {/* Profile Section */}
                   <motion.div
@@ -199,18 +285,21 @@ export function Testimonials () {
           </AnimatePresence>
 
           {/* Navigation Controls */}
-          <div className='flex justify-center gap-4 mt-8'>
-            <button
+          <div className='flex items-center justify-center gap-6 mt-12'>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setIsAutoPlaying(false)
                 prev()
               }}
-              className='p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 group'
+              className='p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors duration-200'
               aria-label='Previous testimonial'
             >
-              <ChevronLeft className='w-6 h-6 text-white group-hover:scale-110 transition-transform' />
-            </button>
-            <div className='flex gap-2 items-center'>
+              <ChevronLeft className='w-6 h-6 text-white' />
+            </motion.button>
+
+            <div className='flex gap-3 items-center'>
               {testimonials.map((_, index) => (
                 <button
                   key={index}
@@ -218,28 +307,36 @@ export function Testimonials () {
                     setIsAutoPlaying(false)
                     setCurrentIndex(index)
                   }}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    index === currentIndex
-                      ? 'bg-white w-8'
-                      : 'bg-white/40 hover:bg-white/60'
+                  className={`relative h-2 transition-all duration-300 ${
+                    index === currentIndex ? 'w-8' : 'w-2'
                   }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
+                >
+                  <div
+                    className={`absolute inset-0 rounded-full ${
+                      index === currentIndex
+                        ? 'bg-white'
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
-            <button
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setIsAutoPlaying(false)
                 next()
               }}
-              className='p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 group'
+              className='p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors duration-200'
               aria-label='Next testimonial'
             >
-              <ChevronRight className='w-6 h-6 text-white group-hover:scale-110 transition-transform' />
-            </button>
+              <ChevronRight className='w-6 h-6 text-white' />
+            </motion.button>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

@@ -35,7 +35,7 @@ const services = [
     name: 'Mortgages',
     description: 'Competitive rates and flexible terms for your dream home.',
     gradient: 'from-red-500 to-pink-600',
-    link: '/services/mortgages'
+    link: '/services'
   },
   {
     icon: ChartBar,
@@ -63,6 +63,29 @@ const services = [
   }
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -50 }, // Start from left
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      bounce: 0.4,
+      duration: 0.8
+    }
+  }
+}
+
 export function Services () {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -73,23 +96,6 @@ export function Services () {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.9, 1], [0, 1, 1, 0])
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' }
-    }
-  }
-
   return (
     <section className='relative py-24 overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-50'>
       {/* Background Pattern */}
@@ -97,12 +103,19 @@ export function Services () {
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-5" />
       </div>
 
-      <div className='container mx-auto px-4 relative z-10' ref={containerRef}>
+      <motion.div
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: false, amount: 0.2 }} // Changed to false to animate every time
+        variants={containerVariants}
+        className='container mx-auto px-4 relative z-10'
+        ref={containerRef}
+      >
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial='hidden'
+          whileInView='visible'
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          variants={containerVariants}
           className='text-center max-w-3xl mx-auto mb-16'
         >
           <span className='text-sm font-semibold text-blue-600 tracking-wider uppercase mb-4 block'>
@@ -128,7 +141,6 @@ export function Services () {
             <motion.div
               key={index}
               variants={itemVariants}
-              whileHover={{ y: -5 }}
               className='group relative'
             >
               {/* Hover Gradient Background */}
@@ -198,7 +210,7 @@ export function Services () {
           className='absolute bottom-0 left-0 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10'
           style={{ y: opacity }}
         />
-      </div>
+      </motion.div>
     </section>
   )
 }

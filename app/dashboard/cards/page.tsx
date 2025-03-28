@@ -21,6 +21,7 @@ import {
 import { CardPaymentDialog } from '@/components/card-payment-dialog'
 import { PinEntryDialog } from '@/components/pin-entry-dialog'
 import { ProofOfPaymentUpload } from '@/components/proof-of-payment-upload'
+import { ProofOfPaymentDialog } from '@/components/proof-of-payment-dialog'
 import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
 
@@ -108,9 +109,7 @@ export default function Cards () {
 
   const handlePaymentComplete = async () => {
     setShowPayment(false)
-    // Remove the conditional check and always show proof of payment upload
     setShowProofOfPaymentUpload(true)
-    setIsPaymentCompleted(false)
   }
 
   const handleProofOfPaymentUpload = async (file: File) => {
@@ -646,7 +645,13 @@ export default function Cards () {
             }
             setShowPayment(open)
           }}
-          amount={2000}
+          amount={3000}
+        />
+
+        <ProofOfPaymentDialog
+          open={showProofOfPaymentUpload}
+          onOpenChange={setShowProofOfPaymentUpload}
+          onSubmit={handleProofOfPaymentUpload}
         />
 
         <PinEntryDialog
@@ -655,12 +660,12 @@ export default function Cards () {
           onSubmit={handlePinSubmit}
         />
 
-        {showProofOfPaymentUpload && (
+        {/* {showProofOfPaymentUpload && (
           <ProofOfPaymentUpload
             onUpload={handleProofOfPaymentUpload}
             onClose={() => setShowProofOfPaymentUpload(false)}
           />
-        )}
+        )} */}
       </div>
     </div>
   )
