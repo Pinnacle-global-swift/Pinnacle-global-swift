@@ -64,20 +64,23 @@ export function ProofOfPaymentDialog ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-md'>
+      <DialogContent className='sm:max-w-md bg-gray-900 text-white border border-gray-800'>
         <DialogHeader>
-          <DialogTitle>Upload Proof of Payment</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className='text-xl font-bold text-white'>
+            Upload Proof of Payment
+          </DialogTitle>
+          <DialogDescription className='text-gray-400'>
             Please upload a clear image of your payment receipt
           </DialogDescription>
         </DialogHeader>
 
-        <div className='mt-4'>
+        <div className='mt-6 space-y-6'>
           <div
             className={cn(
-              'border-2 border-dashed rounded-lg p-6 transition-colors',
-              isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300',
-              'hover:border-blue-500 hover:bg-blue-50'
+              'border-2 border-dashed rounded-xl p-8 transition-all duration-200',
+              'bg-gray-800/50 hover:bg-gray-800',
+              isDragging ? 'border-blue-500 bg-blue-900/20' : 'border-gray-700',
+              'hover:border-blue-500'
             )}
             onDragOver={e => {
               e.preventDefault()
@@ -87,29 +90,31 @@ export function ProofOfPaymentDialog ({
             onDrop={handleDrop}
           >
             {preview ? (
-              <div className='relative aspect-video'>
+              <div className='relative aspect-video group'>
                 <Image
                   src={preview}
                   alt='Payment proof preview'
                   fill
                   className='object-cover rounded-lg'
                 />
+                <div className='absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg' />
                 <button
                   onClick={() => {
                     setFile(null)
                     setPreview(null)
                   }}
-                  className='absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1'
+                  className='absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-600'
                 >
                   <X className='w-4 h-4' />
                 </button>
               </div>
             ) : (
               <div className='text-center'>
-                <ImageIcon className='mx-auto h-12 w-12 text-gray-400' />
-                <div className='mt-4 flex text-sm text-gray-600'>
-                  <label className='relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500'>
-                    <span>Upload a file</span>
+                <ImageIcon className='mx-auto h-12 w-12 text-gray-500' />
+                <div className='mt-4 flex flex-col items-center gap-2'>
+                  <label className='cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors'>
+                    <Upload className='w-4 h-4 mr-2' />
+                    <span className='text-sm font-medium'>Choose a file</span>
                     <input
                       ref={fileInputRef}
                       type='file'
@@ -118,30 +123,46 @@ export function ProofOfPaymentDialog ({
                       onChange={handleFileSelect}
                     />
                   </label>
-                  <p className='pl-1'>or drag and drop</p>
+                  <p className='text-sm text-gray-400'>or drag and drop here</p>
+                  <p className='text-xs text-gray-500 mt-2'>
+                    Supported: PNG, JPG, GIF (Max 10MB)
+                  </p>
                 </div>
-                <p className='text-xs text-gray-500 mt-2'>
-                  PNG, JPG, GIF up to 10MB
-                </p>
               </div>
             )}
           </div>
 
-          <div className='mt-4 flex justify-end gap-3'>
+          <div className='flex justify-end gap-3 pt-2'>
             <Button
               variant='outline'
               onClick={() => onOpenChange(false)}
               disabled={isLoading}
+              className='border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white'
             >
               Cancel
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={!file || isLoading}
-              className='bg-gradient-to-r from-blue-500 to-purple-500'
+              className={cn(
+                'bg-gradient-to-r from-blue-600 to-purple-600',
+                'hover:from-blue-700 hover:to-purple-700',
+                'text-white font-medium px-6',
+                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'transition-all duration-200'
+              )}
             >
-              {isLoading ? 'Uploading...' : 'Submit'}
-              {!isLoading && <Upload className='ml-2 h-4 w-4' />}
+              {isLoading ? (
+                <>
+                  <div className='animate-spin w-4 h-4 border-2 border-white/20 border-t-white rounded-full mr-2' />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  Submit
+                  <Upload className='ml-2 h-4 w-4' />
+                </>
+              )}
             </Button>
           </div>
         </div>

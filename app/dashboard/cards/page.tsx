@@ -109,7 +109,9 @@ export default function Cards () {
 
   const handlePaymentComplete = async () => {
     setShowPayment(false)
-    setShowProofOfPaymentUpload(true)
+    setTimeout(() => {
+      setShowProofOfPaymentUpload(true)
+    }, 300)
   }
 
   const handleProofOfPaymentUpload = async (file: File) => {
