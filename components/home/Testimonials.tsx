@@ -25,11 +25,11 @@ export function Testimonials() {
   const [isAutoPlaying, setIsAutoPlaying] = useState<any>(true)
 
   const next = useCallback(() => {
-    setCurrentIndex(prev => (prev + 1) % testimonials.length)
+    setCurrentIndex((prev:any) => (prev + 1) % testimonials.length)
   }, [])
 
   const prev = useCallback(() => {
-    setCurrentIndex(prev => (prev - 1 + testimonials.length) % testimonials.length)
+    setCurrentIndex((prev:any) => (prev - 1 + testimonials.length) % testimonials.length)
   }, [])
 
   useEffect(() => {
