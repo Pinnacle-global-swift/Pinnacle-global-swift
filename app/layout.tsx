@@ -10,27 +10,78 @@ import { LoadingAnimation } from '@/components/LoadingAnimation'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Pinance Global Swift - Supercharge Your Workflow',
-  description: 'Pinance Global Swift is the ultimate productivity tool...',
+  title: {
+    default: 'Pinnacle Global Swift - Premier Digital Banking Solutions',
+    template: '%s | Pinnacle Global Swift'
+  },
+  description: 'Experience seamless global banking with Pinnacle Global Swift. We offer comprehensive financial solutions including personal banking, business accounts, investments, and international transfers with cutting-edge security.',
+  keywords: [
+    'digital banking',
+    'online banking',
+    'international transfers',
+    'business banking',
+    'investment management',
+    'secure banking',
+    'global banking solutions',
+    'wealth management',
+    'financial services',
+    'mobile banking'
+  ],
+  authors: [{ name: 'Pinnacle Global Swift' }],
+  creator: 'Pinnacle Global Swift',
+  publisher: 'Pinnacle Global Swift',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://pinnacleglobalswift.com'),
   openGraph: {
-    title: 'Pinance Global Swift',
-    description: 'Pinance Global Swift is the ultimate productivity tool...',
+    type: 'website',
+    locale: 'en_US',
     url: 'https://pinnacleglobalswift.com/',
+    siteName: 'Pinnacle Global Swift',
+    title: 'Pinnacle Global Swift - Premier Digital Banking Solutions',
+    description: 'Transform your banking experience with our comprehensive suite of digital financial services. Access global markets, manage wealth, and conduct secure transactions anywhere, anytime.',
     images: [
       {
         url: '/pgbw.png',
         width: 900,
         height: 900,
-        alt: 'Pinance Global Swift'
+        alt: 'Pinnacle Global Swift - Digital Banking Excellence',
+        type: 'image/png'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pinance Global Swift',
-    description: 'Supercharge your workflow with Pinance Global Swift...',
+    title: 'Pinnacle Global Swift - Premier Digital Banking',
+    description: 'Experience the future of banking with our comprehensive digital financial solutions. Secure, efficient, and globally connected.',
+    site: '@PinnacleGlobal',
+    creator: '@PinnacleGlobal',
     images: ['/twitter-image.jpg']
-  }
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
+  category: 'Banking & Finance'
 }
 
 export default function RootLayout ({

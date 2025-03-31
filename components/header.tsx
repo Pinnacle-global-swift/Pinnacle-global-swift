@@ -24,6 +24,7 @@ const menuItems: MenuItem[] = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
@@ -51,6 +52,22 @@ export function Header() {
     window.addEventListener('resize', handleResize, { passive: true })
     return () => window.removeEventListener('resize', handleResize)
   }, [isMenuOpen])
+
+  // Add useEffect to detect mobile screens
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768) // 768px is typical tablet/mobile breakpoint
+    }
+
+    // Initial check
+    checkMobile()
+
+    // Add event listener for window resize
+    window.addEventListener('resize', checkMobile)
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Animation variants
   const containerVariants = {
@@ -103,7 +120,9 @@ export function Header() {
 
   return (
     <>
-      <TopBar />
+      {/* Only show TopBar on non-mobile screens */}
+      {!isMobile && <TopBar />}
+      
       <motion.header
         initial="hidden"
         animate="visible"
