@@ -120,6 +120,30 @@ html, body {
   .text-gradient-secondary {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-700;
   }
+
+  .text-heading {
+    @apply font-heading tracking-tight;
+  }
+  
+  .text-display {
+    @apply font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  }
+  
+  .text-title {
+    @apply font-heading text-2xl md:text-3xl lg:text-4xl font-bold;
+  }
+  
+  .text-subtitle {
+    @apply font-sans text-lg md:text-xl text-gray-600 dark:text-gray-300;
+  }
+  
+  .text-body {
+    @apply font-sans text-base leading-relaxed text-gray-700 dark:text-gray-200;
+  }
+  
+  .text-small {
+    @apply font-sans text-sm text-gray-600 dark:text-gray-400;
+  }
 }
 
 /* Custom scrollbar styles */
@@ -150,4 +174,29 @@ html, body {
 .no-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+/* Global Typography Styles */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading;
+}
+
+p {
+  @apply font-sans;
+}
+
+/* Smooth text rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced Link Styling */
+a {
+  @apply transition-colors duration-200;
+}
+
+/* Button Text */
+button, .button {
+  @apply font-sans font-medium;
 }

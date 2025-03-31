@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Outfit, Raleway } from 'next/font/google'
 import './globals.css'
 import { Suspense } from 'react'
 import { Toaster } from '@/components/ui/toaster'
@@ -7,7 +7,22 @@ import { TawkTo } from '@/components/tawk-to'
 import { LoadingProvider } from '@/components/LoadingProvider'
 import { LoadingAnimation } from '@/components/LoadingAnimation'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter'
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit'
+})
+
+const raleway = Raleway({
+  subsets: ['latin'],
+  variable: '--font-raleway'
+})
 
 export const metadata: Metadata = {
   title: {
@@ -99,7 +114,7 @@ export default function RootLayout ({
         <link rel='apple-touch-icon' href='/PGSLOGO.png' />
         {/* <script src="//code.jivosite.com/widget/xDOUdtrJAc" async></script> */}
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${outfit.variable} ${raleway.variable} font-sans`}>
         <Suspense fallback={<LoadingAnimation />}>
           <LoadingProvider>
             {children}
