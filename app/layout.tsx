@@ -112,14 +112,14 @@ export default function RootLayout ({
         <link rel='icon' type='image/png' sizes='32x32' href='/PGSLOGO.png' />
         <link rel='icon' type='image/png' sizes='16x16' href='/PGSLOGO.png' />
         <link rel='apple-touch-icon' href='/PGSLOGO.png' />
-        {/* <script src="//code.jivosite.com/widget/xDOUdtrJAc" async></script> */}
+        <script src="//code.jivosite.com/widget/xDOUdtrJAc" async></script>
       </head>
       <body className={`${inter.variable} ${outfit.variable} ${raleway.variable} font-sans`}>
         <Suspense fallback={<LoadingAnimation />}>
           <LoadingProvider>
             {children}
             <Toaster />
-            <TawkTo />
+            {/* <TawkTo /> */}
           </LoadingProvider>
         </Suspense>
       </body>
