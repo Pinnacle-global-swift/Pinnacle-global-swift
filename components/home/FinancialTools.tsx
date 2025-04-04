@@ -150,7 +150,7 @@ export function FinancialTools () {
                 </div>
 
                 {/* Enhanced button */}
-                <Link href={tool.link} className='mt-6 inline-block'>
+                <Link href="/login" className='mt-6 inline-block'>
                   <Button
                     className={`w-full bg-gradient-to-r ${tool.gradient} text-white hover:opacity-90 transition-all duration-300`}
                   >
