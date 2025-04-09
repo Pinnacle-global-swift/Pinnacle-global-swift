@@ -102,10 +102,10 @@ export function Hero() {
   }, [currentSlide])
 
   return (
-    <section className='relative bg-gradient-primary text-white overflow-hidden min-h-[85vh]'>
+    <section className='relative bg-gradient-primary text-white overflow-hidden min-h-[85vh] md:min-h-[80vh] lg:min-h-[85vh]'>
       {/* Background Gradient Overlay */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent z-10"
+        className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10"
         variants={overlayVariants}
         initial="hidden"
         animate="visible"
@@ -119,7 +119,7 @@ export function Hero() {
           exit="exit"
           className='absolute inset-0'
         >
-          {/* Background Image with Ken Burns Effect */}
+          {/* Background Image */}
           <motion.div 
             className='absolute inset-0'
             initial={{ scale: 1.2 }}
@@ -136,90 +136,93 @@ export function Hero() {
             />
           </motion.div>
 
-          {/* Content */}
-          <div className='relative container mx-auto px-4 h-full flex items-center z-20'>
-            <div className='max-w-3xl'>
-              {/* Title with Split Text Animation */}
-              <motion.h1
-                className='text-5xl md:text-7xl font-bold text-white mb-6'
-                variants={titleVariants}
-              >
-                {heroSlides[currentSlide].title.split(' ').map((word, index) => (
-                  <motion.span
-                    key={index}
-                    className="inline-block mr-4"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-              </motion.h1>
+          {/* Content Container */}
+          <div className='relative container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center z-20'>
+            <div className='w-full max-w-4xl mx-auto lg:mx-0'>
+              {/* Text Content */}
+              <div className='text-center lg:text-left space-y-6 sm:space-y-8'>
+                {/* Title */}
+                <motion.h1
+                  className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold'
+                  variants={titleVariants}
+                >
+                  {heroSlides[currentSlide].title.split(' ').map((word, index) => (
+                    <motion.span
+                      key={index}
+                      className="inline-block mr-2 sm:mr-4"
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </motion.h1>
 
-              {/* Subtitle with Gradient */}
-              <motion.h2
-                variants={subtitleVariants}
-                className='text-2xl md:text-3xl font-semibold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent'
-              >
-                {heroSlides[currentSlide].subtitle}
-              </motion.h2>
+                {/* Subtitle */}
+                <motion.h2
+                  variants={subtitleVariants}
+                  className='text-xl sm:text-2xl md:text-3xl font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent'
+                >
+                  {heroSlides[currentSlide].subtitle}
+                </motion.h2>
 
-              {/* Description with Line Animation */}
-              <motion.div
-                variants={descriptionVariants}
-                className='relative mb-8'
-              >
+                {/* Description */}
                 <motion.div
-                  className='w-1 h-full bg-blue-500 absolute -left-4'
-                  initial={{ height: 0 }}
-                  animate={{ height: '100%' }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                />
-                <p className='text-xl text-gray-200 leading-relaxed'>
-                  {heroSlides[currentSlide].description}
-                </p>
-              </motion.div>
+                  variants={descriptionVariants}
+                  className='relative max-w-2xl mx-auto lg:mx-0'
+                >
+                  <motion.div
+                    className='hidden lg:block w-1 h-full bg-blue-500 absolute -left-4'
+                    initial={{ height: 0 }}
+                    animate={{ height: '100%' }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                  />
+                  <p className='text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed'>
+                    {heroSlides[currentSlide].description}
+                  </p>
+                </motion.div>
 
-              {/* CTA Buttons */}
-              <div className='flex flex-col sm:flex-row gap-4'>
-                <motion.div variants={buttonVariants} custom={0}>
-                  <Link href={heroSlides[currentSlide].cta.primary.link}>
-                    <Button
-                      size='lg'
-                      className='w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300'
-                    >
-                      {heroSlides[currentSlide].cta.primary.text}
-                      <motion.div
-                        className='ml-2'
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
+                {/* CTA Buttons */}
+                <div className='flex flex-col sm:flex-row justify-center lg:justify-start gap-4 sm:gap-6 mt-8'>
+                  <motion.div variants={buttonVariants} custom={0}>
+                    <Link href={heroSlides[currentSlide].cta.primary.link}>
+                      <Button
+                        size='lg'
+                        className='w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4'
                       >
-                        <ArrowRight className='h-5 w-5' />
-                      </motion.div>
-                    </Button>
-                  </Link>
-                </motion.div>
+                        {heroSlides[currentSlide].cta.primary.text}
+                        <motion.div
+                          className='ml-2'
+                          animate={{ x: [0, 5, 0] }}
+                          transition={{ repeat: Infinity, duration: 1.5 }}
+                        >
+                          <ArrowRight className='h-5 w-5' />
+                        </motion.div>
+                      </Button>
+                    </Link>
+                  </motion.div>
 
-                <motion.div variants={buttonVariants} custom={1}>
-                  <Link href={heroSlides[currentSlide].cta.secondary.link}>
-                    <Button
-                      size='lg'
-                      variant='outline'
-                      className='w-full sm:w-auto border-2 border-white/30 hover:border-white text-white hover:bg-white/10 backdrop-blur-sm'
-                    >
-                      {heroSlides[currentSlide].cta.secondary.text}
-                    </Button>
-                  </Link>
-                </motion.div>
+                  <motion.div variants={buttonVariants} custom={1}>
+                    <Link href={heroSlides[currentSlide].cta.secondary.link}>
+                      <Button
+                        size='lg'
+                        variant='outline'
+                        className='w-full sm:w-auto border-2 border-white/30 hover:border-white text-white hover:bg-white/10 backdrop-blur-sm text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4'
+                      >
+                        {heroSlides[currentSlide].cta.secondary.text}
+                      </Button>
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
             </div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation */}
-      <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-10'>
+      {/* Navigation Controls */}
+      <div className='absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-20'>
         {heroSlides.map((_, index) => (
           <button
             key={index}
@@ -232,8 +235,8 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Arrow Controls */}
-      <div className='absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between z-10'>
+      {/* Arrow Controls - Hidden on mobile */}
+      <div className='hidden sm:flex absolute inset-x-4 top-1/2 -translate-y-1/2 justify-between z-20'>
         <button
           className='bg-white/30 hover:bg-white/50 text-white rounded-full p-2 transition-colors duration-300'
           onClick={prevSlide}
