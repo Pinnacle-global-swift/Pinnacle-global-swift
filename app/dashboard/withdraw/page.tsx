@@ -63,7 +63,7 @@ export default function WithdrawPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: "",
-      withdrawalMethod: "",
+      withdrawalMethod: undefined,
       bankName: "",
       accountNumber: "",
       swiftCode: "",
