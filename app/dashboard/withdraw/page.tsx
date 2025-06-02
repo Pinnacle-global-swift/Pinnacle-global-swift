@@ -17,12 +17,40 @@ import { api } from "@/lib/api"
 import { cn } from "@/lib/utils"
 
 const formSchema = z.object({
-  amount: z.string().min(1, "Amount is required"),
-  withdrawalMethod: z.string().min(1, "Withdrawal method is required"),
-  bankName: z.string().min(1, "Bank name is required"),
-  accountNumber: z.string().min(1, "Account number is required"),
-  swiftCode: z.string().min(1, "SWIFT code is required"),
-  description: z.string().optional(),
+  amount: z
+    .string()
+    .min(1, "Amount is required")
+    .refine((val) => !isNaN(parseFloat(val)), {
+      message: "Amount must be a valid number",
+    })
+    .refine((val) => parseFloat(val) >= 100, {
+      message: "Minimum withdrawal amount is $100",
+    })
+    .refine((val) => parseFloat(val) <= 50000, {
+      message: "Maximum withdrawal amount is $50,000",
+    }),
+  withdrawalMethod: z.enum(["Bank Transfer", "Wire Transfer"], {
+    required_error: "Please select a withdrawal method",
+  }),
+  bankName: z
+    .string()
+    .min(2, "Bank name must be at least 2 characters")
+    .max(50, "Bank name must not exceed 50 characters")
+    .regex(/^[a-zA-Z\s]*$/, "Bank name must contain only letters and spaces"),
+  accountNumber: z
+    .string()
+    .min(8, "Account number must be at least 8 digits")
+    .max(20, "Account number must not exceed 20 digits")
+    .regex(/^\d+$/, "Account number must contain only numbers"),
+  swiftCode: z
+    .string()
+    .min(8, "SWIFT code must be 8 or 11 characters")
+    .max(11, "SWIFT code must be 8 or 11 characters")
+    .regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/, "Invalid SWIFT code format"),
+  description: z
+    .string()
+    .max(100, "Description must not exceed 100 characters")
+    .optional(),
 })
 
 export default function WithdrawPage() {
@@ -44,15 +72,39 @@ export default function WithdrawPage() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const withdrawalAmount = parseFloat(values.amount)
+    const currentBalance = accountUser?.balance || 0
+
+    // Check if withdrawal amount exceeds balance
+    if (withdrawalAmount > currentBalance) {
+      toast({
+        type: "error",
+        title: "Insufficient Balance",
+        description: "Withdrawal amount exceeds available balance",
+      })
+      return
+    }
+
+    // Check if withdrawal amount exceeds daily limit
+    if (withdrawalAmount > 10000) {
+      toast({
+        type: "error",
+        title: "Limit Exceeded",
+        description: "Daily withdrawal limit is $10,000",
+      })
+      return
+    }
+
     setIsSubmitting(true)
     try {
       const response = await api.withdraw({
-        amount: Number.parseFloat(values.amount),
+        amount: withdrawalAmount,
         withdrawalMethod: values.withdrawalMethod,
         bankName: values.bankName,
         accountNumber: values.accountNumber,
         swiftCode: values.swiftCode,
       })
+      
       toast({
         title: "Withdrawal Initiated",
         description: `Your withdrawal request for $${values.amount} has been submitted.`,
