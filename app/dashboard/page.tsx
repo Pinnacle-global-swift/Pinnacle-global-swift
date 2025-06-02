@@ -19,6 +19,8 @@ import {
   Check,
   TrendingUp,
   TrendingDown,
+  Eye,
+  EyeOff,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -41,6 +43,12 @@ export default function DashboardOverview() {
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<any>(null)
+  const [showBalance, setShowBalance] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('showBalance') !== 'false'
+    }
+    return true
+  })
   const { toast } = useToast()
 
   useEffect(() => {
@@ -115,7 +123,17 @@ export default function DashboardOverview() {
     }
   }
 
+  const toggleBalanceVisibility = () => {
+    const newState = !showBalance
+    setShowBalance(newState)
+    localStorage.setItem('showBalance', newState.toString())
+  }
 
+  const formatHiddenBalance = (balance: number) => {
+    if (!balance) return '*****'
+    const length = balance.toString().length
+    return '$' + '*'.repeat(length)
+  }
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -143,13 +161,30 @@ export default function DashboardOverview() {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-400">Total Balance</p>
-                  <h2 className="text-3xl font-bold">
-                    $
-                    {accountInfo?.balance?.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-3xl font-bold transition-all duration-300">
+                      {showBalance ? (
+                        `$${accountInfo?.balance?.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}`
+                      ) : (
+                        <span className="select-none">{formatHiddenBalance(accountInfo?.balance)}</span>
+                      )}
+                    </h2>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={toggleBalanceVisibility}
+                      className="focus:outline-none text-gray-400 hover:text-white h-8 w-8 p-1"
+                    >
+                      {showBalance ? (
+                        <Eye className="w-4 h-4" />
+                      ) : (
+                        <EyeOff className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">

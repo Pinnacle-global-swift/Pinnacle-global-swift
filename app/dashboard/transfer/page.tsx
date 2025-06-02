@@ -37,15 +37,41 @@ import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
 
 const formSchema = z.object({
-  accountNumber: z.string().min(1, 'Account number is required'),
-  beneficiaryName: z.string().min(1, 'Beneficiary name is required'),
-  amount: z.string().min(1, 'Amount is required'),
-  transferType: z.string().min(1, 'Transfer type is required'),
-  description: z.string().optional()
+  accountNumber: z
+    .string()
+    .min(1, 'Account number is required')
+    .regex(/^\d+$/, 'Account number must contain only numbers')
+    .min(10, 'Account number must be at least 10 digits')
+    .max(16, 'Account number must not exceed 16 digits'),
+  beneficiaryName: z
+    .string()
+    .min(3, 'Beneficiary name must be at least 3 characters')
+    .max(50, 'Beneficiary name must not exceed 50 characters')
+    .regex(/^[a-zA-Z\s]*$/, 'Beneficiary name must contain only letters and spaces'),
+  amount: z
+    .string()
+    .min(1, 'Amount is required')
+    .refine((val) => !isNaN(parseFloat(val)), {
+      message: 'Amount must be a valid number',
+    })
+    .refine((val) => parseFloat(val) >= 10, {
+      message: 'Minimum transfer amount is $10',
+    })
+    .refine((val) => parseFloat(val) <= 50000, {
+      message: 'Maximum transfer amount is $50,000',
+    }),
+  transferType: z.enum(['internal', 'external', 'international'], {
+    required_error: 'Please select a transfer type',
+  }),
+  description: z
+    .string()
+    .max(100, 'Description must not exceed 100 characters')
+    .optional()
 })
 
 export default function TransferPage () {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isValidatingAccount, setIsValidatingAccount] = useState(false)
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,12 +80,47 @@ export default function TransferPage () {
       accountNumber: '',
       beneficiaryName: '',
       amount: '',
-      transferType: '',
+      transferType: undefined,
       description: ''
     }
   })
 
+  const validateAccountNumber = async (accountNumber: string) => {
+    if (accountNumber.length < 10) return
+    
+    setIsValidatingAccount(true)
+    try {
+      // Simulate API call to validate account
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Add your actual account validation API call here
+      
+      // For demo purposes, let's assume account numbers starting with '1' are invalid
+      if (accountNumber.startsWith('1')) {
+        form.setError('accountNumber', {
+          type: 'manual',
+          message: 'Invalid account number'
+        })
+      }
+    } catch (error) {
+      form.setError('accountNumber', {
+        type: 'manual',
+        message: 'Error validating account'
+      })
+    } finally {
+      setIsValidatingAccount(false)
+    }
+  }
+
   async function onSubmit (values: z.infer<typeof formSchema>) {
+    const amount = parseFloat(values.amount)
+    if (amount > 10000 && values.transferType === 'internal') {
+      return toast({
+        type: "error",
+        title: 'Validation Error',
+        description: 'Internal transfers cannot exceed $10,000'
+      })
+    }
+
     setIsSubmitting(true)
     try {
       // Simulate API call
@@ -125,15 +186,23 @@ export default function TransferPage () {
                         </FormLabel>
                         <FormControl>
                           <div className='relative group'>
-                            <Search className='absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-blue-400 transition-colors' />
+                            <Search className={cn(
+                              'absolute left-3 top-3 h-5 w-5',
+                              isValidatingAccount ? 'animate-spin text-blue-400' : 'text-gray-400',
+                              'group-focus-within:text-blue-400 transition-colors'
+                            )} />
                             <Input
+                              {...field}
+                              onChange={(e) => {
+                                field.onChange(e)
+                                validateAccountNumber(e.target.value)
+                              }}
                               placeholder='Enter account number'
                               className={cn(
                                 'pl-11 bg-gray-950/50 border-white/20 text-gray-100',
                                 'rounded-xl h-12 focus:ring-2 focus:ring-blue-400 focus:border-transparent',
                                 'transition-all duration-300 hover:border-white/40'
                               )}
-                              {...field}
                             />
                           </div>
                         </FormControl>
