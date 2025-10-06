@@ -38,20 +38,20 @@ import { cn } from '@/lib/utils'
 
 const cryptoAddresses = [
   {
-    type: 'BTC',
+    type: 'XRP',
     coin: 'COIN',
-    address: 'bc1qc5hvcr8k6vxzsks6w3d5h3rcmaa52t34n4mdjk',
-    qrCode: '/BTC.png?height=200&width=200',
-    timestamp: '9:19 PM',
-    icon: '/btc-icon.svg'
+    address: 'rpW3G4AyeRtTFumwyd7bDyGW1AWZhZi7u',
+    qrCode: '/XRP.png?height=200&width=200',
+    timestamp: '10:04 PM',
+    icon: '/xrp-icon.svg'
   },
   {
-    type: 'ETH',
+    type: 'XLM',
     coin: 'COIN',
-    address: '0x5ed59b1E92493310e5580C4e54051036396AAA2C',
-    qrCode: '/ETH.png?height=200&width=200',
-    timestamp: '9:20 PM',
-    icon: '/eth-icon.svg'
+    address: 'GDTIY34FHHVZEUZCSE5V57WA2WYLQC4KFFKCDP6LUSO7BH5HITAZK',
+    qrCode: '/XLM.png?height=200&width=200',
+    timestamp: '10:05 PM',
+    icon: '/xlm-icon.svg'
   },
   {
     type: 'USDT',
@@ -77,7 +77,7 @@ export default function DepositPage () {
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: '',
-      paymentMethod: 'BTC' // Changed to match crypto type
+      paymentMethod: 'XRP' // Changed to match crypto type
     }
   })
 
