@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { DateRangePicker } from "@/components/date-range-picker"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+import { CircularSpinner } from "@/components/ui/loading-spinner"
 import { api } from "@/lib/api"
 import { useToast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
@@ -82,6 +82,7 @@ function getStatusBadge(status: string) {
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
+  const [paginationLoading, setPaginationLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [transactionType, setTransactionType] = useState<string | null>(null)
   const [dateRange, setDateRange] = useState<DateRange | undefined>()
@@ -91,12 +92,20 @@ export default function TransactionsPage() {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   useEffect(() => {
-    fetchTransactions()
+    if (currentPage === 1) {
+      fetchTransactions(false)
+    } else {
+      fetchTransactions(true)
+    }
   }, [currentPage]) //Fixed unnecessary dependencies
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (isPagination = false) => {
     try {
-      setLoading(true)
+      if (isPagination) {
+        setPaginationLoading(true)
+      } else {
+        setLoading(true)
+      }
       const response = await api.transactions(currentPage, 20)
       if (response?.success) {
         setTransactions(response.data.transactions)
@@ -108,7 +117,11 @@ export default function TransactionsPage() {
       console.error("Error fetching transactions:", error)
       showErrorToast("An unexpected error occurred. Please try again.")
     } finally {
-      setLoading(false)
+      if (isPagination) {
+        setPaginationLoading(false)
+      } else {
+        setLoading(false)
+      }
     }
   }
 
@@ -182,7 +195,51 @@ export default function TransactionsPage() {
             </div>
 
             {loading ? (
-              <LoadingSpinner />
+              <div className="rounded-xl overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-white/10">
+                      <TableHead className="text-gray-300">Type</TableHead>
+                      <TableHead className="text-gray-300">Date</TableHead>
+                      <TableHead className="text-gray-300">Description</TableHead>
+                      <TableHead className="text-gray-300">Reference</TableHead>
+                      <TableHead className="text-gray-300">Amount</TableHead>
+                      <TableHead className="text-gray-300">Balance After</TableHead>
+                      <TableHead className="text-gray-300">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <TableRow key={index} className="border-b border-white/10">
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 bg-gray-700/50 rounded animate-pulse" />
+                            <div className="w-16 h-4 bg-gray-700/50 rounded animate-pulse" />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-24 h-4 bg-gray-700/50 rounded animate-pulse" />
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-32 h-4 bg-gray-700/50 rounded animate-pulse" />
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-20 h-6 bg-gray-700/50 rounded animate-pulse" />
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-16 h-4 bg-gray-700/50 rounded animate-pulse" />
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-20 h-4 bg-gray-700/50 rounded animate-pulse" />
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-16 h-6 bg-gray-700/50 rounded animate-pulse" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             ) : (
               <div className="rounded-xl overflow-hidden">
                 <Table>
@@ -215,17 +272,30 @@ export default function TransactionsPage() {
                 <Button
                   variant="outline"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
+                  disabled={currentPage === 1 || paginationLoading}
                   className="bg-white/10 text-white hover:bg-white/20"
                 >
+                  {paginationLoading && currentPage > 1 ? (
+                    <CircularSpinner size="sm" variant="white" className="mr-2" />
+                  ) : null}
                   Previous
                 </Button>
+                <span className="px-4 py-2 text-white">
+                  {paginationLoading ? (
+                    <CircularSpinner size="sm" variant="white" />
+                  ) : (
+                    `${currentPage} of ${totalPages}`
+                  )}
+                </span>
                 <Button
                   variant="outline"
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
+                  disabled={currentPage === totalPages || paginationLoading}
                   className="bg-white/10 text-white hover:bg-white/20"
                 >
+                  {paginationLoading && currentPage < totalPages ? (
+                    <CircularSpinner size="sm" variant="white" className="mr-2" />
+                  ) : null}
                   Next
                 </Button>
               </div>

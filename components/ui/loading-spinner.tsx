@@ -51,7 +51,7 @@ export function CircularSpinner ({
         className={cn(
           'rounded-full border-t-transparent',
           sizeClasses[size],
-          variant === 'default' ? 'border-primary' : 'border-white',
+          variant === 'default' ? 'border-primary border-t-primary/30' : 'border-white border-t-white/30',
           className
         )}
       />
