@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Outfit, Raleway } from 'next/font/google'
 import './globals.css'
 import { Suspense } from 'react'
@@ -7,7 +7,7 @@ import { TawkTo } from '@/components/tawk-to'
 import { LoadingProvider } from '@/components/LoadingProvider'
 import { LoadingAnimation } from '@/components/LoadingAnimation'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter'
@@ -23,6 +23,16 @@ const raleway = Raleway({
   subsets: ['latin'],
   variable: '--font-raleway'
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
+}
 
 export const metadata: Metadata = {
   title: {
@@ -76,11 +86,6 @@ export const metadata: Metadata = {
     creator: '@PinnacleGlobal',
     images: ['/twitter-image.jpg']
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
   robots: {
     index: true,
     follow: true,
@@ -92,14 +97,10 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
-  ],
   category: 'Banking & Finance'
 }
 
-export default function RootLayout ({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode
@@ -120,7 +121,7 @@ export default function RootLayout ({
           <LoadingProvider>
             {children}
             <Toaster />
-               <TawkTo /> 
+            <TawkTo />
           </LoadingProvider>
         </Suspense>
       </body>
