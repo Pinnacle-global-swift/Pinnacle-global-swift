@@ -17,7 +17,7 @@ const accountTypes = [
     icon: Piggy,
     title: 'Personal Savings',
     description:
-      'Grow your wealth with our high-yield savings accounts and personalized financial planning services.',
+      'Start building your financial future with our high-yield savings accounts. Enjoy competitive interest rates, no monthly maintenance fees, and personalized financial planning services designed to help you reach your long-term goals faster.',
     features: [
       'High-yield interest rates',
       'No monthly fees',
@@ -34,7 +34,7 @@ const accountTypes = [
     icon: Briefcase,
     title: 'Business Checking',
     description:
-      'Streamlined business banking solutions with advanced cash management tools and dedicated support.',
+      'Power your business with a checking account that works as hard as you do. Our streamlined solutions include advanced cash management tools, dedicated business support, and seamless integration with your existing accounting systems.',
     features: [
       'Advanced cash management',
       'Dedicated support',
@@ -51,7 +51,7 @@ const accountTypes = [
     icon: Building,
     title: 'Corporate Banking',
     description:
-      'Comprehensive financial solutions for large corporations with global banking capabilities.',
+      'Tailored for large enterprises and global organizations, our corporate banking suite provides comprehensive financial solutions, global transaction capabilities, and a dedicated account management team to support your strategic operations worldwide.',
     features: [
       'Global banking capabilities',
       'Dedicated account manager',
@@ -68,7 +68,7 @@ const accountTypes = [
     icon: Users,
     title: 'Joint Accounts',
     description:
-      'Simplified shared banking with smart features for families and partnerships.',
+      'Manage shared finances effortlessly with our smart joint accounts. Perfect for families and business partnerships, these accounts offer real-time tracking, transparent budgeting tools, and dual access to ensure both parties stay perfectly synchronized.',
     features: [
       'Shared account access',
       'Smart budgeting tools',
@@ -83,7 +83,7 @@ const accountTypes = [
   }
 ]
 
-export function AccountTypes () {
+export function AccountTypes() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

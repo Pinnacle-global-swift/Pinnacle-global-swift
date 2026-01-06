@@ -104,7 +104,7 @@ export function Hero() {
   return (
     <section className='relative bg-gradient-primary text-white overflow-hidden min-h-[85vh] md:min-h-[80vh] lg:min-h-[85vh]'>
       {/* Background Gradient Overlay */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10"
         variants={overlayVariants}
         initial="hidden"
@@ -120,7 +120,7 @@ export function Hero() {
           className='absolute inset-0'
         >
           {/* Background Image */}
-          <motion.div 
+          <motion.div
             className='absolute inset-0'
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
@@ -137,7 +137,7 @@ export function Hero() {
           </motion.div>
 
           {/* Content Container */}
-          <div className='relative container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center z-20'>
+          <div className='relative container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center z-20 pb-20 sm:pb-24 lg:pb-0'>
             <div className='w-full max-w-4xl mx-auto lg:mx-0'>
               {/* Text Content */}
               <div className='text-center lg:text-left space-y-6 sm:space-y-8'>
@@ -226,9 +226,8 @@ export function Hero() {
         {heroSlides.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-              currentSlide === index ? 'bg-white' : 'bg-gray-400'
-            }`}
+            className={`w-3 h-3 rounded-full transition-colors duration-300 ${currentSlide === index ? 'bg-white' : 'bg-gray-400'
+              }`}
             onClick={() => setCurrentSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
           />

@@ -19,21 +19,23 @@ const services = [
     icon: CreditCard,
     name: 'Personal Banking',
     description:
-      'Checking, savings, and credit card solutions tailored to your needs.',
+      'Discover checking, savings, and credit card solutions tailored perfectly to your lifestyle and financial needs for a seamless everyday banking experience.',
     gradient: 'from-blue-500 to-indigo-600',
     link: '/services'
   },
   {
     icon: Briefcase,
     name: 'Business Accounts',
-    description: 'Comprehensive banking services to help your business thrive.',
+    description:
+      'Access comprehensive banking services and advanced financial tools designed specifically to help your business thrive and scale in any market environment.',
     gradient: 'from-green-500 to-teal-600',
     link: '/services'
   },
   {
     icon: Home,
     name: 'Mortgages',
-    description: 'Competitive rates and flexible terms for your dream home.',
+    description:
+      'Unlock competitive rates and highly flexible terms for your dream home with our expert mortgage consultants guiding you through every step of the journey.',
     gradient: 'from-red-500 to-pink-600',
     link: '/services'
   },
@@ -41,7 +43,7 @@ const services = [
     icon: ChartBar,
     name: 'Investment Services',
     description:
-      'Expert guidance and diverse portfolio options for wealth growth.',
+      'Benefit from expert financial guidance and a wide range of diverse portfolio options designed to maximize your long-term wealth growth and stability.',
     gradient: 'from-purple-500 to-violet-600',
     link: '/services'
   },
@@ -49,7 +51,7 @@ const services = [
     icon: Plane,
     name: 'International Banking',
     description:
-      'Seamless cross-border transactions and multi-currency accounts.',
+      'Experience seamless cross-border transactions and manage multi-currency accounts with ease, ensuring your finances travel as far as you do without friction.',
     gradient: 'from-yellow-500 to-orange-600',
     link: '/services'
   },
@@ -57,7 +59,7 @@ const services = [
     icon: Shield,
     name: 'Insurance Products',
     description:
-      'Protect what matters most with our range of insurance offerings.',
+      'Protect what matters most to you with our extensive range of specialized insurance offerings, providing peace of mind for you and your family.',
     gradient: 'from-gray-500 to-gray-600',
     link: '/services'
   }
@@ -86,7 +88,7 @@ const itemVariants = {
   }
 }
 
-export function Services () {
+export function Services() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,

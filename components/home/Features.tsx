@@ -16,7 +16,7 @@ const features = [
     icon: CreditCard,
     title: 'Smart Card Management',
     description:
-      'Control your cards in real-time, set limits, and track expenses with our intuitive interface.',
+      'Take full control of your cards in real-time. Set spending limits, freeze cards instantly, and track your daily expenses with our intuitive interface.',
     image:
       'https://images.unsplash.com/photo-1633158829875-e5316a358c6f?auto=format&fit=crop&q=80&w=2070',
     gradient: 'from-blue-500 to-indigo-600'
@@ -25,7 +25,7 @@ const features = [
     icon: Lock,
     title: 'Bank-Grade Security',
     description:
-      'Rest easy knowing your money and data are protected by state-of-the-art encryption and multi-factor authentication.',
+      'Rest easy knowing your money and data are protected by state-of-the-art encryption and advanced multi-factor authentication protocols for maximum safety.',
     image:
       'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1920',
     gradient: 'from-green-500 to-teal-600'
@@ -34,7 +34,7 @@ const features = [
     icon: Zap,
     title: 'Instant Transfers',
     description:
-      'Send and receive money in seconds, both domestically and internationally, with low fees and great exchange rates.',
+      'Send and receive money in seconds, both domestically and internationally, with incredibly low fees and competitive real-time exchange rates.',
     image:
       'https://images.unsplash.com/photo-1616514197671-15d99ce7a6f8?auto=format&fit=crop&q=80&w=1920',
     gradient: 'from-yellow-500 to-orange-600'
@@ -43,7 +43,7 @@ const features = [
     icon: Globe,
     title: 'Global Access',
     description:
-      'Bank from anywhere in the world with our comprehensive online and mobile banking platforms.',
+      'Access your accounts and bank from anywhere in the world with our comprehensive online banking and mobile platforms designed for global mobility.',
     image:
       'https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&q=80&w=1920',
     gradient: 'from-purple-500 to-pink-600'
@@ -52,7 +52,7 @@ const features = [
     icon: Smartphone,
     title: 'Mobile Banking',
     description:
-      'Manage your accounts, pay bills, and deposit checks right from your smartphone with our award-winning app.',
+      'Manage accounts, pay bills, and deposit checks directly from your smartphone with our award-winning app featuring a seamless user experience.',
     image:
       'https://images.unsplash.com/photo-1599202875854-23b7cd490ff4?q=80&w=1588&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     gradient: 'from-red-500 to-pink-600'
@@ -61,14 +61,14 @@ const features = [
     icon: PiggyBank,
     title: 'Savings Goals',
     description:
-      'Set and track your savings goals with our interactive tools and automated savings plans.',
+      'Plan for your future by setting and tracking savings goals with our interactive tools and automated savings plans tailored to your needs.',
     image:
       'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&q=80&w=1920',
     gradient: 'from-indigo-500 to-purple-600'
   }
 ]
 
-export function Features () {
+export function Features() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -87,7 +87,7 @@ export function Features () {
   }
 
   return (
-    <section className='relative py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden'>
+    <section className='relative pt-24 pb-32 bg-gradient-to-b from-gray-50 to-white overflow-hidden'>
       {/* Background Pattern */}
       <div className='absolute inset-0 opacity-40'>
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />

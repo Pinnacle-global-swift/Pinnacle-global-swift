@@ -17,7 +17,7 @@ const tools = [
     icon: Calculator,
     title: 'Loan Calculator',
     description:
-      'Estimate your monthly payments and total interest with our advanced loan calculator. Plan your finances with confidence.',
+      'Estimate your monthly payments and total interest with our advanced loan calculator. Plan your finances with confidence and clarity using real data.',
     image:
       'https://images.unsplash.com/photo-1633158829875-e5316a358c6f?auto=format&fit=crop&q=80&w=2070',
     link: '/tools/loan-calculator',
@@ -26,7 +26,8 @@ const tools = [
   {
     icon: TrendingUp,
     title: 'Investment Tracker',
-    description: 'Monitor your portfolio performance in real-time.',
+    description:
+      'Monitor your portfolio performance in real-time with our comprehensive tracker. Stay informed about market trends and your overall wealth growth instantly.',
     image:
       'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=2070',
     link: '/tools/investment-tracker',
@@ -35,7 +36,8 @@ const tools = [
   {
     icon: PieChart,
     title: 'Budget Planner',
-    description: 'Create and manage your personal or business budget.',
+    description:
+      'Create and manage your personal or business budget with ease. Our intuitive planner helps you track spending and save effectively for future goals.',
     image:
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2070',
     link: '/tools/budget-planner',
@@ -44,7 +46,8 @@ const tools = [
   {
     icon: DollarSign,
     title: 'Currency Converter',
-    description: 'Get real-time exchange rates for multiple currencies.',
+    description:
+      'Get real-time exchange rates for multiple global currencies. Perform quick and accurate conversions to manage your international transactions with complete confidence.',
     image:
       'https://images.unsplash.com/photo-1627719172038-611c725920bc?auto=format&fit=crop&q=80&w=2070',
     link: '/tools/currency-converter',
@@ -52,7 +55,7 @@ const tools = [
   }
 ]
 
-export function FinancialTools () {
+export function FinancialTools() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
