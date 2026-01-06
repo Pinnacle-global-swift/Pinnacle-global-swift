@@ -300,15 +300,19 @@ export default function DashboardOverview() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { label: 'Transactions', icon: Receipt, href: '/dashboard/transactions', color: 'bg-emerald-500/10 text-emerald-400' },
+                    { label: 'Deposit', icon: Wallet, href: '/dashboard/deposit', color: 'bg-blue-500/10 text-blue-400' },
+                    { label: 'KYC', icon: ShieldCheck, href: '/dashboard/kyc', color: 'bg-indigo-500/10 text-indigo-400' }
                   ].map((action) => (
-                  <Link key={action.label} href={action.href}>
-                    <div className="h-full p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 transition-all cursor-pointer group/item flex flex-col justify-between aspect-square">
-                      <div className={`w-10 h-10 rounded-lg ${action.color} flex items-center justify-center transition-transform group-hover/item:scale-110`}>
-                        <action.icon className="w-5 h-5" />
+                    <Link key={action.label} href={action.href}>
+                      <div className="h-full p-4 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 transition-all cursor-pointer group/item flex flex-col justify-between aspect-square">
+                        <div className={`w-10 h-10 rounded-lg ${action.color} flex items-center justify-center transition-transform group-hover/item:scale-110`}>
+                          <action.icon className="w-5 h-5" />
+                        </div>
+                        <span className="text-sm font-medium text-slate-300 group-hover/item:text-white">{action.label}</span>
                       </div>
-                      <span className="text-sm font-medium text-slate-300 group-hover/item:text-white">{action.label}</span>
-                    </div>
-                  </Link>
+                    </Link>
                   ))}
                 </div>
               </div>
