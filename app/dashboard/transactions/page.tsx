@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback, memo } from "react"
 import { motion } from "framer-motion"
 import { ArrowUpRight, ArrowDownRight, ArrowLeftRight, Download, Search } from "lucide-react"
 import { format } from "date-fns"
@@ -26,19 +26,6 @@ interface Transaction {
   description: string
   date: string
   balanceAfter: number
-}
-
-interface TransactionResponse {
-  success: boolean
-  data: {
-    transactions: Transaction[]
-    pagination: {
-      total: number
-      pages: number
-      page: number
-      limit: number
-    }
-  }
 }
 
 function getTransactionIcon(type: string) {
@@ -79,6 +66,50 @@ function getStatusBadge(status: string) {
   }
 }
 
+const TransactionRow = memo(({
+  transaction,
+  onSelect
+}: {
+  transaction: Transaction
+  onSelect: (t: Transaction) => void
+}) => {
+  return (
+    <TableRow
+      className="border-b border-white/10 hover:bg-white/5 cursor-pointer"
+      onClick={() => onSelect(transaction)}
+    >
+      <TableCell className="text-white">
+        <div className="flex items-center gap-2">
+          {getTransactionIcon(transaction.type)}
+          <span className="capitalize">{transaction.type}</span>
+        </div>
+      </TableCell>
+      <TableCell className="text-gray-300">{format(new Date(transaction.date), "MMM dd, yyyy HH:mm")}</TableCell>
+      <TableCell className="text-gray-300">{transaction.description}</TableCell>
+      <TableCell>
+        <code className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-300">{transaction.reference}</code>
+      </TableCell>
+      <TableCell>
+        <span
+          className={cn(
+            transaction.type === "deposit"
+              ? "text-green-400"
+              : transaction.type === "withdrawal"
+                ? "text-red-400"
+                : "text-blue-400",
+          )}
+        >
+          ${transaction.amount.toFixed(2)}
+        </span>
+      </TableCell>
+      <TableCell className="text-gray-300">${transaction?.balanceAfter.toFixed(2)}</TableCell>
+      <TableCell>{getStatusBadge(transaction.status)}</TableCell>
+    </TableRow>
+  )
+})
+
+TransactionRow.displayName = "TransactionRow"
+
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
@@ -91,15 +122,15 @@ export default function TransactionsPage() {
   const { toast } = useToast()
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
-  useEffect(() => {
-    if (currentPage === 1) {
-      fetchTransactions(false)
-    } else {
-      fetchTransactions(true)
-    }
-  }, [currentPage]) //Fixed unnecessary dependencies
+  const showErrorToast = useCallback((message: string) => {
+    toast({
+      title: "Error",
+      description: message,
+      type: "error",
+    })
+  }, [toast])
 
-  const fetchTransactions = async (isPagination = false) => {
+  const fetchTransactions = useCallback(async (isPagination = false) => {
     try {
       if (isPagination) {
         setPaginationLoading(true)
@@ -123,16 +154,11 @@ export default function TransactionsPage() {
         setLoading(false)
       }
     }
-  }
+  }, [currentPage, showErrorToast])
 
-  const showErrorToast = (message: string) => {
-    toast({
-      title: "Error",
-      description: message,
-      type: "error",
-    })
-  }
-
+  useEffect(() => {
+    fetchTransactions(currentPage > 1)
+  }, [fetchTransactions, currentPage])
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter(
@@ -141,6 +167,10 @@ export default function TransactionsPage() {
         transaction.reference.toLowerCase().includes(searchTerm.toLowerCase()),
     )
   }, [transactions, searchTerm])
+
+  const handleTransactionSelect = useCallback((transaction: Transaction) => {
+    setSelectedTransaction(transaction)
+  }, [])
 
   return (
     <div className="container max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8">
@@ -256,10 +286,10 @@ export default function TransactionsPage() {
                   </TableHeader>
                   <TableBody>
                     {filteredTransactions.map((transaction) => (
-                      <TransactionRow 
-                        key={transaction.reference} 
+                      <TransactionRow
+                        key={transaction.reference}
                         transaction={transaction}
-                        onSelect={() => setSelectedTransaction(transaction)}
+                        onSelect={handleTransactionSelect}
                       />
                     ))}
                   </TableBody>
@@ -305,52 +335,9 @@ export default function TransactionsPage() {
       </motion.div>
       <TransactionReceipt
         isOpen={!!selectedTransaction}
-        onClose={() => setSelectedTransaction(null)}
+        onClose={() => handleTransactionSelect(null as any)}
         transaction={selectedTransaction}
       />
     </div>
   )
 }
-
-function TransactionRow({ 
-  transaction, 
-  onSelect 
-}: { 
-  transaction: Transaction
-  onSelect: () => void 
-}) {
-  return (
-    <TableRow 
-      className="border-b border-white/10 hover:bg-white/5 cursor-pointer" 
-      onClick={onSelect}
-    >
-      <TableCell className="text-white">
-        <div className="flex items-center gap-2">
-          {getTransactionIcon(transaction.type)}
-          <span className="capitalize">{transaction.type}</span>
-        </div>
-      </TableCell>
-      <TableCell className="text-gray-300">{format(new Date(transaction.date), "MMM dd, yyyy HH:mm")}</TableCell>
-      <TableCell className="text-gray-300">{transaction.description}</TableCell>
-      <TableCell>
-        <code className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-300">{transaction.reference}</code>
-      </TableCell>
-      <TableCell>
-        <span
-          className={cn(
-            transaction.type === "deposit"
-              ? "text-green-400"
-              : transaction.type === "withdrawal"
-                ? "text-red-400"
-                : "text-blue-400",
-          )}
-        >
-          ${transaction.amount.toFixed(2)}
-        </span>
-      </TableCell>
-      <TableCell className="text-gray-300">${transaction?.balanceAfter.toFixed(2)}</TableCell>
-      <TableCell>{getStatusBadge(transaction.status)}</TableCell>
-    </TableRow>
-  )
-}
-

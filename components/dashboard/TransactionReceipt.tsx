@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { memo, useCallback, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -8,9 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { format } from "date-fns"
-import { Download, Copy, Check, Building, ArrowRight } from 'lucide-react'
+import { Download, Copy, Check, Building } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import Image from 'next/image'
 
@@ -20,11 +19,11 @@ interface TransactionReceiptProps {
   transaction: any
 }
 
-export function TransactionReceipt({ isOpen, onClose, transaction }: TransactionReceiptProps) {
+export const TransactionReceipt = memo(function TransactionReceipt({ isOpen, onClose, transaction }: TransactionReceiptProps) {
   const [copied, setCopied] = useState(false)
   const { toast } = useToast()
 
-  const handleCopy = async (text: string) => {
+  const handleCopy = useCallback(async (text: string) => {
     await navigator.clipboard.writeText(text)
     setCopied(true)
     toast({
@@ -33,11 +32,11 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
       type: 'success'
     })
     setTimeout(() => setCopied(false), 2000)
-  }
+  }, [toast])
 
-  const printReceipt = () => {
+  const printReceipt = useCallback(() => {
     window.print()
-  }
+  }, [])
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -66,7 +65,7 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
             </div>
           </div>
         </DialogHeader>
-        
+
         <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
           {/* Bank Information */}
           <div className="bg-gradient-to-r from-primary/5 to-primary/10 p-4 sm:p-6 rounded-xl space-y-2">
@@ -89,15 +88,13 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
           </div>
 
           {/* Transaction Status Banner */}
-          <div className={`rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 ${
-            transaction?.status === 'completed' ? 'bg-green-50 text-green-700' : 
-            transaction?.status === 'pending' ? 'bg-yellow-50 text-yellow-700' : 'bg-red-50 text-red-700'
-          }`}>
+          <div className={`rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 ${transaction?.status === 'completed' ? 'bg-green-50 text-green-700' :
+              transaction?.status === 'pending' ? 'bg-yellow-50 text-yellow-700' : 'bg-red-50 text-red-700'
+            }`}>
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${
-                transaction?.status === 'completed' ? 'bg-green-500' :
-                transaction?.status === 'pending' ? 'bg-yellow-500' : 'bg-red-500'
-              }`} />
+              <div className={`w-2 h-2 rounded-full ${transaction?.status === 'completed' ? 'bg-green-500' :
+                  transaction?.status === 'pending' ? 'bg-yellow-500' : 'bg-red-500'
+                }`} />
               <span className="font-medium capitalize">
                 {transaction?.status} Transaction
               </span>
@@ -120,7 +117,7 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
                   <div className="flex justify-between text-sm items-center">
                     <span className="text-gray-500">Amount</span>
                     <span className="font-bold text-base sm:text-lg">
-                      ${transaction?.amount.toFixed(2)} {transaction?.currency}
+                      ${transaction?.amount?.toFixed(2)} {transaction?.currency}
                     </span>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between text-sm gap-2">
@@ -129,7 +126,7 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
                       <code className="font-mono text-xs bg-gray-100 px-2 py-1 rounded whitespace-nowrap">
                         {transaction?.reference}
                       </code>
-                      <button 
+                      <button
                         onClick={() => handleCopy(transaction?.reference)}
                         className="text-primary hover:text-primary/80 shrink-0"
                       >
@@ -179,14 +176,14 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
                 <p className="mt-1">Generated on {format(new Date(), "PPP")}</p>
               </div>
               <div className="flex gap-3 w-full sm:w-auto">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={onClose}
                   className="flex-1 sm:flex-none"
                 >
                   Close
                 </Button>
-                <Button 
+                <Button
                   className="bg-primary hover:bg-primary/90 flex-1 sm:flex-none"
                   onClick={printReceipt}
                 >
@@ -200,4 +197,6 @@ export function TransactionReceipt({ isOpen, onClose, transaction }: Transaction
       </DialogContent>
     </Dialog>
   )
-}
+})
+
+TransactionReceipt.displayName = 'TransactionReceipt'

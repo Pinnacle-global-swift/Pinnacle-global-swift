@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CreditCard,
   CheckCircle2,
   ArrowRight,
   Lock,
-  PinIcon as Chip
+  Pin as Chip
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/card'
 import { CardPaymentDialog } from '@/components/card-payment-dialog'
 import { PinEntryDialog } from '@/components/pin-entry-dialog'
-import { ProofOfPaymentUpload } from '@/components/proof-of-payment-upload'
 import { ProofOfPaymentDialog } from '@/components/proof-of-payment-dialog'
 import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
@@ -43,7 +42,7 @@ const requirements = [
   'Active account for at least 3 working days'
 ]
 
-export default function Cards () {
+export default function Cards() {
   const [step, setStep] = useState<
     | 'intro'
     | 'requirements'
@@ -60,94 +59,83 @@ export default function Cards () {
   const [cardStatus, setCardStatus] = useState<any>(null)
   const [showProofOfPaymentUpload, setShowProofOfPaymentUpload] =
     useState(false)
-  const [isPaymentCompleted, setIsPaymentCompleted] = useState(false)
 
-  const handleActivate = async () => {
+  const handleActivate = useCallback(() => {
     setIsPinActivation(false)
     setShowPinEntry(true)
-  }
+  }, [])
 
-  const handleActivatePin = async () => {
+  const handleActivatePin = useCallback(() => {
     setIsPinActivation(true)
     setShowPinEntry(true)
-  }
+  }, [])
 
-  const handlePinSubmit = async (pin: string) => {
+  const handlePinSubmit = useCallback(async (pin: string) => {
     setShowPinEntry(false)
     setIsLoading(true)
     try {
       if (isPinActivation) {
         // Handle PIN activation
-        const data = await api.activatePin({ pin })
-        console.log(data)
-        setCardStatus({
-          ...cardStatus,
-          cardDetails: { ...cardStatus.cardDetails, hasPIN: true }
-        })
+        await api.activatePin({ pin })
+        setCardStatus((prev: any) => ({
+          ...prev,
+          cardDetails: { ...prev.cardDetails, hasPIN: true }
+        }))
       } else {
         // Handle card activation
         const formData = new FormData()
         formData.append('pin', pin)
-        const data = await api.activateCard(formData)
-        console.log(data)
-        setCardStatus({
-          ...cardStatus,
-          cardDetails: { ...cardStatus.cardDetails, status: 'active' }
-        })
+        await api.activateCard(formData)
+        setCardStatus((prev: any) => ({
+          ...prev,
+          cardDetails: { ...prev.cardDetails, status: 'active' }
+        }))
       }
     } catch (error) {
       console.error('Error:', error)
-      // Handle error (e.g., show error message to user)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [isPinActivation])
 
-  const handleApply = async () => {
+  const handleApply = useCallback(() => {
     setShowPayment(true)
-  }
+  }, [])
 
-  const handlePaymentComplete = async () => {
+  const handlePaymentComplete = useCallback(() => {
     setShowPayment(false)
     setTimeout(() => {
       setShowProofOfPaymentUpload(true)
     }, 300)
-  }
+  }, [])
 
-  const handleProofOfPaymentUpload = async (file: File) => {
+  const handleProofOfPaymentUpload = useCallback(async (file: File) => {
     setShowProofOfPaymentUpload(false)
     setIsLoading(true)
     try {
       const formData = new FormData()
       formData.append('paymentReceipt', file)
       formData.append('type', 'mastercard')
-      console.log(formData)
-      const data = await api.applyCard(formData)
-      console.log(data)
+      await api.applyCard(formData)
       setStep('success')
     } catch (error) {
       console.error('Error uploading proof of payment:', error)
-      // Handle error (e.g., show error message to user)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     const fetchAccountInfo = async () => {
       try {
         const data = await api.cardStatus()
         setCardStatus(data?.data)
-
-        console.log(data?.data)
       } catch (err: any) {
         console.log(err)
       }
     }
     fetchAccountInfo()
   }, [])
-
-  console.log(cardStatus)
 
   return (
     <div className='min-h-screen w-full py-4 px-2 sm:py-6 sm:px-4 md:py-8 lg:py-10'>
@@ -167,7 +155,7 @@ export default function Cards () {
             <CardContent className='p-4 sm:p-6 pt-6'>
               <AnimatePresence mode='wait'>
                 {cardStatus?.hasCard &&
-                cardStatus?.cardDetails?.status == 'approved' ? (
+                  cardStatus?.cardDetails?.status == 'approved' ? (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -188,7 +176,6 @@ export default function Cards () {
                               className={`w-full p-4 sm:p-6 rounded-lg bg-gradient-to-br ${card.color}`}
                             >
                               <div className='flex flex-col h-40 sm:h-52'>
-                                {/* Bank Info & Logo */}
                                 <div className='flex justify-between items-start mb-4 sm:mb-6'>
                                   <h3 className='text-white/90 text-base sm:text-lg font-medium'>
                                     Pinnacle Global Swift
@@ -201,18 +188,16 @@ export default function Cards () {
                                   </div>
                                 </div>
 
-                                {/* Chip & Status */}
                                 <div className='flex items-center gap-3 mb-4 sm:mb-6'>
                                   <Chip className='w-10 h-8 sm:w-12 sm:h-9 text-yellow-300/90 rounded-md' />
                                   <span className='text-white/80 text-xs sm:text-sm px-2 py-1 bg-white/20 rounded-full'>
                                     {cardStatus?.cardDetails?.status ===
-                                    'active'
+                                      'active'
                                       ? 'Active'
                                       : 'Pending'}
                                   </span>
                                 </div>
 
-                                {/* Card Number */}
                                 <div className='text-base sm:text-lg text-white font-mono tracking-wider break-words'>
                                   {cardStatus?.cardDetails?.maskedCardNumber
                                     .split('-')
@@ -223,7 +208,6 @@ export default function Cards () {
                                     ))}
                                 </div>
 
-                                {/* Card Details */}
                                 <div className='flex justify-between items-end mt-2 sm:mt-4'>
                                   <div className='space-y-0.5 sm:space-y-1'>
                                     <div className='text-white/60 text-xs'>
@@ -310,8 +294,8 @@ export default function Cards () {
                               {isLoading
                                 ? 'Processing...'
                                 : cardStatus?.cardDetails?.status === 'active'
-                                ? 'Card Active'
-                                : 'Activate Card'}
+                                  ? 'Card Active'
+                                  : 'Activate Card'}
                             </Button>
                             <Button
                               onClick={handleActivatePin}
@@ -327,8 +311,8 @@ export default function Cards () {
                               {isLoading
                                 ? 'Processing...'
                                 : cardStatus?.cardDetails?.hasPIN
-                                ? 'PIN Set'
-                                : 'Activate PIN'}
+                                  ? 'PIN Set'
+                                  : 'Activate PIN'}
                               <Lock className='ml-2 h-4 w-4' />
                             </Button>
                           </CardFooter>
@@ -371,7 +355,7 @@ export default function Cards () {
                           </CardContent>
                           <CardFooter className='bg-gray-800/50'>
                             {cardStatus?.hasCard &&
-                            cardStatus?.cardDetails?.status === 'pending' ? (
+                              cardStatus?.cardDetails?.status === 'pending' ? (
                               <Button
                                 className={cn(
                                   'w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white',
@@ -464,16 +448,6 @@ export default function Cards () {
                         transition={{ duration: 0.3 }}
                         className='grid gap-4 sm:gap-6 md:grid-cols-2'
                       >
-                        <CardPaymentDialog
-                          open={showPayment}
-                          onOpenChange={open => {
-                            if (!open) {
-                              handlePaymentComplete()
-                            }
-                            setShowPayment(open)
-                          }}
-                          amount={2000}
-                        />
                         {cardTypes.map((card, index) => (
                           <motion.div
                             key={card.name}
@@ -487,7 +461,6 @@ export default function Cards () {
                                   className={`w-full p-4 sm:p-6 rounded-lg bg-gradient-to-br ${card.color}`}
                                 >
                                   <div className='flex flex-col h-40 sm:h-52'>
-                                    {/* Bank Info & Logo */}
                                     <div className='flex justify-between items-start mb-4 sm:mb-6'>
                                       <h3 className='text-white/90 text-base sm:text-lg font-medium'>
                                         Pinnacle Global Swift
@@ -500,24 +473,20 @@ export default function Cards () {
                                       </div>
                                     </div>
 
-                                    {/* Chip & Status */}
                                     <div className='flex items-center gap-3 mb-4 sm:mb-6'>
-                                      <div className='w-10 h-8 sm:w-12 sm:h-9 bg-yellow-300/90 rounded-md' />{' '}
-                                      {/* Chip */}
+                                      <div className='w-10 h-8 sm:w-12 sm:h-9 bg-yellow-300/90 rounded-md' />
                                       <span className='text-white/80 text-xs sm:text-sm px-2 py-1 bg-white/20 rounded-full'>
                                         {cardStatus?.cardDetails?.status ===
-                                        'active'
+                                          'active'
                                           ? 'Active'
                                           : 'Pending'}
                                       </span>
                                     </div>
 
-                                    {/* Card Number */}
                                     <div className='text-base sm:text-lg text-white font-mono tracking-wider break-words'>
                                       **** **** **** ****
                                     </div>
 
-                                    {/* Card Details */}
                                     <div className='flex justify-between items-end mt-2 sm:mt-4'>
                                       <div className='space-y-0.5 sm:space-y-1'>
                                         <div className='text-white/60 text-xs'>
@@ -572,20 +541,6 @@ export default function Cards () {
                             </Card>
                           </motion.div>
                         ))}
-                      </motion.div>
-                    )}
-
-                    {step === 'proofOfPayment' && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ProofOfPaymentUpload
-                          onUpload={handleProofOfPaymentUpload}
-                          onClose={() => setStep('options')}
-                        />
                       </motion.div>
                     )}
 
@@ -661,13 +616,6 @@ export default function Cards () {
           onOpenChange={setShowPinEntry}
           onSubmit={handlePinSubmit}
         />
-
-        {/* {showProofOfPaymentUpload && (
-          <ProofOfPaymentUpload
-            onUpload={handleProofOfPaymentUpload}
-            onClose={() => setShowProofOfPaymentUpload(false)}
-          />
-        )} */}
       </div>
     </div>
   )

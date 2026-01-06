@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -20,9 +20,8 @@ import {
   ArrowDownRight,
   FileText,
   Shield,
-  HomeIcon,
-  CreditCardIcon,
-  DiamondIcon as GoldIcon,
+  Home,
+  Diamond as GoldIcon,
   MessageSquare
 } from 'lucide-react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
@@ -53,53 +52,21 @@ const navigation = [
   { name: 'Settings', href: '/dashboard/settings', icon: Settings }
 ]
 
-const bottomNavigation = [
-  {
-    name: 'Home',
-    href: '/dashboard',
-    icon: HomeIcon,
-    className: 'text-gray-600'
-  },
-  {
-    name: 'My Card',
-    href: '/dashboard/cards',
-    icon: CreditCardIcon,
-    className: 'text-gray-600'
-  },
-  {
-    name: 'Buy Gold',
-    href: '/dashboard/buy-gold',
-    icon: GoldIcon,
-    className: 'text-gray-600'
-  },
-  {
-    name: 'Chat',
-    href: '/dashboard/chat',
-    icon: MessageSquare,
-    className: 'text-gray-600'
-  }
-]
-
-export default function DashboardLayout ({
+export default function DashboardLayout({
   children
 }: {
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const router = useRouter()
   const bottomNavRef = useRef<HTMLDivElement>(null)
-  const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [accountInfo, setAccountInfo] = useState<any>(null)
   const [accountUser, setAccountUser] = useState<any>(null)
   const [isNavigating, setIsNavigating] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-
-  const { theme } = useTheme()
 
   useSession() // This is now just for inactivity timeout
 
@@ -120,7 +87,6 @@ export default function DashboardLayout ({
   }, [])
 
   useEffect(() => {
-    // Hide bottom navigation on larger screens
     const handleResize = () => {
       if (bottomNavRef.current) {
         bottomNavRef.current.style.display =
@@ -129,12 +95,11 @@ export default function DashboardLayout ({
     }
 
     window.addEventListener('resize', handleResize)
-    handleResize() // Call on mount
+    handleResize()
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Handle clicking outside sidebar on mobile
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const sidebar = document.getElementById('sidebar')
@@ -158,47 +123,44 @@ export default function DashboardLayout ({
   useEffect(() => {
     const fetchAccountInfo = async () => {
       try {
-        const data = await api.getUserDetails() // Call the API method
-        setAccountUser(data?.data?.user) // Set the fetched data to state
+        const data = await api.getUserDetails()
+        setAccountUser(data?.data?.user)
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch account info') // Handle error
+        setError(err.message || 'Failed to fetch account info')
       } finally {
-        setLoading(false) // Stop loading indicator
+        setLoading(false)
       }
     }
 
-    fetchAccountInfo() // Call the function when the component mounts
+    fetchAccountInfo()
   }, [])
 
   useEffect(() => {
     setIsNavigating(true)
-    // Simulate a delay to show the loading indicator
     const timer = setTimeout(() => {
       setIsNavigating(false)
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [pathname]) // Removed searchParams from dependencies
+  }, [pathname])
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('token')
     localStorage.removeItem('expires_at')
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT'
     document.cookie = 'expiry=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT'
     router.push('/login')
-  }
+  }, [router])
 
-  // Enhanced navigation click handler
-  const handleNavigationClick = () => {
+  const handleNavigationClick = useCallback(() => {
     const isMobile = window.innerWidth < 1024
     if (isMobile && isSidebarOpen) {
       setIsSidebarOpen(false)
     }
-  }
+  }, [isSidebarOpen])
 
   return (
     <div className='min-h-screen bg-white dark:bg-gray-900'>
-      {/* Progress Indicator */}
       {isNavigating && (
         <div className='fixed top-0 left-0 w-full h-1 bg-blue-100 z-50'>
           <div className='h-full w-1/3 bg-blue-500 animate-loading rounded-r-full' />
@@ -215,7 +177,6 @@ export default function DashboardLayout ({
         )}
       >
         <div className='flex flex-col h-full'>
-          {/* Logo Section */}
           <div className='px-6 py-5 border-b border-gray-100 dark:border-gray-700'>
             <div className='flex items-center gap-3'>
               <div className='p-2 bg-blue-100 rounded-lg'>
@@ -230,7 +191,6 @@ export default function DashboardLayout ({
             </div>
           </div>
 
-          {/* Navigation */}
           <nav className='flex-1 px-3 space-y-1 overflow-y-auto py-6'>
             {navigation.map(item => {
               const Icon = item.icon
@@ -268,7 +228,6 @@ export default function DashboardLayout ({
             })}
           </nav>
 
-          {/* User Profile - Improved */}
           <div className='sticky bottom-0 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700'>
             <div className='p-3'>
               <div className='relative p-3 rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200'>
@@ -345,9 +304,7 @@ export default function DashboardLayout ({
         </div>
       </div>
 
-      {/* Main Content */}
       <div className='lg:pl-64 flex flex-col min-h-screen'>
-        {/* Header */}
         <header className='sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 z-40'>
           <div className='flex items-center justify-between px-6 py-4'>
             <div className='flex items-center gap-3'>
@@ -369,7 +326,6 @@ export default function DashboardLayout ({
               </h2>
             </div>
 
-            {/* Header Actions */}
             <div className='flex items-center gap-3'>
               {!isMobile && (
                 <div className='relative'>
@@ -399,7 +355,6 @@ export default function DashboardLayout ({
           </div>
         </header>
 
-        {/* Main Content */}
         <main className='flex-grow p-1 lg:p-8 bg-gray-50 dark:bg-gray-900'>
           <div className='w-full px-1 lg:max-w-screen-xl lg:mx-auto bg-white dark:bg-gray-800 rounded-none lg:rounded-xl shadow-none lg:shadow-sm border-0 lg:border border-gray-100 dark:border-gray-700 p-4 lg:p-6'>
             {children}

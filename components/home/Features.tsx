@@ -10,6 +10,7 @@ import {
   PiggyBank
 } from 'lucide-react'
 import Image from 'next/image'
+import { memo } from 'react'
 
 const features = [
   {
@@ -68,7 +69,7 @@ const features = [
   }
 ]
 
-export function Features() {
+export const Features = memo(function Features() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -161,4 +162,4 @@ export function Features() {
       </div>
     </section>
   )
-}
+})

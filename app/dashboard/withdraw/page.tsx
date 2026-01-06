@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import { ArrowDownRight, Wallet } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -71,7 +71,7 @@ export default function WithdrawPage() {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     const withdrawalAmount = parseFloat(values.amount)
     const currentBalance = accountUser?.balance || 0
 
@@ -97,14 +97,14 @@ export default function WithdrawPage() {
 
     setIsSubmitting(true)
     try {
-      const response = await api.withdraw({
+      await api.withdraw({
         amount: withdrawalAmount,
         withdrawalMethod: values.withdrawalMethod,
         bankName: values.bankName,
         accountNumber: values.accountNumber,
         swiftCode: values.swiftCode,
       })
-      
+
       toast({
         title: "Withdrawal Initiated",
         description: `Your withdrawal request for $${values.amount} has been submitted.`,
@@ -120,7 +120,7 @@ export default function WithdrawPage() {
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [accountUser?.balance, form, toast])
 
   useEffect(() => {
     const fetchAccountInfo = async () => {
@@ -139,7 +139,7 @@ export default function WithdrawPage() {
     }
 
     fetchAccountInfo()
-  }, [])
+  }, [toast])
 
   return (
     <div className="container max-w-xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -168,7 +168,7 @@ export default function WithdrawPage() {
               <Wallet className="w-5 h-5 text-blue-400" />
               <div>
                 <p className="text-sm font-medium text-gray-200">Available Balance</p>
-                <p className="text-2xl font-bold text-white">${accountUser?.balance}</p>
+                <p className="text-2xl font-bold text-white">${accountUser?.balance || "0.00"}</p>
               </div>
             </div>
 
@@ -324,4 +324,3 @@ export default function WithdrawPage() {
     </div>
   )
 }
-

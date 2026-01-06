@@ -5,14 +5,14 @@ import {
   CreditCard,
   Briefcase,
   Home,
-  BarChartIcon as ChartBar,
+  BarChart as ChartBar,
   Plane,
   Shield,
   ArrowRight
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { useRef } from 'react'
+import { useRef, memo } from 'react'
 
 const services = [
   {
@@ -88,7 +88,7 @@ const itemVariants = {
   }
 }
 
-export function Services() {
+export const Services = memo(function Services() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -215,4 +215,4 @@ export function Services() {
       </motion.div>
     </section>
   )
-}
+})

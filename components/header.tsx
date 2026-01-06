@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Phone } from 'lucide-react'
@@ -21,7 +21,7 @@ const menuItems: MenuItem[] = [
   { name: 'Contact Us', href: '/contact' }
 ]
 
-export function Header() {
+export const Header = memo(function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -34,10 +34,10 @@ export function Header() {
   useEffect(() => {
     // Add passive: true for better scroll performance
     window.addEventListener('scroll', handleScroll, { passive: true })
-    
+
     // Initial check for page load with scroll already happened
     handleScroll()
-    
+
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
@@ -72,10 +72,10 @@ export function Header() {
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: -5 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.3,
         when: "beforeChildren"
       }
@@ -87,7 +87,7 @@ export function Header() {
     visible: (custom: number) => ({
       opacity: 1,
       x: 0,
-      transition: { 
+      transition: {
         delay: custom * 0.05, // Reduced delay for faster animation
         type: "spring",
         stiffness: 150,
@@ -98,8 +98,8 @@ export function Header() {
 
   const mobileMenuVariants = {
     hidden: { opacity: 0, height: 0 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       height: "auto",
       transition: {
         duration: 0.25,
@@ -107,8 +107,8 @@ export function Header() {
         when: "beforeChildren"
       }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       height: 0,
       transition: {
         duration: 0.2,
@@ -122,21 +122,20 @@ export function Header() {
     <>
       {/* Only show TopBar on non-mobile screens */}
       {!isMobile && <TopBar />}
-      
+
       <motion.header
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className={`sticky top-0 z-50 w-full backdrop-blur-lg bg-white/90 transition-all duration-300 ${
-          scrolled ? 'shadow-lg border-b border-gray-200' : ''
-        }`}
+        className={`sticky top-0 z-50 w-full backdrop-blur-lg bg-white/90 transition-all duration-300 ${scrolled ? 'shadow-lg border-b border-gray-200' : ''
+          }`}
         role="banner"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
-            <motion.div 
-              whileHover={{ scale: 1.02 }} 
+            <motion.div
+              whileHover={{ scale: 1.02 }}
               className="relative z-10"
               whileTap={{ scale: 0.98 }}
             >
@@ -262,7 +261,7 @@ export function Header() {
                       </Button>
                     </Link>
                     <Link href="/register" className="block">
-                      <Button 
+                      <Button
                         className="w-full justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -278,4 +277,6 @@ export function Header() {
       </motion.header>
     </>
   )
-}
+})
+
+Header.displayName = 'Header'

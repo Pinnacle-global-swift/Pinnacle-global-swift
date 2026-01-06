@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { motion } from "framer-motion"
 import { FileText, Calculator } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -39,22 +39,22 @@ export default function LoanPage() {
     },
   })
 
-  const calculateMonthlyPayment = (amount: number, months: number) => {
+  const calculateMonthlyPayment = useCallback((amount: number, months: number) => {
     const interestRate = 0.05 / 12 // 5% annual interest rate
     const payment =
       (amount * interestRate * Math.pow(1 + interestRate, months)) / (Math.pow(1 + interestRate, months) - 1)
     return Math.round(payment * 100) / 100
-  }
+  }, [])
 
-  const handleDurationChange = (duration: string) => {
+  const handleDurationChange = useCallback((duration: string) => {
     const amount = Number.parseFloat(form.getValues("amount")) || 0
     const months = Number.parseInt(duration) || 0
     if (amount && months) {
       setMonthlyPayment(calculateMonthlyPayment(amount, months))
     }
-  }
+  }, [form, calculateMonthlyPayment])
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true)
     try {
       // Simulate API call
@@ -75,7 +75,7 @@ export default function LoanPage() {
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [form, toast])
 
   return (
     <div className="container max-w-xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -313,4 +313,3 @@ export default function LoanPage() {
     </div>
   )
 }
-

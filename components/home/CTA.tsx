@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Smartphone, Headphones } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { memo } from 'react'
 
-export function CTA () {
+export const CTA = memo(function CTA() {
   return (
     <section className='bg-gray-900 text-white py-20 overflow-hidden'>
       <div className='container mx-auto px-4'>
@@ -74,4 +75,4 @@ export function CTA () {
       </div>
     </section>
   )
-}
+})

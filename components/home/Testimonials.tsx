@@ -1,26 +1,20 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { memo } from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Star } from 'lucide-react'
 
 // Move data to a separate constant file
 import { testimonials } from '@/constants/testimonials'
 
 // Simplified variants
-const slideVariants = {
-  enter: { opacity: 0, x: 20 },
-  center: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -20 }
-}
-
 const fadeInVariants = {
   hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 }
 }
 
-export function Testimonials() {
+export const Testimonials = memo(function Testimonials() {
   return (
     <section className='relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-950 py-24'>
       {/* Background Pattern - Simplified */}
@@ -101,4 +95,4 @@ export function Testimonials() {
       </div>
     </section>
   )
-}
+})

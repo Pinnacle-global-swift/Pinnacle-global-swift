@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Copy, Wallet, QrCode, Check } from 'lucide-react'
 import Image from 'next/image'
@@ -68,7 +68,7 @@ const formSchema = z.object({
   paymentMethod: z.string().min(1, 'Payment method is required')
 })
 
-export default function DepositPage () {
+export default function DepositPage() {
   const [selectedCrypto, setSelectedCrypto] = useState(cryptoAddresses[0])
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null)
   const { toast } = useToast()
@@ -81,13 +81,13 @@ export default function DepositPage () {
     }
   })
 
-  const copyToClipboard = async (e: React.MouseEvent, address: string) => {
+  const copyToClipboard = useCallback(async (e: React.MouseEvent, address: string) => {
     e.preventDefault() // Prevent default button behavior
     try {
       await navigator.clipboard.writeText(address)
       setCopiedAddress(address)
       toast({
-        type:"success",
+        type: "success",
         title: 'Address Copied',
         description: 'The address has been copied to your clipboard'
       })
@@ -99,16 +99,15 @@ export default function DepositPage () {
         type: 'error'
       })
     }
-  }
-  const handlePaymentMethodChange = (value: string) => {
-    console.log('Selected value:', value) // Debug logging
-    
+  }, [toast])
+
+  const handlePaymentMethodChange = useCallback((value: string) => {
     const selectedCrypto = cryptoAddresses.find(crypto => crypto.type === value)
     if (selectedCrypto) {
       setSelectedCrypto(selectedCrypto)
       form.setValue('paymentMethod', value)
     }
-  }
+  }, [form])
 
   return (
     <div className='container max-w-xl mx-auto py-10 px-4 sm:px-6 lg:px-8'>

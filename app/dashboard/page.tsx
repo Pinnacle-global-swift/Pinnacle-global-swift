@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useMemo, memo } from "react"
 import { motion } from "framer-motion"
 import {
   ArrowUpRight,
@@ -32,6 +32,67 @@ import { format } from "date-fns"
 import { useToast } from "@/components/ui/use-toast"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { TransactionReceipt } from '@/components/dashboard/TransactionReceipt'
+
+// Memoized Transaction Item Component
+const TransactionItem = memo(({ transaction, onClick }: { transaction: any; onClick: (t: any) => void }) => {
+  return (
+    <div
+      onClick={() => onClick(transaction)}
+      className="flex items-center justify-between p-4 hover:bg-white/5 rounded-lg transition duration-200 cursor-pointer"
+    >
+      <div className="flex items-center gap-3">
+        <div
+          className={`p-2 rounded-full ${transaction.type.toLowerCase() === "deposit"
+              ? "bg-green-500/20 text-green-400"
+              : transaction.type.toLowerCase() === "withdrawal"
+                ? "bg-red-500/20 text-red-400"
+                : "bg-blue-500/20 text-blue-400"
+            }`}
+        >
+          {transaction.type.toLowerCase() === "deposit" ? (
+            <ArrowDownRight className="w-4 h-4" />
+          ) : transaction.type.toLowerCase() === "withdrawal" ? (
+            <ArrowUpRight className="w-4 h-4" />
+          ) : (
+            <ArrowLeftRight className="w-4 h-4" />
+          )}
+        </div>
+        <div>
+          <p className="font-medium text-white">{transaction.description}</p>
+          <p className="text-sm text-gray-400">
+            {format(new Date(transaction?.date), "MMM dd, yyyy")}
+          </p>
+        </div>
+      </div>
+      <div className="text-right">
+        <p
+          className={`font-medium ${transaction.type.toLowerCase() === "deposit"
+              ? "text-green-400"
+              : transaction.type.toLowerCase() === "withdrawal"
+                ? "text-red-400"
+                : "text-blue-400"
+            }`}
+        >
+          ${transaction.amount.toFixed(2)}
+        </p>
+        <Badge
+          variant={
+            transaction.status.toLowerCase() === "completed"
+              ? "default"
+              : transaction.status.toLowerCase() === "pending"
+                ? "secondary"
+                : "destructive"
+          }
+          className="text-xs"
+        >
+          {transaction.status}
+        </Badge>
+      </div>
+    </div>
+  )
+})
+
+TransactionItem.displayName = "TransactionItem"
 
 export default function DashboardOverview() {
   const [accountInfo, setAccountInfo] = useState<any>(null)
@@ -67,7 +128,6 @@ export default function DashboardOverview() {
       try {
         const response = await api.transactions(1, 5)
         if (response.success) {
-          console.log(response.success)
           setRecentTransactions(response.data.transactions)
         }
       } catch (error) {
@@ -103,9 +163,10 @@ export default function DashboardOverview() {
     fetchUserDetails()
   }, [])
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
+    if (!accountInfo?.accountNumber) return
     try {
-      await navigator.clipboard.writeText(accountInfo?.accountNumber)
+      await navigator.clipboard.writeText(accountInfo.accountNumber)
       setCopied(true)
       toast({
         title: "Copied!",
@@ -121,31 +182,47 @@ export default function DashboardOverview() {
         description: "Unable to copy account number. Please try again.",
       })
     }
-  }
+  }, [accountInfo?.accountNumber, toast])
 
-  const toggleBalanceVisibility = () => {
-    const newState = !showBalance
-    setShowBalance(newState)
-    localStorage.setItem('showBalance', newState.toString())
-  }
+  const toggleBalanceVisibility = useCallback(() => {
+    setShowBalance(prev => {
+      const newState = !prev
+      localStorage.setItem('showBalance', newState.toString())
+      return newState
+    })
+  }, [])
 
-  const formatHiddenBalance = (balance: number) => {
-    if (!balance) return '*****'
-    const length = balance.toString().length
-    return '$' + '*'.repeat(length)
-  }
+  const formatHiddenBalance = useCallback((balance: number) => {
+    if (!balance && balance !== 0) return '*****'
+    const length = balance.toString().split('.')[0].length
+    return '$' + '*'.repeat(Math.max(length, 4))
+  }, [])
+
+  const handleTransactionClick = useCallback((transaction: any) => {
+    setSelectedTransaction(transaction)
+  }, [])
+
+  const formattedBalance = useMemo(() => {
+    if (!accountInfo?.balance && accountInfo?.balance !== 0) return "0.00"
+    return accountInfo.balance.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  }, [accountInfo?.balance])
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="space-y-8 relative z-10 p-4 md:p-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <Card className="bg-gradient-to-br from-gray-800 to-gray-900 text-white backdrop-blur-sm shadow-lg border-white/10">
-            <Image
-              src="https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&q=80&w=1920&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Card background"
-              fill
-              className="absolute inset-0 object-cover opacity-20 -z-10"
-            />
+          <Card className="bg-gradient-to-br from-gray-800 to-gray-900 text-white backdrop-blur-sm shadow-lg border-white/10 overflow-hidden">
+            <div className="absolute inset-0 opacity-20 -z-10">
+              <Image
+                src="https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&q=80&w=1920"
+                alt="Card background"
+                fill
+                className="object-cover"
+              />
+            </div>
             <CardHeader className="pb-2">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
@@ -164,10 +241,7 @@ export default function DashboardOverview() {
                   <div className="flex items-center gap-2">
                     <h2 className="text-3xl font-bold transition-all duration-300">
                       {showBalance ? (
-                        `$${accountInfo?.balance?.toLocaleString("en-US", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}`
+                        `$${formattedBalance}`
                       ) : (
                         <span className="select-none">{formatHiddenBalance(accountInfo?.balance)}</span>
                       )}
@@ -190,7 +264,7 @@ export default function DashboardOverview() {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-400">Account number:</span>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{accountInfo?.accountNumber}</span>
+                      <span className="font-medium">{accountInfo?.accountNumber || "----"}</span>
                       <Button variant="ghost" size="icon" onClick={handleCopy} className="focus:outline-none">
                         {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
                       </Button>
@@ -285,68 +359,13 @@ export default function DashboardOverview() {
                   <div className="text-center py-8 text-gray-400">No transactions yet</div>
                 ) : (
                   <div className="space-y-4">
-                    {recentTransactions.map((transaction: any) =>  {
-
-                    return   (
-                      <div
+                    {recentTransactions.map((transaction: any) => (
+                      <TransactionItem
                         key={transaction?.reference}
-                        onClick={() => setSelectedTransaction(transaction)}
-                        className="flex items-center justify-between p-4 hover:bg-white/5 rounded-lg transition duration-200 cursor-pointer"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`p-2 rounded-full ${
-                              transaction.type.toLowerCase() === "deposit"
-                                ? "bg-green-500/20 text-green-400"
-                                : transaction.type.toLowerCase() === "withdrawal"
-                                  ? "bg-red-500/20 text-red-400"
-                                  : "bg-blue-500/20 text-blue-400"
-                            }`}
-                          >
-                            {transaction.type.toLowerCase() === "deposit" ? (
-                              <ArrowDownRight className="w-4 h-4" />
-                            ) : transaction.type.toLowerCase() === "withdrawal" ? (
-                              <ArrowUpRight className="w-4 h-4" />
-                            ) : (
-                              <ArrowLeftRight className="w-4 h-4" />
-                            )}
-                          </div>
-                          <div>
-                            <p className="font-medium text-white">{transaction.description}</p>
-                            <p className="text-sm text-gray-400">
-                              {format(new Date(transaction?.date), "MMM dd, yyyy")}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p
-                            className={`font-medium ${
-                              transaction.type.toLowerCase() === "deposit"
-                                ? "text-green-400"
-                                : transaction.type.toLowerCase() === "withdrawal"
-                                  ? "text-red-400"
-                                  : "text-blue-400"
-                            }`}
-                          >
-                            ${transaction.amount.toFixed(2)}
-                          </p>
-                          <Badge
-                            variant={
-                              transaction.status.toLowerCase() === "completed"
-                                ? "default"
-                                : transaction.status.toLowerCase() === "pending"
-                                  ? "secondary"
-                                  : "destructive"
-                            }
-                            className="text-xs"
-                          >
-                            {transaction.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    )
-                  }
-                    )}
+                        transaction={transaction}
+                        onClick={handleTransactionClick}
+                      />
+                    ))}
                   </div>
                 )}
               </CardContent>
@@ -390,23 +409,6 @@ export default function DashboardOverview() {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="bg-white/5 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-white mb-4">Income vs Expenses</h4>
-                    <ResponsiveContainer width="100%" height={200}>
-                      <LineChart data={chartData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9CA3AF" />
-                        <YAxis stroke="#9CA3AF" />
-                        <Tooltip
-                          contentStyle={{ backgroundColor: "#1F2937", border: "none" }}
-                          itemStyle={{ color: "#E5E7EB" }}
-                          labelStyle={{ color: "#E5E7EB" }}
-                        />
-                        <Line type="monotone" dataKey="income" stroke="#10B981" strokeWidth={2} />
-                        <Line type="monotone" dataKey="expenses" stroke="#EF4444" strokeWidth={2} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div> */}
                 </div>
               </CardContent>
             </Card>
@@ -415,11 +417,10 @@ export default function DashboardOverview() {
 
         <TransactionReceipt
           isOpen={!!selectedTransaction}
-          onClose={() => setSelectedTransaction(null)}
+          onClose={() => handleTransactionClick(null)}
           transaction={selectedTransaction}
         />
       </div>
     </div>
   )
 }
-

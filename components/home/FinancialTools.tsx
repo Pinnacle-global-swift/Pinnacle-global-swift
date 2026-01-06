@@ -11,6 +11,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { memo } from 'react'
 
 const tools = [
   {
@@ -55,7 +56,7 @@ const tools = [
   }
 ]
 
-export function FinancialTools() {
+export const FinancialTools = memo(function FinancialTools() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -168,4 +169,4 @@ export function FinancialTools() {
       </div>
     </section>
   )
-}
+})

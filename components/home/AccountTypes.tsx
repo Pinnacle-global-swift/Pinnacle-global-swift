@@ -1,7 +1,7 @@
 'use client'
 
 import {
-  PiggyBankIcon as Piggy,
+  PiggyBank as Piggy,
   Briefcase,
   Building,
   Users,
@@ -11,6 +11,7 @@ import {
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { memo } from 'react'
 
 const accountTypes = [
   {
@@ -83,7 +84,7 @@ const accountTypes = [
   }
 ]
 
-export function AccountTypes() {
+export const AccountTypes = memo(function AccountTypes() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -193,4 +194,4 @@ export function AccountTypes() {
       </div>
     </section>
   )
-}
+})

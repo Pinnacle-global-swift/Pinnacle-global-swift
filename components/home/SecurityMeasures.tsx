@@ -1,6 +1,7 @@
 import { Shield, Lock, Eye, Bell } from 'lucide-react'
+import { memo } from 'react'
 
-export function SecurityMeasures() {
+export const SecurityMeasures = memo(function SecurityMeasures() {
   const measures = [
     {
       icon: Shield,
@@ -40,5 +41,4 @@ export function SecurityMeasures() {
       </div>
     </section>
   )
-}
-
+})

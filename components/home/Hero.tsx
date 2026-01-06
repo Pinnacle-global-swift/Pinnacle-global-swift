@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
@@ -75,7 +75,7 @@ const overlayVariants = {
   }
 }
 
-export function Hero() {
+export const Hero = memo(function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -253,4 +253,4 @@ export function Hero() {
       </div>
     </section>
   )
-}
+})

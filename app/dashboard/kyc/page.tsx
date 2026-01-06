@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, usePresence } from 'framer-motion'
 import {
   Shield,
@@ -11,7 +11,6 @@ import {
 } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-// import ConfettiExplosion from 'react-confetti-explosion'
 import * as z from 'zod'
 import { cn } from '@/lib/utils'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
@@ -45,7 +44,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { api } from '@/lib/api'
 import { countries } from 'countries-list'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { LoadingSpinner } from '@/components/ui/loading-spinner' // Make sure this component exists
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 const formSchema = z.object({
   fullLegalName: z.string().min(1, 'Full name is required'),
@@ -88,7 +87,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-export default function KYCPage () {
+export default function KYCPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [frontImage, setFrontImage] = useState<{
     file: File | null
@@ -135,13 +134,10 @@ export default function KYCPage () {
         setIsLoading(true)
         const data = await api.statuskyc()
         setKyc(data?.data)
-        // Show confetti if KYC is approved after fetching status
         if (data?.data?.status === 'approved') {
           setShowConfetti(true)
         }
-        console.log(data?.data)
       } catch (err: any) {
-        console.log(err)
         toast({
           title: 'Error',
           description: 'Failed to fetch KYC status',
@@ -152,15 +148,12 @@ export default function KYCPage () {
       }
     }
     fetchAccountInfo()
-  }, [])
+  }, [toast])
 
-  async function onSubmit (values: FormValues) {
-    // No need to check for files separately as the schema validation will handle it
+  const onSubmit = useCallback(async (values: FormValues) => {
     setIsSubmitting(true)
     try {
       const formData = new FormData()
-
-      // Add form field values
       Object.entries(values).forEach(([key, value]) => {
         if (key === 'idFrontImage') {
           formData.append('idFront', values.idFrontImage.file as File)
@@ -176,9 +169,7 @@ export default function KYCPage () {
         }
       })
 
-      const response = await api.submitkyc(formData)
-
-      console.log(response)
+      await api.submitkyc(formData)
       await new Promise(resolve => setTimeout(resolve, 2000))
       toast({
         title: 'KYC Submitted Successfully',
@@ -200,20 +191,9 @@ export default function KYCPage () {
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [form, toast])
 
-  function dataURItoBlob (dataURI: string) {
-    const byteString = atob(dataURI.split(',')[1])
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-    const ab = new ArrayBuffer(byteString.length)
-    const ia = new Uint8Array(ab)
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i)
-    }
-    return new Blob([ab], { type: mimeString })
-  }
-
-  const handleFrontImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFrontImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const imageData = {
@@ -223,9 +203,9 @@ export default function KYCPage () {
       setFrontImage(imageData)
       form.setValue('idFrontImage', imageData, { shouldValidate: true })
     }
-  }
+  }, [form])
 
-  const handleBackImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBackImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const imageData = {
@@ -235,9 +215,9 @@ export default function KYCPage () {
       setBackImage(imageData)
       form.setValue('idBackImage', imageData, { shouldValidate: true })
     }
-  }
+  }, [form])
 
-  const handleProofOfAddressChange = (
+  const handleProofOfAddressChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0]
@@ -249,7 +229,7 @@ export default function KYCPage () {
       setProofOfAddressImage(imageData)
       form.setValue('proofOfAddressImage', imageData, { shouldValidate: true })
     }
-  }
+  }, [form])
 
   if (isLoading) {
     return (

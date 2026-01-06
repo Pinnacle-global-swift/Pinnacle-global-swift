@@ -5,7 +5,7 @@ import {
   CreditCard,
   Briefcase,
   PiggyBank,
-  BarChartIcon as ChartBar,
+  BarChart as ChartBar,
   Globe,
   Shield,
   ArrowRight,
@@ -219,7 +219,7 @@ const testimonials = [
   }
 ]
 
-export default function ServicesPage () {
+export default function ServicesPage() {
   return (
     <div className='min-h-screen flex flex-col'>
       <Header />
@@ -449,7 +449,7 @@ export default function ServicesPage () {
                 Our financial experts are here to help you find the perfect
                 banking solutions
               </p>
-          
+
             </div>
           </div>
         </section>
@@ -459,7 +459,7 @@ export default function ServicesPage () {
   )
 }
 
-function ServiceCard ({ service, index }: { service: any; index: number }) {
+function ServiceCard({ service, index }: { service: any; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

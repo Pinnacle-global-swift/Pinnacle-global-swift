@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Search } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -69,7 +69,7 @@ const formSchema = z.object({
     .optional()
 })
 
-export default function TransferPage () {
+export default function TransferPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isValidatingAccount, setIsValidatingAccount] = useState(false)
   const { toast } = useToast()
@@ -85,15 +85,14 @@ export default function TransferPage () {
     }
   })
 
-  const validateAccountNumber = async (accountNumber: string) => {
+  const validateAccountNumber = useCallback(async (accountNumber: string) => {
     if (accountNumber.length < 10) return
-    
+
     setIsValidatingAccount(true)
     try {
       // Simulate API call to validate account
       await new Promise(resolve => setTimeout(resolve, 1000))
-      // Add your actual account validation API call here
-      
+
       // For demo purposes, let's assume account numbers starting with '1' are invalid
       if (accountNumber.startsWith('1')) {
         form.setError('accountNumber', {
@@ -109,9 +108,9 @@ export default function TransferPage () {
     } finally {
       setIsValidatingAccount(false)
     }
-  }
+  }, [form])
 
-  async function onSubmit (values: z.infer<typeof formSchema>) {
+  const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
     const amount = parseFloat(values.amount)
     if (amount > 10000 && values.transferType === 'internal') {
       return toast({
@@ -123,35 +122,29 @@ export default function TransferPage () {
 
     setIsSubmitting(true)
     try {
-      // Simulate API call
-      // await new Promise(resolve => setTimeout(resolve, 2000))
-      const response = await api.transfer({
+      await api.transfer({
         accountNumber: values.accountNumber,
         beneficiaryName: values.beneficiaryName,
         amount: parseFloat(values.amount),
-        // bankName: values.bankName,
-        // withdrawalMethod: values.withdrawalMethod,
-
         description: values.description
       })
 
       toast({
         title: 'Transfer Successful',
         description: `$${values.amount} has been transferred to ${values.beneficiaryName}`,
-                type: 'success'
+        type: 'success'
       })
       form.reset()
     } catch (error: any) {
       toast({
-        type:"error",
+        type: "error",
         title: 'Transfer Failed',
-        // description: error?.response?.data?.errors?.msg
-        description: 'Please contact own customer service'
+        description: 'Please contact our customer service'
       })
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [form, toast])
 
   return (
     <div className='container max-w-xl mx-auto py-10'>
@@ -251,19 +244,19 @@ export default function TransferPage () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className='bg-gray-900 border-white/20 backdrop-blur-lg rounded-xl'>
-                          <SelectItem 
+                          <SelectItem
                             value='internal'
                             className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
                           >
                             Internal Transfer
                           </SelectItem>
-                          <SelectItem 
+                          <SelectItem
                             value='external'
                             className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
                           >
                             External Transfer
                           </SelectItem>
-                          <SelectItem 
+                          <SelectItem
                             value='international'
                             className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
                           >

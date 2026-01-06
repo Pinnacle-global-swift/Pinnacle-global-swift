@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Upload, X, Image as ImageIcon, CheckCircle } from 'lucide-react'
+import { Upload, X, Image as LucideImage, CheckCircle } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -20,7 +20,7 @@ interface ProofOfPaymentDialogProps {
   onSubmit: (file: File) => Promise<void>
 }
 
-export function ProofOfPaymentDialog ({
+export function ProofOfPaymentDialog({
   open,
   onOpenChange,
   onSubmit
@@ -110,7 +110,7 @@ export function ProofOfPaymentDialog ({
               </div>
             ) : (
               <div className='text-center'>
-                <ImageIcon className='mx-auto h-12 w-12 text-gray-500' />
+                <LucideImage className='mx-auto h-12 w-12 text-gray-500' />
                 <div className='mt-4 flex flex-col items-center gap-2'>
                   <label className='cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors'>
                     <Upload className='w-4 h-4 mr-2' />

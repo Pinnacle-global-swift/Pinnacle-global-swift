@@ -12,12 +12,12 @@ import {
   Clock,
   Facebook,
   Twitter,
-  LinkedinIcon as LinkedIn,
+  Linkedin,
   Instagram
 } from 'lucide-react'
 import Image from 'next/image'
 
-export function Contact () {
+export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,7 +92,7 @@ export function Contact () {
                 {[
                   { icon: Facebook, href: 'https://facebook.com' },
                   { icon: Twitter, href: 'https://twitter.com' },
-                  { icon: LinkedIn, href: 'https://linkedin.com' },
+                  { icon: Linkedin, href: 'https://linkedin.com' },
                   { icon: Instagram, href: 'https://instagram.com' }
                 ].map((social, index) => (
                   <a
