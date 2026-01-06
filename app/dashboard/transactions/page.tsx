@@ -173,124 +173,124 @@ export default function TransactionsPage() {
   }, [])
 
   return (
-    <div className="container max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="min-h-full bg-[#f8fafc] dark:bg-[#0f172a] p-4 lg:p-8">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.4 }}
+        className="max-w-7xl mx-auto space-y-8"
       >
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10">
-          <CardHeader className="border-b border-white/20 pb-7">
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Transactions
-              </CardTitle>
-              <Button variant="outline" className="bg-white/10 text-white hover:bg-white/20">
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Ledger & History</h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">Audit and export your complete record of transactions</p>
+          </div>
+          <Button variant="outline" className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 h-11 px-6 font-bold shadow-sm">
+            <Download className="w-4 h-4 mr-2" />
+            Export Audit Log
+          </Button>
+        </div>
+
+        <Card className="border-none shadow-xl bg-white dark:bg-slate-800 overflow-hidden">
+          <CardHeader className="p-0">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700/50">
+              <div className="md:col-span-2 relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
-                  placeholder="Search transactions..."
+                  placeholder="Search by description or reference..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 bg-gray-950/50 border-white/20 text-white rounded-xl h-12"
+                  className="pl-11 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 h-11 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 transition-all font-medium"
                 />
               </div>
               <Select value={transactionType || undefined} onValueChange={setTransactionType}>
-                <SelectTrigger className="bg-gray-950/50 border-white/20 text-white rounded-xl h-12">
-                  <SelectValue placeholder="Transaction type" />
+                <SelectTrigger className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 h-11 rounded-xl shadow-sm text-slate-700 dark:text-slate-300 font-semibold">
+                  <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-white/20 backdrop-blur-lg rounded-xl">
-                  <SelectItem value="all" className="text-white">
-                    All types
-                  </SelectItem>
-                  <SelectItem value="deposit" className="text-white">
-                    Deposit
-                  </SelectItem>
-                  <SelectItem value="withdrawal" className="text-white">
-                    Withdrawal
-                  </SelectItem>
-                  <SelectItem value="transfer" className="text-white">
-                    Transfer
-                  </SelectItem>
+                <SelectContent className="dark:bg-slate-800 border-slate-700">
+                  <SelectItem value="all">Every Transaction</SelectItem>
+                  <SelectItem value="deposit">Deposits Only</SelectItem>
+                  <SelectItem value="withdrawal">Withdrawals Only</SelectItem>
+                  <SelectItem value="transfer">Transfers Only</SelectItem>
                 </SelectContent>
               </Select>
-              <DateRangePicker dateRange={dateRange} setDateRange={setDateRange} />
+              <div className="h-11">
+                <DateRangePicker dateRange={dateRange} setDateRange={setDateRange} />
+              </div>
             </div>
+          </CardHeader>
 
+          <CardContent className="p-0">
             {loading ? (
-              <div className="rounded-xl overflow-hidden">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-white/10">
-                      <TableHead className="text-gray-300">Type</TableHead>
-                      <TableHead className="text-gray-300">Date</TableHead>
-                      <TableHead className="text-gray-300">Description</TableHead>
-                      <TableHead className="text-gray-300">Reference</TableHead>
-                      <TableHead className="text-gray-300">Amount</TableHead>
-                      <TableHead className="text-gray-300">Balance After</TableHead>
-                      <TableHead className="text-gray-300">Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <TableRow key={index} className="border-b border-white/10">
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-gray-700/50 rounded animate-pulse" />
-                            <div className="w-16 h-4 bg-gray-700/50 rounded animate-pulse" />
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-24 h-4 bg-gray-700/50 rounded animate-pulse" />
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-32 h-4 bg-gray-700/50 rounded animate-pulse" />
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-20 h-6 bg-gray-700/50 rounded animate-pulse" />
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-16 h-4 bg-gray-700/50 rounded animate-pulse" />
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-20 h-4 bg-gray-700/50 rounded animate-pulse" />
-                        </TableCell>
-                        <TableCell>
-                          <div className="w-16 h-6 bg-gray-700/50 rounded animate-pulse" />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <div className="p-8 flex items-center justify-center min-h-[400px]">
+                <CircularSpinner size="lg" variant="default" />
               </div>
             ) : (
-              <div className="rounded-xl overflow-hidden">
+              <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-white/10">
-                      <TableHead className="text-gray-300">Type</TableHead>
-                      <TableHead className="text-gray-300">Date</TableHead>
-                      <TableHead className="text-gray-300">Description</TableHead>
-                      <TableHead className="text-gray-300">Reference</TableHead>
-                      <TableHead className="text-gray-300">Amount</TableHead>
-                      <TableHead className="text-gray-300">Balance After</TableHead>
-                      <TableHead className="text-gray-300">Status</TableHead>
+                    <TableRow className="bg-slate-50 dark:bg-slate-900 group hover:bg-slate-50 dark:hover:bg-slate-900">
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Type</TableHead>
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Timestamp</TableHead>
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Description</TableHead>
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Reference ID</TableHead>
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Amount</TableHead>
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Post-Balance</TableHead>
+                      <TableHead className="text-xs font-black uppercase tracking-widest text-slate-500 py-5 px-6">Verification</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredTransactions.map((transaction) => (
-                      <TransactionRow
+                      <TableRow
                         key={transaction.reference}
-                        transaction={transaction}
-                        onSelect={handleTransactionSelect}
-                      />
+                        onClick={() => handleTransactionSelect(transaction)}
+                        className="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-900/40 cursor-pointer transition-colors group"
+                      >
+                        <TableCell className="py-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <div className={cn(
+                              "p-2 rounded-lg transition-transform group-hover:scale-110",
+                              transaction.type === 'deposit' ? "bg-emerald-500/10" :
+                                transaction.type === 'withdrawal' ? "bg-rose-500/10" : "bg-blue-500/10"
+                            )}>
+                              {getTransactionIcon(transaction.type)}
+                            </div>
+                            <span className="font-bold text-slate-700 dark:text-slate-300 capitalize">{transaction.type}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-4 px-6">
+                          <p className="text-sm font-bold text-slate-700 dark:text-slate-300">{format(new Date(transaction.date), "MMM dd, yyyy")}</p>
+                          <p className="text-xs font-medium text-slate-400">{format(new Date(transaction.date), "HH:mm:ss")}</p>
+                        </TableCell>
+                        <TableCell className="py-4 px-6">
+                          <span className="text-sm font-semibold text-slate-600 dark:text-slate-400 line-clamp-1">{transaction.description}</span>
+                        </TableCell>
+                        <TableCell className="py-4 px-6">
+                          <code className="text-[10px] font-bold px-2 py-1 bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 rounded-md uppercase tracking-tighter">
+                            {transaction.reference}
+                          </code>
+                        </TableCell>
+                        <TableCell className="py-4 px-6">
+                          <span
+                            className={cn(
+                              "font-black text-base",
+                              transaction.type === "deposit"
+                                ? "text-emerald-600 dark:text-emerald-400"
+                                : transaction.type === "withdrawal"
+                                  ? "text-rose-600 dark:text-rose-400"
+                                  : "text-blue-600 dark:text-blue-400",
+                            )}
+                          >
+                            {transaction.type === 'withdrawal' ? '-' : '+'}${transaction.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                          </span>
+                        </TableCell>
+                        <TableCell className="py-4 px-6">
+                          <span className="text-sm font-bold text-slate-700 dark:text-slate-300">${transaction?.balanceAfter.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+                        </TableCell>
+                        <TableCell className="py-4 px-6">
+                          {getStatusBadge(transaction.status)}
+                        </TableCell>
+                      </TableRow>
                     ))}
                   </TableBody>
                 </Table>
@@ -298,33 +298,29 @@ export default function TransactionsPage() {
             )}
 
             {totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-6">
+              <div className="flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900/20 border-t border-slate-100 dark:border-slate-700/30">
                 <Button
                   variant="outline"
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1 || paginationLoading}
-                  className="bg-white/10 text-white hover:bg-white/20"
+                  className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 h-10 px-4 font-bold rounded-lg shadow-sm"
                 >
                   {paginationLoading && currentPage > 1 ? (
-                    <CircularSpinner size="sm" variant="white" className="mr-2" />
+                    <CircularSpinner size="sm" variant="default" className="mr-2" />
                   ) : null}
-                  Previous
+                  Prev
                 </Button>
-                <span className="px-4 py-2 text-white">
-                  {paginationLoading ? (
-                    <CircularSpinner size="sm" variant="white" />
-                  ) : (
-                    `${currentPage} of ${totalPages}`
-                  )}
-                </span>
+                <p className="text-xs font-black text-slate-500 uppercase tracking-widest">
+                  Page <span className="text-slate-800 dark:text-white">{currentPage}</span> of <span className="text-slate-800 dark:text-white">{totalPages}</span>
+                </p>
                 <Button
                   variant="outline"
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages || paginationLoading}
-                  className="bg-white/10 text-white hover:bg-white/20"
+                  className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-700 h-10 px-4 font-bold rounded-lg shadow-sm"
                 >
                   {paginationLoading && currentPage < totalPages ? (
-                    <CircularSpinner size="sm" variant="white" className="mr-2" />
+                    <CircularSpinner size="sm" variant="default" className="mr-2" />
                   ) : null}
                   Next
                 </Button>
@@ -335,7 +331,7 @@ export default function TransactionsPage() {
       </motion.div>
       <TransactionReceipt
         isOpen={!!selectedTransaction}
-        onClose={() => handleTransactionSelect(null as any)}
+        onClose={() => setSelectedTransaction(null)}
         transaction={selectedTransaction}
       />
     </div>

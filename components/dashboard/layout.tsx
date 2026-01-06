@@ -10,7 +10,6 @@ import {
   Receipt,
   Settings,
   LogOut,
-  Search,
   Bell,
   User,
   MoreVertical,
@@ -45,7 +44,6 @@ const navigation = [
   { name: 'Transfer', href: '/dashboard/transfer', icon: ArrowLeftRight },
   { name: 'Deposit', href: '/dashboard/deposit', icon: WalletCards },
   { name: 'Withdraw', href: '/dashboard/withdraw', icon: ArrowDownRight },
-  { name: 'Loan', href: '/dashboard/loan', icon: FileText },
   { name: 'KYC', href: '/dashboard/kyc', icon: Shield },
   { name: 'Transactions', href: '/dashboard/transactions', icon: Receipt },
   { name: 'Cards', href: '/dashboard/cards', icon: CreditCard },
@@ -327,17 +325,6 @@ export default function DashboardLayout({
             </div>
 
             <div className='flex items-center gap-3'>
-              {!isMobile && (
-                <div className='relative'>
-                  <Input
-                    type='search'
-                    placeholder='Search...'
-                    className='pl-10 pr-4 rounded-full bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 focus:ring-1 focus:ring-blue-500 w-48 lg:w-64 transition-all'
-                  />
-                  <Search className='w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500' />
-                </div>
-              )}
-
               <ThemeToggle />
 
               <Button

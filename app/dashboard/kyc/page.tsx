@@ -316,11 +316,12 @@ export default function KYCPage() {
   }
 
   return (
-    <div className='container max-w-3xl mx-auto py-10 px-4 sm:px-6'>
+    <div className='min-h-full bg-[#f8fafc] dark:bg-[#0f172a] p-4 lg:p-8'>
       <motion.div
         className='bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 rounded-2xl shadow-2xl border border-white/10'
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
       >
         <CardHeader className='border-b border-white/20 p-8'>
           <div className='flex items-center gap-4'>

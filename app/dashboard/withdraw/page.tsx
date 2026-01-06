@@ -142,34 +142,40 @@ export default function WithdrawPage() {
   }, [toast])
 
   return (
-    <div className="container max-w-xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div className='min-h-full bg-[#f8fafc] dark:bg-[#0f172a] p-4 lg:p-8'>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.4 }}
+        className="w-full"
       >
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10">
-          <CardHeader className="border-b border-white/20 pb-7">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-red-500/20 rounded-xl backdrop-blur-sm">
-                <ArrowDownRight className="w-7 h-7 text-red-400" />
+        <Card className="border-none shadow-2xl bg-white dark:bg-slate-800 overflow-hidden">
+          <CardHeader className="bg-[#1e293b] text-white p-8 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10 bg-[url(\'https://www.transparenttextures.com/patterns/carbon-fibre.png\')]" />
+            <div className="relative z-10 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-red-500/20 rounded-xl backdrop-blur-sm">
+                  <ArrowDownRight className="w-8 h-8 text-red-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl font-bold tracking-tight">Withdraw Funds</CardTitle>
+                  <CardDescription className="text-slate-400 mt-1 font-medium">Fast and secure global payouts</CardDescription>
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-                  Withdraw Funds
-                </CardTitle>
-                <CardDescription className="text-gray-300/90">Withdraw money to your bank account</CardDescription>
+              <div className="text-right hidden sm:block">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Available Balance</p>
+                <p className="text-2xl font-black text-white">${(accountUser?.balance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
               </div>
             </div>
           </CardHeader>
 
-          <CardContent className="pt-8">
-            <div className="mb-6 p-4 bg-blue-500/10 rounded-lg flex items-center gap-3">
-              <Wallet className="w-5 h-5 text-blue-400" />
-              <div>
-                <p className="text-sm font-medium text-gray-200">Available Balance</p>
-                <p className="text-2xl font-bold text-white">${accountUser?.balance || "0.00"}</p>
+          <CardContent className="p-8">
+            <div className="sm:hidden mb-8 p-6 bg-slate-900 rounded-2xl border border-slate-700">
+              <div className="flex items-center gap-3 mb-1">
+                <Wallet className="w-4 h-4 text-blue-400" />
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Available Balance</p>
               </div>
+              <p className="text-3xl font-black text-white">${(accountUser?.balance || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
             </div>
 
             <Form {...form}>
@@ -179,144 +185,118 @@ export default function WithdrawPage() {
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-100 font-medium">Amount</FormLabel>
+                      <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold">Amount to Withdraw</FormLabel>
                       <FormControl>
-                        <div className="relative group">
-                          <span className="absolute left-3 top-3.5 text-gray-400 text-lg">$</span>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
                           <Input
                             type="number"
                             placeholder="0.00"
-                            className={cn(
-                              "pl-10 bg-gray-950/50 border-white/20 text-gray-100",
-                              "rounded-xl h-14 text-lg font-medium focus:ring-2 focus:ring-red-400",
-                              "focus:border-transparent transition-all duration-300 hover:border-white/40",
-                            )}
+                            className="pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-14 text-xl font-bold rounded-xl focus:ring-2 focus:ring-red-500 transition-all"
                             {...field}
                           />
                         </div>
                       </FormControl>
-                      <FormMessage className="text-red-300" />
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="withdrawalMethod"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-100 font-medium">Withdrawal Method</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="withdrawalMethod"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold">Method</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all">
+                              <SelectValue placeholder="Select method" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="dark:bg-slate-800 border-slate-700">
+                            <SelectItem value="Bank Transfer">Local Bank Transfer</SelectItem>
+                            <SelectItem value="Wire Transfer">SWIFT/Wire Transfer</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="bankName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold">Bank Name</FormLabel>
                         <FormControl>
-                          <SelectTrigger className="bg-gray-950/50 border-white/20 text-gray-100 rounded-xl h-14 px-4">
-                            <SelectValue placeholder="Select withdrawal method" />
-                          </SelectTrigger>
+                          <Input
+                            placeholder="Receiving bank"
+                            className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                            {...field}
+                          />
                         </FormControl>
-                        <SelectContent className="bg-gray-900 border-white/20 backdrop-blur-lg rounded-xl">
-                          <SelectItem
-                            value="Bank Transfer"
-                            className="focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg"
-                          >
-                            Bank Transfer
-                          </SelectItem>
-                          <SelectItem
-                            value="Wire Transfer"
-                            className="focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg"
-                          >
-                            Wire Transfer
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage className="text-red-300" />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-                <FormField
-                  control={form.control}
-                  name="bankName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-100 font-medium">Bank Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter bank name"
-                          className={cn(
-                            "bg-gray-950/50 border-white/20 text-gray-100",
-                            "rounded-xl h-14 text-lg font-medium focus:ring-2 focus:ring-red-400",
-                            "focus:border-transparent transition-all duration-300 hover:border-white/40",
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-300" />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="accountNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold">Account Number</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Recipient account"
+                            className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-mono"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="accountNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-100 font-medium">Account Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter account number"
-                          className={cn(
-                            "bg-gray-950/50 border-white/20 text-gray-100",
-                            "rounded-xl h-14 text-lg font-medium focus:ring-2 focus:ring-red-400",
-                            "focus:border-transparent transition-all duration-300 hover:border-white/40",
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-300" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="swiftCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-100 font-medium">SWIFT Code</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter SWIFT code"
-                          className={cn(
-                            "bg-gray-950/50 border-white/20 text-gray-100",
-                            "rounded-xl h-14 text-lg font-medium focus:ring-2 focus:ring-red-400",
-                            "focus:border-transparent transition-all duration-300 hover:border-white/40",
-                          )}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-300" />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="swiftCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-slate-700 dark:text-slate-300 font-semibold">SWIFT/BIC</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Bank identifier"
+                            className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-mono uppercase"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <Button
                   type="submit"
-                  className={cn(
-                    "w-full bg-gradient-to-r from-red-500 to-orange-500 text-white",
-                    "rounded-xl h-14 text-lg font-medium transition-all duration-300",
-                    "hover:from-red-600 hover:to-orange-600 focus:ring-2 focus:ring-red-400",
-                  )}
+                  className="w-full h-14 bg-red-600 hover:bg-red-700 text-white text-lg font-bold rounded-xl shadow-lg shadow-red-500/20 transition-all hover:-translate-y-0.5 mt-4"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Processing..." : "Withdraw Funds"}
+                  {isSubmitting ? "Processing Request..." : "Initiate Withdrawal"}
                 </Button>
               </form>
             </Form>
           </CardContent>
 
-          <CardFooter className="border-t border-white/20 mt-6 py-6">
-            <div className="w-full space-y-3">
-              <h4 className="text-lg font-semibold text-gray-100">Recent Withdrawals</h4>
-              <p className="text-sm text-gray-400/90 leading-relaxed">No recent withdrawals</p>
+          <CardFooter className="bg-slate-50 dark:bg-slate-900/50 p-6">
+            <div className="w-full flex items-center gap-4 text-slate-500 dark:text-slate-400">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <p className="text-xs font-semibold uppercase tracking-wider">Withdrawals are processed within 24-48 business hours.</p>
             </div>
           </CardFooter>
         </Card>

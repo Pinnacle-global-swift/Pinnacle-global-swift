@@ -147,42 +147,48 @@ export default function TransferPage() {
   }, [form, toast])
 
   return (
-    <div className='container max-w-xl mx-auto py-10'>
+    <div className='min-h-full bg-[#f8fafc] dark:bg-[#0f172a] p-4 lg:p-8'>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
+        className="w-full"
       >
-        <Card className='border-0 shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10'>
-          <CardHeader className='border-b border-white/20 pb-7'>
-            <CardTitle className='text-3xl font-bold text-white flex items-center gap-3'>
-              <ArrowUpRight className='w-7 h-7 text-blue-400' />
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Transfer Money
-              </span>
-            </CardTitle>
-            <CardDescription className='text-gray-300/90'>
-              Send money to other bank accounts securely
-            </CardDescription>
+        <Card className='border-none shadow-2xl bg-white dark:bg-slate-800 overflow-hidden'>
+          <CardHeader className='bg-[#1e293b] text-white p-8 relative overflow-hidden'>
+            <div className="absolute inset-0 opacity-10 bg-[url(\'https://www.transparenttextures.com/patterns/carbon-fibre.png\')]" />
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="p-3 bg-blue-500/20 rounded-xl backdrop-blur-sm">
+                <ArrowUpRight className='w-8 h-8 text-blue-400' />
+              </div>
+              <div>
+                <CardTitle className='text-2xl font-bold tracking-tight'>
+                  Transfer Funds
+                </CardTitle>
+                <CardDescription className='text-slate-400 mt-1 font-medium'>
+                  Securely send money between accounts
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent className='pt-8'>
+
+          <CardContent className='p-8'>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+              <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                   <FormField
                     control={form.control}
                     name='accountNumber'
                     render={({ field }) => (
-                      <FormItem className='space-y-4'>
-                        <FormLabel className='text-gray-100 font-medium'>
-                          Account Number
+                      <FormItem>
+                        <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>
+                          Recipient Account
                         </FormLabel>
                         <FormControl>
-                          <div className='relative group'>
+                          <div className='relative'>
                             <Search className={cn(
-                              'absolute left-3 top-3 h-5 w-5',
-                              isValidatingAccount ? 'animate-spin text-blue-400' : 'text-gray-400',
-                              'group-focus-within:text-blue-400 transition-colors'
+                              'absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors',
+                              isValidatingAccount ? 'animate-spin text-blue-500' : 'text-slate-400'
                             )} />
                             <Input
                               {...field}
@@ -190,16 +196,12 @@ export default function TransferPage() {
                                 field.onChange(e)
                                 validateAccountNumber(e.target.value)
                               }}
-                              placeholder='Enter account number'
-                              className={cn(
-                                'pl-11 bg-gray-950/50 border-white/20 text-gray-100',
-                                'rounded-xl h-12 focus:ring-2 focus:ring-blue-400 focus:border-transparent',
-                                'transition-all duration-300 hover:border-white/40'
-                              )}
+                              placeholder='Account Number'
+                              className='pl-12 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-mono tracking-wider'
                             />
                           </div>
                         </FormControl>
-                        <FormMessage className='text-red-300' />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -208,22 +210,67 @@ export default function TransferPage() {
                     control={form.control}
                     name='beneficiaryName'
                     render={({ field }) => (
-                      <FormItem className='space-y-4'>
-                        <FormLabel className='text-gray-100 font-medium'>
+                      <FormItem>
+                        <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>
                           Beneficiary Name
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder='Enter beneficiary name'
-                            className={cn(
-                              'bg-gray-950/50 border-white/20 text-gray-100',
-                              'rounded-xl h-12 focus:ring-2 focus:ring-blue-400 focus:border-transparent',
-                              'transition-all duration-300 hover:border-white/40'
-                            )}
+                            placeholder='Full legal name'
+                            className='bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all'
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage className='text-red-300' />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  <FormField
+                    control={form.control}
+                    name='transferType'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>
+                          Method
+                        </FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className='bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all'>
+                              <SelectValue placeholder='Select type' />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="dark:bg-slate-800 border-slate-700">
+                            <SelectItem value='internal'>Internal Transfer</SelectItem>
+                            <SelectItem value='external'>External Transfer</SelectItem>
+                            <SelectItem value='international'>International/Wire</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='amount'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>Amount</FormLabel>
+                        <FormControl>
+                          <div className='relative'>
+                            <span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold'>$</span>
+                            <Input
+                              type='number'
+                              placeholder='0.00'
+                              className='pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 text-lg font-bold rounded-xl focus:ring-2 focus:ring-blue-500 transition-all'
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -231,82 +278,16 @@ export default function TransferPage() {
 
                 <FormField
                   control={form.control}
-                  name='transferType'
-                  render={({ field }) => (
-                    <FormItem className='space-y-4'>
-                      <FormLabel className='text-gray-100 font-medium'>
-                        Transfer Type
-                      </FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className='bg-gray-950/50 border-white/20 text-gray-100 rounded-xl h-12 px-4'>
-                            <SelectValue placeholder='Select transfer type' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className='bg-gray-900 border-white/20 backdrop-blur-lg rounded-xl'>
-                          <SelectItem
-                            value='internal'
-                            className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
-                          >
-                            Internal Transfer
-                          </SelectItem>
-                          <SelectItem
-                            value='external'
-                            className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
-                          >
-                            External Transfer
-                          </SelectItem>
-                          <SelectItem
-                            value='international'
-                            className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
-                          >
-                            International Transfer
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage className='text-red-300' />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name='amount'
-                  render={({ field }) => (
-                    <FormItem className='space-y-4'>
-                      <FormLabel className='text-gray-100 font-medium'>Amount</FormLabel>
-                      <FormControl>
-                        <div className='relative group'>
-                          <span className='absolute left-3 top-3.5 text-gray-400 text-lg'>$</span>
-                          <Input
-                            type='number'
-                            placeholder='0.00'
-                            className={cn(
-                              'pl-10 bg-gray-950/50 border-white/20 text-gray-100',
-                              'rounded-xl h-12 text-lg font-medium focus:ring-2 focus:ring-blue-400',
-                              'focus:border-transparent transition-all duration-300 hover:border-white/40'
-                            )}
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage className='text-red-300' />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name='description'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-gray-200'>
-                        Description (Optional)
+                      <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>
+                        Reference (Optional)
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='Enter transfer description'
-                          className='bg-gray-800 border-gray-700 text-white'
+                          placeholder='E.g. Invoice payment'
+                          className='bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all'
                           {...field}
                         />
                       </FormControl>
@@ -317,25 +298,22 @@ export default function TransferPage() {
 
                 <Button
                   type='submit'
-                  className={cn(
-                    'w-full h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500',
-                    'text-white text-lg font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.01]',
-                    'shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 active:scale-95'
-                  )}
+                  className='w-full h-14 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-0.5 mt-4'
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Processing...' : 'Transfer Money'}
+                  {isSubmitting ? 'Verifying Transaction...' : 'Confirm Transfer'}
                 </Button>
               </form>
             </Form>
           </CardContent>
-          <CardFooter className='border-t border-white/20 mt-8 py-6'>
+
+          <CardFooter className='bg-slate-50 dark:bg-slate-900/50 p-6 flex flex-col items-start gap-4'>
             <div className='w-full'>
-              <h4 className='text-lg font-semibold text-gray-100 mb-3'>
-                Recent Transfers
+              <h4 className='text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4'>
+                Recent Beneficiaries
               </h4>
-              <div className='p-4 rounded-xl bg-white/5 backdrop-blur-sm'>
-                <p className='text-gray-400/90 text-sm'>No recent transfers</p>
+              <div className='p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center'>
+                <p className='text-slate-400 text-sm italic'>Information will appear after your first transfer</p>
               </div>
             </div>
           </CardFooter>

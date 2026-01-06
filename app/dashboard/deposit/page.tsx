@@ -110,142 +110,137 @@ export default function DepositPage() {
   }, [form])
 
   return (
-    <div className='container max-w-xl mx-auto py-10 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-full bg-[#f8fafc] dark:bg-[#0f172a] p-4 lg:p-8'>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        transition={{ duration: 0.4 }}
+        className="w-full"
       >
-        <Card className='border-0 shadow-2xl bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 backdrop-blur-lg rounded-2xl border border-white/10'>
-          <CardHeader className='border-b border-white/20 pb-7'>
-            <div className='flex items-center gap-4'>
+        <Card className='border-none shadow-2xl bg-white dark:bg-slate-800 overflow-hidden'>
+          <CardHeader className='bg-[#1e293b] text-white p-8 relative overflow-hidden'>
+            <div className="absolute inset-0 opacity-10 bg-[url(\'https://www.transparenttextures.com/patterns/carbon-fibre.png\')]" />
+            <div className="relative z-10 flex items-center gap-4">
               <div className='p-3 bg-blue-500/20 rounded-xl backdrop-blur-sm'>
-                <Wallet className='w-7 h-7 text-blue-400' />
+                <Wallet className='w-8 h-8 text-blue-400' />
               </div>
               <div>
-                <CardTitle className='text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent'>
+                <CardTitle className='text-2xl font-bold tracking-tight'>
                   Deposit Funds
                 </CardTitle>
-                <CardDescription className='text-gray-300/90'>
-                  Add money to your account securely
+                <CardDescription className='text-slate-400 mt-1 font-medium'>
+                  Add liquidity via secure crypto gateways
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
 
-          <CardContent className='pt-8'>
+          <CardContent className='p-8'>
             <Form {...form}>
               <form className='space-y-8' onSubmit={(e) => e.preventDefault()}>
-                <FormField
-                  control={form.control}
-                  name='amount'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className='text-gray-100 font-medium'>
-                        Amount
-                      </FormLabel>
-                      <FormControl>
-                        <div className='relative group'>
-                          <span className='absolute left-3 top-3.5 text-gray-400 text-lg'>
-                            $
-                          </span>
-                          <Input
-                            type='number'
-                            placeholder='0.00'
-                            className={cn(
-                              'pl-10 bg-gray-950/50 border-white/20 text-gray-100',
-                              'rounded-xl h-14 text-lg font-medium focus:ring-2 focus:ring-blue-400',
-                              'focus:border-transparent transition-all duration-300 hover:border-white/40'
-                            )}
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage className='text-red-300' />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name='paymentMethod'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className='text-gray-100 font-medium'>
-                        Payment Method
-                      </FormLabel>
-                      <Select
-                        onValueChange={handlePaymentMethodChange}
-                        defaultValue={field.value}
-                      >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <FormField
+                    control={form.control}
+                    name='amount'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>
+                          Anticipated Amount
+                        </FormLabel>
                         <FormControl>
-                          <SelectTrigger className='bg-gray-950/50 border-white/20 text-gray-100 rounded-xl h-14 px-4'>
-                            <SelectValue placeholder='Select payment method' />
-                          </SelectTrigger>
+                          <div className='relative'>
+                            <span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold'>
+                              $
+                            </span>
+                            <Input
+                              type='number'
+                              placeholder='0.00'
+                              className='pl-8 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 text-lg font-bold rounded-xl focus:ring-2 focus:ring-blue-500 transition-all'
+                              {...field}
+                            />
+                          </div>
                         </FormControl>
-                        <SelectContent className='bg-gray-900 border-white/20 backdrop-blur-lg rounded-xl'>
-                          {cryptoAddresses.map((crypto) => (
-                            <SelectItem
-                              key={crypto.type}
-                              value={crypto.type} // Use exact crypto type
-                              className='focus:bg-white/10 text-gray-100 hover:!bg-white/15 rounded-lg'
-                            >
-                              <div className='flex items-center gap-3'>
-                                <img
-                                  src={crypto.icon}
-                                  alt={crypto.type}
-                                  className='w-6 h-6'
-                                />
-                                {crypto.type} ({crypto.coin})
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage className='text-red-300' />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <div className='space-y-6'>
-                  <div className='flex justify-center group relative'>
-                    <div className='bg-white/5 p-5 rounded-2xl backdrop-blur-sm border border-white/20 transition-all duration-300 hover:border-blue-400/50'>
-                      <div className='absolute inset-0 bg-blue-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity' />
-                      <Image
-                        src={selectedCrypto.qrCode}
-                        alt='QR Code'
-                        width={240}
-                        height={240}
-                        className='w-full max-w-[240px] aspect-square'
-                      />
-                    </div>
+                  <FormField
+                    control={form.control}
+                    name='paymentMethod'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='text-slate-700 dark:text-slate-300 font-semibold'>
+                          Asset Type
+                        </FormLabel>
+                        <Select
+                          onValueChange={handlePaymentMethodChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className='bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 h-12 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all'>
+                              <SelectValue placeholder='Select asset' />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="dark:bg-slate-800 border-slate-700">
+                            {cryptoAddresses.map((crypto) => (
+                              <SelectItem
+                                key={crypto.type}
+                                value={crypto.type}
+                              >
+                                <div className='flex items-center gap-3'>
+                                  <img
+                                    src={crypto.icon}
+                                    alt={crypto.type}
+                                    className='w-5 h-5 grayscale group-hover:grayscale-0 transition-all'
+                                  />
+                                  <span className="font-semibold">{crypto.type}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className='flex flex-col md:flex-row gap-8 items-center bg-slate-50 dark:bg-slate-900/50 p-8 rounded-2xl border border-slate-100 dark:border-slate-700/50'>
+                  <div className='bg-white p-4 rounded-2xl shadow-inner border border-slate-200'>
+                    <Image
+                      src={selectedCrypto.qrCode}
+                      alt='QR Code'
+                      width={180}
+                      height={180}
+                      className='aspect-square'
+                    />
                   </div>
 
-                  <div className='space-y-3'>
-                    <label className='text-sm font-medium text-gray-200'>
-                      Deposit Address
-                    </label>
-                    <div className='flex items-center gap-2 bg-gray-950/50 p-4 rounded-xl border border-white/20 group hover:border-blue-400/50 transition-all duration-300'>
-                      <QrCode className='w-6 h-6 text-blue-400' />
-                      <code className='flex-1 text-sm text-gray-300 font-mono break-all'>
+                  <div className='flex-1 space-y-4 w-full'>
+                    <div className="flex items-center gap-2">
+                      <QrCode className='w-4 h-4 text-blue-500' />
+                      <label className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
+                        Your Personal {selectedCrypto.type} Address
+                      </label>
+                    </div>
+                    <div className='flex items-center gap-3 bg-white dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-700'>
+                      <code className='flex-1 text-sm text-slate-700 dark:text-slate-300 font-mono break-all leading-relaxed'>
                         {selectedCrypto.address}
                       </code>
                       <Button
                         variant='ghost'
-                        size='sm'
+                        size='icon'
                         onClick={(e) => copyToClipboard(e, selectedCrypto.address)}
                         className={cn(
-                          'h-9 px-3 text-gray-400 hover:text-white',
-                          'hover:bg-white/10 transition-all duration-200',
-                          copiedAddress === selectedCrypto.address && 'text-green-400'
+                          'shrink-0 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all',
+                          copiedAddress === selectedCrypto.address && 'text-emerald-500'
                         )}
                       >
                         {copiedAddress === selectedCrypto.address ? (
-                          <span className='flex items-center gap-2'>
-                            <Check className='w-4 h-4' /> Copied
-                          </span>
+                          <Check className='w-5 h-5' />
                         ) : (
-                          <Copy className='w-4 h-4' />
+                          <Copy className='w-5 h-5 text-slate-400' />
                         )}
                       </Button>
                     </div>
@@ -255,18 +250,13 @@ export default function DepositPage() {
             </Form>
           </CardContent>
 
-          <CardFooter className='border-t border-white/20 mt-6 py-6'>
+          <CardFooter className='bg-slate-50 dark:bg-slate-900/50 p-8 border-t border-slate-100 dark:border-slate-700/30'>
             <div className='w-full space-y-3'>
-              <h4 className='text-lg font-semibold text-gray-100'>
-                Important Note
+              <h4 className='text-xs font-bold text-slate-500 uppercase tracking-widest'>
+                Compliance & Security
               </h4>
-              <p className='text-sm text-gray-400/90 leading-relaxed'>
-                Please ensure to send only{' '}
-                <span className='font-medium text-blue-400'>
-                  {selectedCrypto.type} ({selectedCrypto.coin})
-                </span>{' '}
-                to this address. Sending other assets may result in permanent loss.
-                Network confirmations typically take 2-30 minutes.
+              <p className='text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium'>
+                Only send <span className='text-blue-500 font-bold'>{selectedCrypto.type}</span> assets to this address. Credits are typically applied after <span className="text-slate-700 dark:text-slate-300">3-12 network confirmations</span>. All deposits are monitored for institutional compliance.
               </p>
             </div>
           </CardFooter>
