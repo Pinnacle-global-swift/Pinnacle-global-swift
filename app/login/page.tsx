@@ -18,6 +18,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/useAuth'
 import { api } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import {
@@ -48,6 +49,9 @@ export default function Login () {
   const [isRedirecting, setIsRedirecting] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
+  
+  // Activate auth guard to redirect logged-in users to dashboard
+  useAuth()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
