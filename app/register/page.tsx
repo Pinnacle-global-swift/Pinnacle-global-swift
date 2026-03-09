@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -20,7 +20,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
-import { countries } from 'countries-list'
+import dynamic from 'next/dynamic'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -82,8 +82,25 @@ const formSchema = z
 
 export default function Register () {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [countryList, setCountryList] = useState<Record<string, any>>({})
+  const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const { toast } = useToast()
+
+  useEffect(() => {
+    // Dynamically load countries list on client side only
+    const loadCountries = async () => {
+      try {
+        const { countries } = await import('countries-list')
+        setCountryList(countries)
+      } catch (error) {
+        console.error('Failed to load countries:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadCountries()
+  }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -323,16 +340,17 @@ export default function Register () {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={isLoading}
                       >
                         <FormControl>
                           <SelectTrigger className='bg-gray-50 border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'>
-                            <SelectValue placeholder='Select country' />
+                            <SelectValue placeholder={isLoading ? 'Loading countries...' : 'Select country'} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className='bg-white border-gray-200 shadow-lg rounded-lg'>
                           <ScrollArea className='h-[200px]'>
-                            {Object.entries(countries).map(
-                              ([code, country]) => (
+                            {Object.entries(countryList).map(
+                              ([code, country]: any) => (
                                 <SelectItem key={code} value={code}>
                                   {country.name}
                                 </SelectItem>
@@ -419,7 +437,7 @@ export default function Register () {
               <Button
                 type='submit'
                 className='w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white'
-                disabled={isSubmitting}
+                disabled={isSubmitting || isLoading}
               >
                 {isSubmitting ? (
                   <div className='flex items-center justify-center'>
